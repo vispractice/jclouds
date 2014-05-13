@@ -39,752 +39,1130 @@ import com.google.common.collect.Maps;
  */
 public class Account extends ForwardingSet<User> {
 
-   /**
+	/**
     */
-   public static enum State {
-      ENABLED, DISABLED, LOCKED, UNRECOGNIZED;
+	public static enum State {
+		ENABLED, DISABLED, LOCKED, UNRECOGNIZED;
 
-      @Override
-      public String toString() {
-         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, name());
-      }
+		@Override
+		public String toString() {
+			return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN,
+					name());
+		}
 
-      public static State fromValue(String state) {
-         try {
-            return valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, checkNotNull(state, "state")));
-         } catch (IllegalArgumentException e) {
-            return UNRECOGNIZED;
-         }
-      }
+		public static State fromValue(String state) {
+			try {
+				return valueOf(CaseFormat.LOWER_HYPHEN.to(
+						CaseFormat.UPPER_UNDERSCORE,
+						checkNotNull(state, "state")));
+			} catch (IllegalArgumentException e) {
+				return UNRECOGNIZED;
+			}
+		}
 
-   }
+	}
 
-   /**
+	/**
     */
-   public static enum Type {
-      /**
-       * API access for all the resources associated with their account. There
-       * may be many users in a domain, many domains in a deployment, and many
-       * users in a deployment. This is typically the end user
-       */
-      USER(0),
-      /**
-       * full API access. This is typically a service administrator or code that
-       * executes with complete trust in the service operator's environment.
-       */
-      ADMIN(1),
-      /**
-       * full API access within a domain. This is the most privileged user that
-       * a given customer has. This may be a reseller for the service provider.
-       */
-      DOMAIN_ADMIN(2), UNRECOGNIZED(Integer.MAX_VALUE);
-
-      private int code;
-
-      private static final Map<Integer, Type> INDEX = Maps.uniqueIndex(ImmutableSet.copyOf(Type.values()),
-            new Function<Type, Integer>() {
-
-               @Override
-               public Integer apply(Type input) {
-                  return input.code;
-               }
-
-            });
-
-      Type(int code) {
-         this.code = code;
-      }
-
-      @Override
-      public String toString() {
-         return "" + code;
-      }
-
-      public static Type fromValue(String type) {
-         Integer code = Integer.valueOf(checkNotNull(type, "type"));
-         return INDEX.containsKey(code) ? INDEX.get(code) : UNRECOGNIZED;
-      }
-
-   }
-
-   public static Builder<?> builder() {
-      return new ConcreteBuilder();
-   }
-
-   public Builder<?> toBuilder() {
-      return new ConcreteBuilder().fromAccount(this);
-   }
-
-   public abstract static class Builder<T extends Builder<T>> {
-      protected abstract T self();
-
-      protected String id;
-      protected Account.Type type;
-      protected String networkDomain;
-      protected String domain;
-      protected String domainId;
-      protected Long IPsAvailable;
-      protected Long IPLimit;
-      protected long IPs;
-      protected boolean cleanupRequired;
-      protected String name;
-      protected long receivedBytes;
-      protected long sentBytes;
-      protected Long snapshotsAvailable;
-      protected Long snapshotLimit;
-      protected long snapshots;
-      protected Account.State state;
-      protected Long templatesAvailable;
-      protected Long templateLimit;
-      protected long templates;
-      protected Long VMsAvailable;
-      protected Long VMLimit;
-      protected long VMsRunning;
-      protected long VMsStopped;
-      protected long VMs;
-      protected Long volumesAvailable;
-      protected Long volumeLimit;
-      protected long volumes;
-      protected Set<User> users = ImmutableSet.of();
-
-      /**
-       * @see Account#getId()
-       */
-      public T id(String id) {
-         this.id = id;
-         return self();
-      }
-
-      /**
-       * @see Account#getType()
-       */
-      public T type(Account.Type type) {
-         this.type = type;
-         return self();
-      }
-
-      /**
-       * @see Account#getNetworkDomain()
-       */
-      public T networkDomain(String networkDomain) {
-         this.networkDomain = networkDomain;
-         return self();
-      }
-
-      /**
-       * @see Account#getDomain()
-       */
-      public T domain(String domain) {
-         this.domain = domain;
-         return self();
-      }
-
-      /**
-       * @see Account#getDomainId()
-       */
-      public T domainId(String domainId) {
-         this.domainId = domainId;
-         return self();
-      }
-
-      /**
-       * @see Account#getIPsAvailable()
-       */
-      public T IPsAvailable(Long IPsAvailable) {
-         this.IPsAvailable = IPsAvailable;
-         return self();
-      }
-
-      /**
-       * @see Account#getIPLimit()
-       */
-      public T IPLimit(Long IPLimit) {
-         this.IPLimit = IPLimit;
-         return self();
-      }
-
-      /**
-       * @see Account#getIPs()
-       */
-      public T IPs(long IPs) {
-         this.IPs = IPs;
-         return self();
-      }
-
-      /**
-       * @see Account#isCleanupRequired()
-       */
-      public T cleanupRequired(boolean cleanupRequired) {
-         this.cleanupRequired = cleanupRequired;
-         return self();
-      }
-
-      /**
-       * @see Account#getName()
-       */
-      public T name(String name) {
-         this.name = name;
-         return self();
-      }
-
-      /**
-       * @see Account#getReceivedBytes()
-       */
-      public T receivedBytes(long receivedBytes) {
-         this.receivedBytes = receivedBytes;
-         return self();
-      }
-
-      /**
-       * @see Account#getSentBytes()
-       */
-      public T sentBytes(long sentBytes) {
-         this.sentBytes = sentBytes;
-         return self();
-      }
-
-      /**
-       * @see Account#getSnapshotsAvailable()
-       */
-      public T snapshotsAvailable(Long snapshotsAvailable) {
-         this.snapshotsAvailable = snapshotsAvailable;
-         return self();
-      }
-
-      /**
-       * @see Account#getSnapshotLimit()
-       */
-      public T snapshotLimit(Long snapshotLimit) {
-         this.snapshotLimit = snapshotLimit;
-         return self();
-      }
-
-      /**
-       * @see Account#getSnapshots()
-       */
-      public T snapshots(long snapshots) {
-         this.snapshots = snapshots;
-         return self();
-      }
-
-      /**
-       * @see Account#getState()
-       */
-      public T state(Account.State state) {
-         this.state = state;
-         return self();
-      }
-
-      /**
-       * @see Account#getTemplatesAvailable()
-       */
-      public T templatesAvailable(Long templatesAvailable) {
-         this.templatesAvailable = templatesAvailable;
-         return self();
-      }
-
-      /**
-       * @see Account#getTemplateLimit()
-       */
-      public T templateLimit(Long templateLimit) {
-         this.templateLimit = templateLimit;
-         return self();
-      }
-
-      /**
-       * @see Account#getTemplates()
-       */
-      public T templates(long templates) {
-         this.templates = templates;
-         return self();
-      }
-
-      /**
-       * @see Account#getVMsAvailable()
-       */
-      public T VMsAvailable(Long VMsAvailable) {
-         this.VMsAvailable = VMsAvailable;
-         return self();
-      }
-
-      /**
-       * @see Account#getVMLimit()
-       */
-      public T VMLimit(Long VMLimit) {
-         this.VMLimit = VMLimit;
-         return self();
-      }
-
-      /**
-       * @see Account#getVMsRunning()
-       */
-      public T VMsRunning(long VMsRunning) {
-         this.VMsRunning = VMsRunning;
-         return self();
-      }
-
-      /**
-       * @see Account#getVMsStopped()
-       */
-      public T VMsStopped(long VMsStopped) {
-         this.VMsStopped = VMsStopped;
-         return self();
-      }
-
-      /**
-       * @see Account#getVMs()
-       */
-      public T VMs(long VMs) {
-         this.VMs = VMs;
-         return self();
-      }
-
-      /**
-       * @see Account#getVolumesAvailable()
-       */
-      public T volumesAvailable(Long volumesAvailable) {
-         this.volumesAvailable = volumesAvailable;
-         return self();
-      }
-
-      /**
-       * @see Account#getVolumeLimit()
-       */
-      public T volumeLimit(Long volumeLimit) {
-         this.volumeLimit = volumeLimit;
-         return self();
-      }
-
-      /**
-       * @see Account#getVolumes()
-       */
-      public T volumes(long volumes) {
-         this.volumes = volumes;
-         return self();
-      }
-
-      /**
-       * @see Account#getUsers()
-       */
-      public T users(Set<User> users) {
-         this.users = ImmutableSet.copyOf(checkNotNull(users, "users"));
-         return self();
-      }
-
-      public T users(User... in) {
-         return users(ImmutableSet.copyOf(in));
-      }
-
-      public Account build() {
-         return new Account(id, type, networkDomain, domain, domainId, IPsAvailable, IPLimit, IPs, cleanupRequired, name, receivedBytes, sentBytes, snapshotsAvailable, snapshotLimit, snapshots, state, templatesAvailable, templateLimit, templates, VMsAvailable, VMLimit, VMsRunning, VMsStopped, VMs, volumesAvailable, volumeLimit, volumes, users);
-      }
-
-      public T fromAccount(Account in) {
-         return this
-               .id(in.getId())
-               .type(in.getType())
-               .networkDomain(in.getNetworkDomain())
-               .domain(in.getDomain())
-               .domainId(in.getDomainId())
-               .IPsAvailable(in.getIPsAvailable())
-               .IPLimit(in.getIPLimit())
-               .IPs(in.getIPs())
-               .cleanupRequired(in.isCleanupRequired())
-               .name(in.getName())
-               .receivedBytes(in.getReceivedBytes())
-               .sentBytes(in.getSentBytes())
-               .snapshotsAvailable(in.getSnapshotsAvailable())
-               .snapshotLimit(in.getSnapshotLimit())
-               .snapshots(in.getSnapshots())
-               .state(in.getState())
-               .templatesAvailable(in.getTemplatesAvailable())
-               .templateLimit(in.getTemplateLimit())
-               .templates(in.getTemplates())
-               .VMsAvailable(in.getVMsAvailable())
-               .VMLimit(in.getVMLimit())
-               .VMsRunning(in.getVMsRunning())
-               .VMsStopped(in.getVMsStopped())
-               .VMs(in.getVMs())
-               .volumesAvailable(in.getVolumesAvailable())
-               .volumeLimit(in.getVolumeLimit())
-               .volumes(in.getVolumes())
-               .users(in.getUsers());
-      }
-   }
-
-   private static class ConcreteBuilder extends Builder<ConcreteBuilder> {
-      @Override
-      protected ConcreteBuilder self() {
-         return this;
-      }
-   }
-
-   private final String id;
-   private final Account.Type type;
-   private final String networkDomain;
-   private final String domain;
-   private final String domainId;
-   private final Long IPsAvailable;
-   private final Long IPLimit;
-   private final long IPs;
-   private final boolean cleanupRequired;
-   private final String name;
-   private final long receivedBytes;
-   private final long sentBytes;
-   private final Long snapshotsAvailable;
-   private final Long snapshotLimit;
-   private final long snapshots;
-   private final Account.State state;
-   private final Long templatesAvailable;
-   private final Long templateLimit;
-   private final long templates;
-   private final Long VMsAvailable;
-   private final Long VMLimit;
-   private final long VMsRunning;
-   private final long VMsStopped;
-   private final long VMs;
-   private final Long volumesAvailable;
-   private final Long volumeLimit;
-   private final long volumes;
-   private final Set<User> users;
-
-   @ConstructorProperties({
-         "id", "accounttype", "networkdomain", "domain", "domainid", "ipavailable", "iplimit", "iptotal", "iscleanuprequired",
-         "name", "receivedbytes", "sentbytes", "snapshotavailable", "snapshotlimit", "snapshottotal", "state", "templateavailable",
-         "templatelimit", "templatetotal", "vmavailable", "vmlimit", "vmrunning", "vmstopped", "vmtotal", "volumeavailable", "volumelimit",
-         "volumetotal", "user"
-   })
-   private Account(String id, @Nullable Type type, @Nullable String networkDomain, @Nullable String domain,
-                   @Nullable String domainId, @Nullable String IPsAvailable, @Nullable String IPLimit, long IPs,
-                   boolean cleanupRequired, @Nullable String name, long receivedBytes, long sentBytes,
-                   @Nullable String snapshotsAvailable, @Nullable String snapshotLimit, long snapshots,
-                   @Nullable State state, @Nullable String templatesAvailable, @Nullable String templateLimit,
-                   long templates, @Nullable String VMsAvailable, @Nullable String VMLimit, long VMsRunning,
-                   long VMsStopped, long VMs, @Nullable String volumesAvailable, @Nullable String volumeLimit,
-                   long volumes, @Nullable Set<User> users) {
-      this(id, type, networkDomain, domain, domainId, toLongNullIfUnlimited(IPsAvailable), toLongNullIfUnlimited(IPLimit), IPs,
-            cleanupRequired, name, receivedBytes, sentBytes, toLongNullIfUnlimited(snapshotsAvailable), toLongNullIfUnlimited(snapshotLimit),
-            snapshots, state, toLongNullIfUnlimited(templatesAvailable), toLongNullIfUnlimited(templateLimit), templates,
-            toLongNullIfUnlimited(VMsAvailable), toLongNullIfUnlimited(VMLimit), VMsRunning, VMsStopped, VMs,
-            toLongNullIfUnlimited(volumesAvailable), toLongNullIfUnlimited(volumeLimit), volumes, users);
-   }
-
-   private static Long toLongNullIfUnlimited(String in) {
-      return in == null || "Unlimited".equals(in) ? null : Long.valueOf(in);
-   }
-
-   protected Account(String id, @Nullable Account.Type type, @Nullable String networkDomain, @Nullable String domain,
-                     @Nullable String domainId, @Nullable Long IPsAvailable, @Nullable Long IPLimit, long IPs,
-                     boolean cleanupRequired, @Nullable String name, long receivedBytes, long sentBytes, @Nullable Long snapshotsAvailable,
-                     @Nullable Long snapshotLimit, long snapshots, @Nullable Account.State state, @Nullable Long templatesAvailable,
-                     @Nullable Long templateLimit, long templates, @Nullable Long VMsAvailable, @Nullable Long VMLimit, long VMsRunning,
-                     long VMsStopped, long VMs, @Nullable Long volumesAvailable, @Nullable Long volumeLimit, long volumes,
-                     @Nullable Set<User> users) {
-      this.id = checkNotNull(id, "id");
-      this.type = type;
-      this.networkDomain = networkDomain;
-      this.domain = domain;
-      this.domainId = domainId;
-      this.IPsAvailable = IPsAvailable;
-      this.IPLimit = IPLimit;
-      this.IPs = IPs;
-      this.cleanupRequired = cleanupRequired;
-      this.name = name;
-      this.receivedBytes = receivedBytes;
-      this.sentBytes = sentBytes;
-      this.snapshotsAvailable = snapshotsAvailable;
-      this.snapshotLimit = snapshotLimit;
-      this.snapshots = snapshots;
-      this.state = state;
-      this.templatesAvailable = templatesAvailable;
-      this.templateLimit = templateLimit;
-      this.templates = templates;
-      this.VMsAvailable = VMsAvailable;
-      this.VMLimit = VMLimit;
-      this.VMsRunning = VMsRunning;
-      this.VMsStopped = VMsStopped;
-      this.VMs = VMs;
-      this.volumesAvailable = volumesAvailable;
-      this.volumeLimit = volumeLimit;
-      this.volumes = volumes;
-      this.users = users == null ? ImmutableSet.<User>of() : ImmutableSet.copyOf(users);
-   }
-
-   /**
-    * @return the id of the account
-    */
-   public String getId() {
-      return this.id;
-   }
-
-   /**
-    * @return account type (admin, domain-admin, user)
-    */
-   @Nullable
-   public Account.Type getType() {
-      return this.type;
-   }
-
-   /**
-    * @return the network domain
-    */
-   @Nullable
-   public String getNetworkDomain() {
-      return this.networkDomain;
-   }
-
-   /**
-    * @return name of the Domain the account belongs to
-    */
-   @Nullable
-   public String getDomain() {
-      return this.domain;
-   }
-
-   /**
-    * @return id of the Domain the account belongs to
-    */
-   @Nullable
-   public String getDomainId() {
-      return this.domainId;
-   }
-
-   /**
-    * @return the total number of public ip addresses available for this account
-    *         to acquire, or null if unlimited
-    */
-   @Nullable
-   public Long getIPsAvailable() {
-      return this.IPsAvailable;
-   }
-
-   /**
-    * @return the total number of public ip addresses this account can acquire,
-    *         or null if unlimited
-    */
-   @Nullable
-   public Long getIPLimit() {
-      return this.IPLimit;
-   }
-
-   /**
-    * @return the total number of public ip addresses allocated for this account
-    */
-   public long getIPs() {
-      return this.IPs;
-   }
-
-   /**
-    * @return true if the account requires cleanup
-    */
-   public boolean isCleanupRequired() {
-      return this.cleanupRequired;
-   }
-
-   /**
-    * @return the name of the account
-    */
-   @Nullable
-   public String getName() {
-      return this.name;
-   }
-
-   /**
-    * @return the total number of network traffic bytes received
-    */
-   public long getReceivedBytes() {
-      return this.receivedBytes;
-   }
-
-   /**
-    * @return the total number of network traffic bytes sent
-    */
-   public long getSentBytes() {
-      return this.sentBytes;
-   }
-
-   /**
-    * @return the total number of snapshots available for this account, or null
-    *         if unlimited
-    */
-   @Nullable
-   public Long getSnapshotsAvailable() {
-      return this.snapshotsAvailable;
-   }
-
-   /**
-    * @return the total number of snapshots which can be stored by this account,
-    *         or null if unlimited
-    */
-   @Nullable
-   public Long getSnapshotLimit() {
-      return this.snapshotLimit;
-   }
-
-   /**
-    * @return the total number of snapshots stored by this account
-    */
-   public long getSnapshots() {
-      return this.snapshots;
-   }
-
-   /**
-    * @return the state of the account
-    */
-   @Nullable
-   public State getState() {
-      return this.state;
-   }
-
-   /**
-    * @return the total number of templates available to be created by this
-    *         account, or null if unlimited
-    */
-   @Nullable
-   public Long getTemplatesAvailable() {
-      return this.templatesAvailable;
-   }
-
-   /**
-    * @return the total number of templates which can be created by this
-    *         account, or null if unlimited
-    */
-   @Nullable
-   public Long getTemplateLimit() {
-      return this.templateLimit;
-   }
-
-   /**
-    * @return the total number of templates which have been created by this
-    *         account
-    */
-   public long getTemplates() {
-      return this.templates;
-   }
-
-   /**
-    * @return the total number of virtual machines available for this account to
-    *         acquire, or null if unlimited
-    */
-   @Nullable
-   public Long getVMsAvailable() {
-      return this.VMsAvailable;
-   }
-
-   /**
-    * @return the total number of virtual machines that can be deployed by this
-    *         account, or null if unlimited
-    */
-   @Nullable
-   public Long getVMLimit() {
-      return this.VMLimit;
-   }
-
-   /**
-    * @return the total number of virtual machines running for this account
-    */
-   public long getVMsRunning() {
-      return this.VMsRunning;
-   }
-
-   /**
-    * @return the total number of virtual machines stopped for this account
-    */
-   public long getVMsStopped() {
-      return this.VMsStopped;
-   }
-
-   /**
-    * @return the total number of virtual machines deployed by this account
-    */
-   public long getVMs() {
-      return this.VMs;
-   }
-
-   /**
-    * @return the total volume available for this account, or null if unlimited
-    */
-   @Nullable
-   public Long getVolumesAvailable() {
-      return this.volumesAvailable;
-   }
-
-   /**
-    * @return the total volume which can be used by this account, or null if
-    *         unlimited
-    */
-   @Nullable
-   public Long getVolumeLimit() {
-      return this.volumeLimit;
-   }
-
-   /**
-    * @return the total volume being used by this account
-    */
-   public long getVolumes() {
-      return this.volumes;
-   }
-
-   /**
-    * @return the list of users associated with account
-    */
-   public Set<User> getUsers() {
-      return this.users;
-   }
-
-   @Override
-   protected Set<User> delegate() {
-      return this.users;
-   }
-
-   @Override
-   public int hashCode() {
-      return Objects.hashCode(id, type, networkDomain, domain, domainId, IPsAvailable, IPLimit, IPs, cleanupRequired, name, receivedBytes, sentBytes, snapshotsAvailable, snapshotLimit, snapshots, state, templatesAvailable, templateLimit, templates, VMsAvailable, VMLimit, VMsRunning, VMsStopped, VMs, volumesAvailable, volumeLimit, volumes, users);
-   }
-
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj) return true;
-      if (obj == null || getClass() != obj.getClass()) return false;
-      Account that = Account.class.cast(obj);
-      return Objects.equal(this.id, that.id)
-            && Objects.equal(this.type, that.type)
-            && Objects.equal(this.networkDomain, that.networkDomain)
-            && Objects.equal(this.domain, that.domain)
-            && Objects.equal(this.domainId, that.domainId)
-            && Objects.equal(this.IPsAvailable, that.IPsAvailable)
-            && Objects.equal(this.IPLimit, that.IPLimit)
-            && Objects.equal(this.IPs, that.IPs)
-            && Objects.equal(this.cleanupRequired, that.cleanupRequired)
-            && Objects.equal(this.name, that.name)
-            && Objects.equal(this.receivedBytes, that.receivedBytes)
-            && Objects.equal(this.sentBytes, that.sentBytes)
-            && Objects.equal(this.snapshotsAvailable, that.snapshotsAvailable)
-            && Objects.equal(this.snapshotLimit, that.snapshotLimit)
-            && Objects.equal(this.snapshots, that.snapshots)
-            && Objects.equal(this.state, that.state)
-            && Objects.equal(this.templatesAvailable, that.templatesAvailable)
-            && Objects.equal(this.templateLimit, that.templateLimit)
-            && Objects.equal(this.templates, that.templates)
-            && Objects.equal(this.VMsAvailable, that.VMsAvailable)
-            && Objects.equal(this.VMLimit, that.VMLimit)
-            && Objects.equal(this.VMsRunning, that.VMsRunning)
-            && Objects.equal(this.VMsStopped, that.VMsStopped)
-            && Objects.equal(this.VMs, that.VMs)
-            && Objects.equal(this.volumesAvailable, that.volumesAvailable)
-            && Objects.equal(this.volumeLimit, that.volumeLimit)
-            && Objects.equal(this.volumes, that.volumes)
-            && Objects.equal(this.users, that.users);
-   }
-
-   protected ToStringHelper string() {
-      return Objects.toStringHelper(this)
-            .add("id", id).add("type", type).add("networkDomain", networkDomain).add("domain", domain).add("domainId", domainId).add("IPsAvailable", IPsAvailable).add("IPLimit", IPLimit).add("IPs", IPs).add("cleanupRequired", cleanupRequired).add("name", name).add("receivedBytes", receivedBytes).add("sentBytes", sentBytes).add("snapshotsAvailable", snapshotsAvailable).add("snapshotLimit", snapshotLimit).add("snapshots", snapshots).add("state", state).add("templatesAvailable", templatesAvailable).add("templateLimit", templateLimit).add("templates", templates).add("VMsAvailable", VMsAvailable).add("VMLimit", VMLimit).add("VMsRunning", VMsRunning).add("VMsStopped", VMsStopped).add("VMs", VMs).add("volumesAvailable", volumesAvailable).add("volumeLimit", volumeLimit).add("volumes", volumes).add("users", users);
-   }
-
-   @Override
-   public String toString() {
-      return string().toString();
-   }
+	public static enum Type {
+		/**
+		 * API access for all the resources associated with their account. There
+		 * may be many users in a domain, many domains in a deployment, and many
+		 * users in a deployment. This is typically the end user
+		 */
+		USER(0),
+		/**
+		 * full API access. This is typically a service administrator or code
+		 * that executes with complete trust in the service operator's
+		 * environment.
+		 */
+		ADMIN(1),
+		/**
+		 * full API access within a domain. This is the most privileged user
+		 * that a given customer has. This may be a reseller for the service
+		 * provider.
+		 */
+		DOMAIN_ADMIN(2), UNRECOGNIZED(Integer.MAX_VALUE);
+
+		private int code;
+
+		private static final Map<Integer, Type> INDEX = Maps.uniqueIndex(
+				ImmutableSet.copyOf(Type.values()),
+				new Function<Type, Integer>() {
+
+					@Override
+					public Integer apply(Type input) {
+						return input.code;
+					}
+
+				});
+
+		Type(int code) {
+			this.code = code;
+		}
+
+		@Override
+		public String toString() {
+			return "" + code;
+		}
+
+		public static Type fromValue(String type) {
+			Integer code = Integer.valueOf(checkNotNull(type, "type"));
+			return INDEX.containsKey(code) ? INDEX.get(code) : UNRECOGNIZED;
+		}
+
+	}
+
+	public static Builder<?> builder() {
+		return new ConcreteBuilder();
+	}
+
+	public Builder<?> toBuilder() {
+		return new ConcreteBuilder().fromAccount(this);
+	}
+
+	public abstract static class Builder<T extends Builder<T>> {
+		protected abstract T self();
+
+		protected String id;
+		protected String name;
+
+		protected Long cpuAvailable;
+		protected Long cpuLimit;
+		protected long cpuTotal;
+
+		protected String domain;
+		protected String domainId;
+
+		protected Long ipAvailable;
+		protected Long ipLimit;
+		protected long ipTotal;
+
+		protected boolean isDefault;
+
+		protected Long memoryAvailable;
+		protected Long memoryLimit;
+		protected long memoryTotal;
+
+		protected Long networkAvailable;
+		protected Long networkLimit;
+		protected long networkTotal;
+
+		protected Long primaryStorageAvailable;
+		protected Long primaryStorageLimit;
+		protected long primaryStorageTotal;
+
+		protected Long projectAvailable;
+		protected Long projectLimit;
+		protected long projectTotal;
+
+		protected Long secondaryStorageAvailable;
+		protected Long secondaryStorageLimit;
+		protected long secondaryStorageTotal;
+
+		protected Long snapshotAvailable;
+		protected Long snapshotLimit;
+		protected long snapshotTotal;
+
+		protected Account.State state;
+
+		protected Long templateAvailable;
+		protected Long templateLimit;
+		protected long templateTotal;
+
+		protected Long vmAvailable;
+		protected Long vmLimit;
+		protected long vmTotal;
+
+		protected Long volumeAvailable;
+		protected Long volumeLimit;
+		protected long volumeTotal;
+
+		protected Long vpcAvailable;
+		protected Long vpcLimit;
+		protected long vpcTotal;
+
+		protected long receivedBytes;
+		protected long sentBytes;
+
+		protected Account.Type type;
+
+		protected Set<User> users = ImmutableSet.of();
+
+		public T id(String id) {
+			this.id = id;
+			return self();
+		}
+
+		public T name(String name) {
+			this.name = name;
+			return self();
+		}
+
+		public T cpuAvailable(Long cpuAvailable) {
+			this.cpuAvailable = cpuAvailable;
+			return self();
+		}
+
+		public T cpuLimit(Long cpuLimit) {
+			this.cpuLimit = cpuLimit;
+			return self();
+		}
+
+		public T cpuTotal(long cpuTotal) {
+			this.cpuTotal = cpuTotal;
+			return self();
+		}
+
+		public T domain(String domain) {
+			this.domain = domain;
+			return self();
+		}
+
+		public T domainId(String domainId) {
+			this.domainId = domainId;
+			return self();
+		}
+
+		public T ipAvailable(Long ipAvailable) {
+			this.ipAvailable = ipAvailable;
+			return self();
+		}
+
+		public T ipLimit(Long ipLimit) {
+			this.ipLimit = ipLimit;
+			return self();
+		}
+
+		public T ipTotal(long ipTotal) {
+			this.ipTotal = ipTotal;
+			return self();
+		}
+
+		public T isDefault(boolean isDefault) {
+			this.isDefault = isDefault;
+			return self();
+		}
+
+		public T memoryAvailable(Long memoryAvailable) {
+			this.memoryAvailable = memoryAvailable;
+			return self();
+		}
+
+		public T memoryLimit(Long memoryLimit) {
+			this.memoryLimit = memoryLimit;
+			return self();
+		}
+
+		public T memoryTotal(long memoryTotal) {
+			this.memoryTotal = memoryTotal;
+			return self();
+		}
+
+		public T networkAvailable(Long networkAvailable) {
+			this.networkAvailable = networkAvailable;
+			return self();
+		}
+
+		public T networkLimit(Long networkLimit) {
+			this.networkLimit = networkLimit;
+			return self();
+		}
+
+		public T networkTotal(long networkTotal) {
+			this.networkTotal = networkTotal;
+			return self();
+		}
+
+		public T primaryStorageAvailable(Long primaryStorageAvailable) {
+			this.primaryStorageAvailable = primaryStorageAvailable;
+			return self();
+		}
+
+		public T primaryStorageLimit(Long primaryStorageLimit) {
+			this.primaryStorageLimit = primaryStorageLimit;
+			return self();
+		}
+
+		public T primaryStorageTotal(long primaryStorageTotal) {
+			this.primaryStorageTotal = primaryStorageTotal;
+			return self();
+		}
+
+		public T projectAvailable(Long projectAvailable) {
+			this.projectAvailable = projectAvailable;
+			return self();
+		}
+
+		public T projectLimit(Long projectLimit) {
+			this.projectLimit = projectLimit;
+			return self();
+		}
+
+		public T projectTotal(long projectTotal) {
+			this.projectTotal = projectTotal;
+			return self();
+		}
+
+		public T secondaryStorageAvailable(Long secondaryStorageAvailable) {
+			this.secondaryStorageAvailable = secondaryStorageAvailable;
+			return self();
+		}
+
+		public T secondaryStorageLimit(Long secondaryStorageLimit) {
+			this.secondaryStorageLimit = secondaryStorageLimit;
+			return self();
+		}
+
+		public T secondaryStorageTotal(long secondaryStorageTotal) {
+			this.secondaryStorageTotal = secondaryStorageTotal;
+			return self();
+		}
+
+		public T snapshotAvailable(Long snapshotAvailable) {
+			this.snapshotAvailable = snapshotAvailable;
+			return self();
+		}
+
+		public T snapshotLimit(Long snapshotLimit) {
+			this.snapshotLimit = snapshotLimit;
+			return self();
+		}
+
+		public T snapshotTotal(long snapshotTotal) {
+			this.snapshotTotal = snapshotTotal;
+			return self();
+		}
+
+		public T state(Account.State state) {
+			this.state = state;
+			return self();
+		}
+
+		public T templateAvailable(Long templateAvailable) {
+			this.templateAvailable = templateAvailable;
+			return self();
+		}
+
+		public T templateLimit(Long templateLimit) {
+			this.templateLimit = templateLimit;
+			return self();
+		}
+
+		public T templateTotal(long templateTotal) {
+			this.templateTotal = templateTotal;
+			return self();
+		}
+
+		public T vmAvailable(Long vmAvailable) {
+			this.vmAvailable = vmAvailable;
+			return self();
+		}
+
+		public T vmLimit(Long vmLimit) {
+			this.vmLimit = vmLimit;
+			return self();
+		}
+
+		public T vmTotal(long vmTotal) {
+			this.vmTotal = vmTotal;
+			return self();
+		}
+
+		public T volumeAvailable(Long volumeAvailable) {
+			this.volumeAvailable = volumeAvailable;
+			return self();
+		}
+
+		public T volumeLimit(Long volumeLimit) {
+			this.volumeLimit = volumeLimit;
+			return self();
+		}
+
+		public T volumeTotal(long volumeTotal) {
+			this.volumeTotal = volumeTotal;
+			return self();
+		}
+
+		public T vpcAvailable(Long vpcAvailable) {
+			this.vpcAvailable = vpcAvailable;
+			return self();
+		}
+
+		public T vpcLimit(Long vpcLimit) {
+			this.vpcLimit = vpcLimit;
+			return self();
+		}
+
+		public T vpcTotal(long vpcTotal) {
+			this.vpcTotal = vpcTotal;
+			return self();
+		}
+
+		public T type(Account.Type type) {
+			this.type = type;
+			return self();
+		}
+
+		public T users(Set<User> users) {
+			this.users = ImmutableSet.copyOf(checkNotNull(users, "users"));
+			return self();
+		}
+
+		public T receivedBytes(long receivedBytes) {
+			this.receivedBytes = receivedBytes;
+			return self();
+		}
+
+		public T sentBytes(long sentBytes) {
+			this.sentBytes = sentBytes;
+			return self();
+		}
+
+		public T users(User... in) {
+			return users(ImmutableSet.copyOf(in));
+		}
+
+		public Account build() {
+			return new Account(id, name, cpuAvailable, cpuLimit, cpuTotal,
+					domain, domainId, ipAvailable, ipLimit, ipTotal, isDefault,
+					memoryAvailable, memoryLimit, memoryTotal,
+					networkAvailable, networkLimit, networkTotal,
+					primaryStorageAvailable, primaryStorageLimit,
+					primaryStorageTotal, projectAvailable, projectLimit,
+					projectTotal, secondaryStorageAvailable,
+					secondaryStorageLimit, secondaryStorageTotal,
+					snapshotAvailable, snapshotLimit, snapshotTotal, state,
+					templateAvailable, templateLimit, templateTotal,
+					vmAvailable, vmLimit, vmTotal, volumeAvailable,
+					volumeLimit, volumeTotal, vpcAvailable, vpcLimit, vpcTotal,
+					sentBytes, receivedBytes, type, users);
+		}
+
+		public T fromAccount(Account in) {
+			return this
+					.id(in.getId())
+					.name(in.getName())
+					.cpuAvailable(in.getCpuAvailable())
+					.cpuLimit(in.getCpuLimit())
+					.cpuTotal(in.getCpuTotal())
+					.domain(in.getDomain())
+					.domainId(in.getDomainId())
+					.ipAvailable(in.getIpAvailable())
+					.ipLimit(in.getIpLimit())
+					.ipTotal(in.getIpTotal())
+					.isDefault(in.isDefault())
+					.memoryAvailable(in.getMemoryAvailable())
+					.memoryLimit(in.getMemoryLimit())
+					.memoryTotal(in.getMemoryTotal())
+					.networkAvailable(in.getNetworkAvailable())
+					.networkLimit(in.getNetworkLimit())
+					.networkTotal(in.getNetworkTotal())
+					.primaryStorageAvailable(in.getPrimaryStorageAvailable())
+					.primaryStorageLimit(in.getPrimaryStorageLimit())
+					.primaryStorageTotal(in.getPrimaryStorageTotal())
+					.projectAvailable(in.getProjectAvailable())
+					.projectLimit(in.getProjectLimit())
+					.projectTotal(in.getProjectTotal())
+					.secondaryStorageAvailable(
+							in.getSecondaryStorageAvailable())
+					.secondaryStorageLimit(in.getSecondaryStorageLimit())
+					.secondaryStorageTotal(in.getSecondaryStorageTotal())
+					.snapshotAvailable(in.getSnapshotAvailable())
+					.snapshotLimit(in.getSnapshotLimit())
+					.snapshotTotal(in.getSnapshotTotal()).state(in.getState())
+					.templateAvailable(in.getTemplateAvailable())
+					.templateLimit(in.getTemplateLimit())
+					.templateTotal(in.getTemplateTotal())
+					.vmAvailable(in.getVmAvailable()).vmLimit(in.getVmLimit())
+					.vmTotal(in.getVmTotal())
+					.volumeAvailable(in.getVolumeAvailable())
+					.volumeLimit(in.getVolumeLimit())
+					.volumeTotal(in.getVolumeTotal())
+					.vpcAvailable(in.getVpcAvailable())
+					.vpcLimit(in.getVpcLimit()).vpcTotal(in.getVpcTotal())
+					.sentBytes(in.getSentBytes())
+					.receivedBytes(in.getReceivedBytes()).type(in.getType())
+					.users(in.getUsers());
+		}
+	}
+
+	private static class ConcreteBuilder extends Builder<ConcreteBuilder> {
+		@Override
+		protected ConcreteBuilder self() {
+			return this;
+		}
+	}
+
+	private final String id;
+	private final String name;
+
+	private final Long cpuAvailable;
+	private final Long cpuLimit;
+	private final long cpuTotal;
+
+	private final String domain;
+	private final String domainId;
+
+	private final Long ipAvailable;
+	private final Long ipLimit;
+	private final long ipTotal;
+
+	private final boolean isDefault;
+
+	private final Long memoryAvailable;
+	private final Long memoryLimit;
+	private final long memoryTotal;
+
+	private final Long networkAvailable;
+	private final Long networkLimit;
+	private final long networkTotal;
+
+	private final Long primaryStorageAvailable;
+	private final Long primaryStorageLimit;
+	private final long primaryStorageTotal;
+
+	private final Long projectAvailable;
+	private final Long projectLimit;
+	private final long projectTotal;
+
+	private final Long secondaryStorageAvailable;
+	private final Long secondaryStorageLimit;
+	private final long secondaryStorageTotal;
+
+	private final Long snapshotAvailable;
+	private final Long snapshotLimit;
+	private final long snapshotTotal;
+
+	private final Account.State state;
+
+	private final Long templateAvailable;
+	private final Long templateLimit;
+	private final long templateTotal;
+
+	private final Long vmAvailable;
+	private final Long vmLimit;
+	private final long vmTotal;
+
+	private final Long volumeAvailable;
+	private final Long volumeLimit;
+	private final long volumeTotal;
+
+	private final Long vpcAvailable;
+	private final Long vpcLimit;
+	private final long vpcTotal;
+
+	private final long receivedBytes;
+	private final long sentBytes;
+
+	private final Account.Type type;
+
+	private final Set<User> users;
+
+	@ConstructorProperties({ "id", "name", "cpuavailable", "cpulimit",
+			"cputotal", "domain", "domainid", "ipavailable", "iplimit",
+			"iptotal", "isdefault", "memoryavailable", "memorylimit",
+			"memorytotal", "networkavailable", "networklimit", "networktotal",
+			"primarystorageavailable", "primaryStoragelimit",
+			"primarystoragetotal", "projectavailable", "projectlimit",
+			"projecttotal", "secondarystorageavailable",
+			"secondarystoragelimit", "secondarystoragetotal",
+			"snapshotavailable", "snapshotlimit", "snapshottotal", "state",
+			"templateavailable", "templatelimit", "templatetotal",
+			"vmavailable", "vmlimit", "vmtotal", "volumeavailable",
+			"volumelimit", "volumetotal", "vpcavailable", "vpclimit",
+			"vpctotal", "receivedBytes", "sentBytes", "accounttype", "user" })
+	private Account(String id, @Nullable String name,
+			@Nullable String cpuAvailable, @Nullable String cpuLimit,
+			long cpuTotal, @Nullable String domain, @Nullable String domainId,
+			@Nullable String ipAvailable, @Nullable String ipLimit,
+			long ipTotal, boolean isDefault, @Nullable String memoryAvailable,
+			@Nullable String memoryLimit, long memoryTotal,
+			@Nullable String networkAvailable, @Nullable String networkLimit,
+			long networkTotal, @Nullable String primaryStorageAvailable,
+			@Nullable String primaryStorageLimit, long primaryStorageTotal,
+			@Nullable String projectAvailable, @Nullable String projectLimit,
+			long projectTotal, @Nullable String secondaryStorageAvailable,
+			@Nullable String secondaryStorageLimit, long secondaryStorageTotal,
+			@Nullable String snapshotAvailable, @Nullable String snapshotLimit,
+			long snapshotTotal, State state,
+			@Nullable String templateAvailable, @Nullable String templateLimit,
+			long templateTotal, @Nullable String vmAvailable,
+			@Nullable String vmLimit, long vmTotal,
+			@Nullable String volumeAvailable, @Nullable String volumeLimit,
+			long volumeTotal, @Nullable String vpcAvailable,
+			@Nullable String vpcLimit, long vpcTotal, long receivedBytes, 
+			long sentBytes,Type type, Set<User> users) {
+		this(id, name, toLongNullIfUnlimited(cpuAvailable),
+				toLongNullIfUnlimited(cpuLimit), cpuTotal, domain, domainId,
+				toLongNullIfUnlimited(ipAvailable),
+				toLongNullIfUnlimited(ipLimit), ipTotal, isDefault,
+				toLongNullIfUnlimited(memoryAvailable),
+				toLongNullIfUnlimited(memoryLimit), memoryTotal,
+				toLongNullIfUnlimited(networkAvailable),
+				toLongNullIfUnlimited(networkLimit), networkTotal,
+				toLongNullIfUnlimited(primaryStorageAvailable),
+				toLongNullIfUnlimited(primaryStorageLimit),
+				primaryStorageTotal, toLongNullIfUnlimited(projectAvailable),
+				toLongNullIfUnlimited(projectLimit), projectTotal,
+				toLongNullIfUnlimited(secondaryStorageAvailable),
+				toLongNullIfUnlimited(secondaryStorageLimit),
+				secondaryStorageTotal,
+				toLongNullIfUnlimited(snapshotAvailable),
+				toLongNullIfUnlimited(snapshotLimit), snapshotTotal, state,
+				toLongNullIfUnlimited(templateAvailable),
+				toLongNullIfUnlimited(templateLimit), templateTotal,
+				toLongNullIfUnlimited(vmAvailable),
+				toLongNullIfUnlimited(vmLimit), vmTotal,
+				toLongNullIfUnlimited(volumeAvailable),
+				toLongNullIfUnlimited(volumeLimit), volumeTotal,
+				toLongNullIfUnlimited(vpcAvailable),
+				toLongNullIfUnlimited(vpcLimit), vpcTotal, 
+				receivedBytes, sentBytes, type, users);
+	}
+
+	private static Long toLongNullIfUnlimited(String in) {
+		return in == null || "Unlimited".equals(in) ? null : Long.valueOf(in);
+	}
+
+	protected Account(String id, @Nullable String name,
+			@Nullable Long cpuAvailable, @Nullable Long cpuLimit,
+			long cpuTotal, @Nullable String domain, @Nullable String domainId,
+			@Nullable Long ipAvailable, @Nullable Long ipLimit, long ipTotal,
+			boolean isDefault, @Nullable Long memoryAvailable,
+			@Nullable Long memoryLimit, long memoryTotal,
+			@Nullable Long networkAvailable, @Nullable Long networkLimit,
+			long networkTotal, @Nullable Long primaryStorageAvailable,
+			@Nullable Long primaryStorageLimit, long primaryStorageTotal,
+			@Nullable Long projectAvailable, @Nullable Long projectLimit,
+			long projectTotal, @Nullable Long secondaryStorageAvailable,
+			@Nullable Long secondaryStorageLimit, long secondaryStorageTotal,
+			@Nullable Long snapshotAvailable, @Nullable Long snapshotLimit,
+			long snapshotTotal, Account.State state,
+			@Nullable Long templateAvailable, @Nullable Long templateLimit,
+			long templateTotal, @Nullable Long vmAvailable,
+			@Nullable Long vmLimit, long vmTotal,
+			@Nullable Long volumeAvailable, @Nullable Long volumeLimit,
+			long volumeTotal, @Nullable Long vpcAvailable,
+			@Nullable Long vpcLimit, long vpcTotal, long receivedBytes,
+			long sentBytes, Account.Type type, Set<User> users) {
+		super();
+		this.id = checkNotNull(id, "id");
+		this.name = name;
+		this.cpuAvailable = cpuAvailable;
+		this.cpuLimit = cpuLimit;
+		this.cpuTotal = cpuTotal;
+		this.domain = domain;
+		this.domainId = domainId;
+		this.ipAvailable = ipAvailable;
+		this.ipLimit = ipLimit;
+		this.ipTotal = ipTotal;
+		this.isDefault = isDefault;
+		this.memoryAvailable = memoryAvailable;
+		this.memoryLimit = memoryLimit;
+		this.memoryTotal = memoryTotal;
+		this.networkAvailable = networkAvailable;
+		this.networkLimit = networkLimit;
+		this.networkTotal = networkTotal;
+		this.primaryStorageAvailable = primaryStorageAvailable;
+		this.primaryStorageLimit = primaryStorageLimit;
+		this.primaryStorageTotal = primaryStorageTotal;
+		this.projectAvailable = projectAvailable;
+		this.projectLimit = projectLimit;
+		this.projectTotal = projectTotal;
+		this.secondaryStorageAvailable = secondaryStorageAvailable;
+		this.secondaryStorageLimit = secondaryStorageLimit;
+		this.secondaryStorageTotal = secondaryStorageTotal;
+		this.snapshotAvailable = snapshotAvailable;
+		this.snapshotLimit = snapshotLimit;
+		this.snapshotTotal = snapshotTotal;
+		this.state = state;
+		this.templateAvailable = templateAvailable;
+		this.templateLimit = templateLimit;
+		this.templateTotal = templateTotal;
+		this.vmAvailable = vmAvailable;
+		this.vmLimit = vmLimit;
+		this.vmTotal = vmTotal;
+		this.volumeAvailable = volumeAvailable;
+		this.volumeLimit = volumeLimit;
+		this.volumeTotal = volumeTotal;
+		this.vpcAvailable = vpcAvailable;
+		this.vpcLimit = vpcLimit;
+		this.vpcTotal = vpcTotal;
+		this.receivedBytes = receivedBytes;
+		this.sentBytes = sentBytes;
+		this.type = type;
+		this.users = users == null ? ImmutableSet.<User> of() : ImmutableSet
+				.copyOf(users);
+	}
+
+	/**
+	 * @return the id of the account
+	 */
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * @return account type (admin, domain-admin, user)
+	 */
+	@Nullable
+	public Account.Type getType() {
+		return this.type;
+	}
+
+	/**
+	 * @return name of the Domain the account belongs to
+	 */
+	@Nullable
+	public String getDomain() {
+		return this.domain;
+	}
+
+	/**
+	 * @return id of the Domain the account belongs to
+	 */
+	@Nullable
+	public String getDomainId() {
+		return this.domainId;
+	}
+
+	/**
+	 * @return the name of the account
+	 */
+	@Nullable
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * @return the total number of snapshots which can be stored by this
+	 *         account, or null if unlimited
+	 */
+	@Nullable
+	public Long getSnapshotLimit() {
+		return this.snapshotLimit;
+	}
+
+	/**
+	 * @return the state of the account
+	 */
+	@Nullable
+	public State getState() {
+		return this.state;
+	}
+
+	/**
+	 * @return the total number of templates which can be created by this
+	 *         account, or null if unlimited
+	 */
+	@Nullable
+	public Long getTemplateLimit() {
+		return this.templateLimit;
+	}
+
+	/**
+	 * @return the total volume which can be used by this account, or null if
+	 *         unlimited
+	 */
+	@Nullable
+	public Long getVolumeLimit() {
+		return this.volumeLimit;
+	}
+
+	/**
+	 * @return the list of users associated with account
+	 */
+	public Set<User> getUsers() {
+		return this.users;
+	}
+
+	/**
+	 * @return the total number of cpu cores available to be created for this
+	 *         account
+	 */
+	public Long getCpuAvailable() {
+		return cpuAvailable;
+	}
+
+	/**
+	 * @return the total number of cpu cores the account can own
+	 */
+	public Long getCpuLimit() {
+		return cpuLimit;
+	}
+
+	/**
+	 * @return the total number of cpu cores owned by account
+	 */
+	public long getCpuTotal() {
+		return cpuTotal;
+	}
+
+	/**
+	 * @return the total number of public ip addresses available for this
+	 *         account to acquire
+	 */
+	public Long getIpAvailable() {
+		return ipAvailable;
+	}
+
+	/**
+	 * @return the total number of public ip addresses this account can acquire
+	 */
+	public Long getIpLimit() {
+		return ipLimit;
+	}
+
+	/**
+	 * @return the total number of public ip addresses allocated for this
+	 *         account
+	 */
+	public long getIpTotal() {
+		return ipTotal;
+	}
+
+	/**
+	 * @return true if account is default, false otherwise
+	 */
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	/**
+	 * @return the total memory (in MB) available to be created for this account
+	 */
+	public Long getMemoryAvailable() {
+		return memoryAvailable;
+	}
+
+	/**
+	 * @return the total memory (in MB) the account can own
+	 */
+	public Long getMemoryLimit() {
+		return memoryLimit;
+	}
+
+	/**
+	 * @return the total memory (in MB) owned by account
+	 */
+	public long getMemoryTotal() {
+		return memoryTotal;
+	}
+
+	/**
+	 * @return the total number of networks available to be created for this
+	 *         account
+	 */
+	public Long getNetworkAvailable() {
+		return networkAvailable;
+	}
+
+	/**
+	 * @return the total number of networks the account can own
+	 */
+	public Long getNetworkLimit() {
+		return networkLimit;
+	}
+
+	/**
+	 * @return the total number of networks owned by account
+	 */
+	public long getNetworkTotal() {
+		return networkTotal;
+	}
+
+	/**
+	 * @return the total primary storage space (in GiB) available to be used for
+	 *         this account
+	 */
+	public Long getPrimaryStorageAvailable() {
+		return primaryStorageAvailable;
+	}
+
+	/**
+	 * @return the total primary storage space (in GiB) the account can own
+	 */
+	public Long getPrimaryStorageLimit() {
+		return primaryStorageLimit;
+	}
+
+	/**
+	 * @return the total primary storage space (in GiB) owned by account
+	 */
+	public long getPrimaryStorageTotal() {
+		return primaryStorageTotal;
+	}
+
+	/**
+	 * @return the total number of projects available for administration by this
+	 *         account
+	 */
+	public Long getProjectAvailable() {
+		return projectAvailable;
+	}
+
+	/**
+	 * @return the total number of projects the account can own
+	 */
+	public Long getProjectLimit() {
+		return projectLimit;
+	}
+
+	/**
+	 * @return the total number of projects being administrated by this account
+	 */
+	public long getProjectTotal() {
+		return projectTotal;
+	}
+
+	/**
+	 * @return the total secondary storage space (in GiB) available to be used
+	 *         for this account
+	 */
+	public Long getSecondaryStorageAvailable() {
+		return secondaryStorageAvailable;
+	}
+
+	/**
+	 * @return the total secondary storage space (in GiB) the account can own
+	 */
+	public Long getSecondaryStorageLimit() {
+		return secondaryStorageLimit;
+	}
+
+	/**
+	 * @return the total secondary storage space (in GiB) owned by account
+	 */
+	public long getSecondaryStorageTotal() {
+		return secondaryStorageTotal;
+	}
+
+	/**
+	 * @return the total number of snapshots available for this account
+	 */
+	public Long getSnapshotAvailable() {
+		return snapshotAvailable;
+	}
+
+	/**
+	 * @return the total number of snapshots stored by this account
+	 */
+	public long getSnapshotTotal() {
+		return snapshotTotal;
+	}
+
+	/**
+	 * @return the total number of templates available to be created by this
+	 *         account
+	 */
+	public Long getTemplateAvailable() {
+		return templateAvailable;
+	}
+
+	/**
+	 * @return the total number of templates which have been created by this
+	 *         account
+	 */
+	public long getTemplateTotal() {
+		return templateTotal;
+	}
+
+	/**
+	 * @return the total number of virtual machines available for this account
+	 *         to acquire
+	 */
+	public Long getVmAvailable() {
+		return vmAvailable;
+	}
+
+	/**
+	 * @return the total number of virtual machines that can be deployed by this
+	 *         account
+	 */
+	public Long getVmLimit() {
+		return vmLimit;
+	}
+
+	/**
+	 * @return the total number of virtual machines deployed by this account
+	 */
+	public long getVmTotal() {
+		return vmTotal;
+	}
+
+	/**
+	 * @return the total volume available for this account
+	 */
+	public Long getVolumeAvailable() {
+		return volumeAvailable;
+	}
+
+	/**
+	 * @return the total volume being used by this account
+	 */
+	public long getVolumeTotal() {
+		return volumeTotal;
+	}
+
+	/**
+	 * @return the total number of vpcs available to be created for this account
+	 */
+	public Long getVpcAvailable() {
+		return vpcAvailable;
+	}
+
+	/**
+	 * @return the total number of vpcs the account can own
+	 */
+	public Long getVpcLimit() {
+		return vpcLimit;
+	}
+
+	/**
+	 * @return the total number of vpcs owned by account
+	 */
+	public long getVpcTotal() {
+		return vpcTotal;
+	}
+
+	/**
+	 * @return the total number of network traffic bytes received
+	 */
+	public long getReceivedBytes() {
+		return receivedBytes;
+	}
+
+	/**
+	 * @return the total number of network traffic bytes sent
+	 */
+	public long getSentBytes() {
+		return sentBytes;
+	}
+
+	@Override
+	protected Set<User> delegate() {
+		return this.users;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id, name, cpuAvailable, cpuLimit, cpuTotal,
+				domain, domainId, ipAvailable, ipLimit, ipTotal, isDefault,
+				memoryAvailable, memoryLimit, memoryTotal, networkAvailable,
+				networkLimit, networkTotal, primaryStorageAvailable,
+				primaryStorageLimit, primaryStorageTotal, projectAvailable,
+				projectLimit, projectTotal, secondaryStorageAvailable,
+				secondaryStorageLimit, secondaryStorageTotal,
+				snapshotAvailable, snapshotLimit, snapshotTotal, state,
+				templateAvailable, templateLimit, templateTotal, vmAvailable,
+				vmLimit, vmTotal, volumeAvailable, volumeLimit, volumeTotal,
+				vpcAvailable, vpcLimit, vpcTotal, receivedBytes, sentBytes, type, users);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		Account that = Account.class.cast(obj);
+		return Objects.equal(this.id, that.id)
+				&& Objects.equal(this.name, that.name)
+				&& Objects.equal(this.cpuAvailable, that.cpuAvailable)
+				&& Objects.equal(this.cpuLimit, that.cpuLimit)
+				&& Objects.equal(this.cpuTotal, that.cpuTotal)
+				&& Objects.equal(this.domain, that.domain)
+				&& Objects.equal(this.domainId, that.domainId)
+				&& Objects.equal(this.ipAvailable, that.ipAvailable)
+				&& Objects.equal(this.ipLimit, that.ipLimit)
+				&& Objects.equal(this.name, that.name)
+				&& Objects.equal(this.ipTotal, that.ipTotal)
+				&& Objects.equal(this.isDefault, that.isDefault)
+				&& Objects.equal(this.memoryAvailable, that.memoryAvailable)
+				&& Objects.equal(this.memoryLimit, that.memoryLimit)
+				&& Objects.equal(this.memoryTotal, that.memoryTotal)
+				&& Objects.equal(this.networkAvailable, that.networkAvailable)
+				&& Objects.equal(this.networkLimit, that.networkLimit)
+				&& Objects.equal(this.networkTotal, that.networkTotal)
+				&& Objects.equal(this.primaryStorageAvailable,that.primaryStorageAvailable)
+				&& Objects.equal(this.primaryStorageLimit,that.primaryStorageLimit)
+				&& Objects.equal(this.primaryStorageTotal,that.primaryStorageTotal)
+				&& Objects.equal(this.projectAvailable, that.projectAvailable)
+				&& Objects.equal(this.projectLimit, that.projectLimit)
+				&& Objects.equal(this.projectTotal, that.projectTotal)
+				&& Objects.equal(this.secondaryStorageAvailable, that.secondaryStorageAvailable)
+				&& Objects.equal(this.secondaryStorageLimit, that.secondaryStorageLimit)
+				&& Objects.equal(this.secondaryStorageTotal, that.secondaryStorageTotal)
+				&& Objects
+						.equal(this.snapshotAvailable, that.snapshotAvailable)
+				&& Objects.equal(this.snapshotLimit, that.snapshotLimit)
+				&& Objects.equal(this.snapshotTotal, that.snapshotTotal)
+				&& Objects.equal(this.state, that.state)
+				&& Objects.equal(this.templateAvailable, that.templateAvailable)
+				&& Objects.equal(this.templateLimit, that.templateLimit)
+				&& Objects.equal(this.templateTotal, that.templateTotal)
+				&& Objects.equal(this.vmAvailable, that.vmAvailable)
+				&& Objects.equal(this.vmLimit, that.vmLimit)
+				&& Objects.equal(this.vmTotal, that.vmTotal)
+				&& Objects.equal(this.volumeAvailable, that.volumeAvailable)
+				&& Objects.equal(this.volumeLimit, that.volumeLimit)
+				&& Objects.equal(this.volumeTotal, that.volumeTotal)
+				&& Objects.equal(this.vpcAvailable, that.vpcAvailable)
+				&& Objects.equal(this.vpcLimit, that.vpcLimit)
+				&& Objects.equal(this.vpcTotal, that.vpcTotal)
+				&& Objects.equal(this.receivedBytes, that.receivedBytes)
+				&& Objects.equal(this.sentBytes, that.sentBytes)
+				&& Objects.equal(this.type, that.type)
+				&& Objects.equal(this.users, that.users);
+	}
+
+	protected ToStringHelper string() {
+		return Objects.toStringHelper(this).add("id", id).add("name", name)
+				.add("cpuAvailable", cpuAvailable).add("cpuLimit", cpuLimit)
+				.add("cpuTotal", cpuTotal).add("domain", domain)
+				.add("domainId", domainId).add("ipAvailable", ipAvailable)
+				.add("ipLimit", ipLimit).add("ipTotal", ipTotal)
+				.add("isDefault", isDefault)
+				.add("memoryAvailable", memoryAvailable)
+				.add("memoryLimit", memoryLimit)
+				.add("memoryTotal", memoryTotal)
+				.add("networkAvailable", networkAvailable)
+				.add("networkLimit", networkLimit)
+				.add("networkTotal", networkTotal)
+				.add("primaryStorageAvailable", primaryStorageAvailable)
+				.add("primaryStorageLimit", primaryStorageLimit)
+				.add("primaryStorageTotal", primaryStorageTotal)
+				.add("projectAvailable", projectAvailable)
+				.add("projectLimit", projectLimit)
+				.add("projectTotal", projectTotal)
+				.add("secondaryStorageAvailable", secondaryStorageAvailable)
+				.add("projectAvailable", projectAvailable)
+				.add("projectLimit", projectLimit)
+				.add("projectTotal", projectTotal)
+				.add("secondaryStorageAvailable", secondaryStorageAvailable)
+				.add("secondaryStorageLimit", secondaryStorageLimit)
+				.add("secondaryStorageTotal", secondaryStorageTotal)
+				.add("snapshotAvailable", snapshotAvailable)
+				.add("snapshotLimit", snapshotLimit)
+				.add("snapshotTotal", snapshotTotal).add("state", state)
+				.add("templateAvailable", templateAvailable)
+				.add("templateLimit", templateLimit)
+				.add("templateTotal", templateTotal)
+				.add("vmAvailable", vmAvailable).add("vmLimit", vmLimit)
+				.add("vmTotal", vmTotal)
+				.add("volumeAvailable", volumeAvailable)
+				.add("volumeLimit", volumeLimit)
+				.add("volumeTotal", volumeTotal)
+				.add("vpcAvailable", vpcAvailable).add("vpcLimit", vpcLimit)
+				.add("receivedBytes", receivedBytes).add("sentBytes", sentBytes)
+				.add("vpcTotal", vpcTotal).add("type", type)
+				.add("users", users);
+	}
+
+	@Override
+	public String toString() {
+		return string().toString();
+	}
 
 }
