@@ -53,6 +53,8 @@ import org.jclouds.cloudstack.strategy.BlockUntilJobCompletesAndReturnResult;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.domain.ExecResponse;
 import org.jclouds.compute.internal.BaseGenericComputeServiceContextLiveTest;
+import org.jclouds.logging.config.LoggingModule;
+import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.predicates.SocketOpen;
 import org.jclouds.ssh.SshClient;
 import org.jclouds.sshj.config.SshjSshClientModule;
@@ -243,6 +245,11 @@ public class BaseCloudStackApiLiveTest extends BaseGenericComputeServiceContextL
    @Override
    protected Module getSshModule() {
       return new SshjSshClientModule();
+   }
+   
+   @Override
+   protected LoggingModule getLoggingModule() {
+      return new SLF4JLoggingModule();
    }
    
    private static User verifyCurrentUserIsOfType(String identity, AccountApi accountClient, Account.Type type) {
