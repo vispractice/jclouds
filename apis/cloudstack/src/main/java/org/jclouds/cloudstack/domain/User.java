@@ -73,12 +73,15 @@ public class User {
       protected Date created;
       protected User.State state;
       protected String account;
+      protected String accountId;
       protected Account.Type accountType;
       protected String domain;
       protected String domainId;
       protected String timeZone;
       protected String apiKey;
       protected String secretKey;
+      protected boolean isCallerChildDomain;
+      protected boolean isDefault;
 
       /**
        * @see User#getId()
@@ -143,6 +146,14 @@ public class User {
          this.account = account;
          return self();
       }
+      
+      /**
+       * @see User#getAccountId()
+       */
+      public T accountId(String accountId) {
+          this.accountId = accountId;
+          return self();
+       }
 
       /**
        * @see User#getAccountType()
@@ -191,9 +202,35 @@ public class User {
          this.secretKey = secretKey;
          return self();
       }
+      
+      public T isCallerChildDomain(boolean isCallerChildDomain) {
+    	  this.isCallerChildDomain = isCallerChildDomain;
+    	  return self();
+      }
+      
+      public T isDefault(boolean isDefault) {
+    	  this.isDefault = isDefault;
+    	  return self();
+      }
 
       public User build() {
-         return new User(id, name, firstName, lastName, email, created, state, account, accountType, domain, domainId, timeZone, apiKey, secretKey);
+         return new User(id, 
+        		 name, 
+        		 firstName, 
+        		 lastName, 
+        		 email, 
+        		 created, 
+        		 state, 
+        		 account, 
+        		 accountId, 
+        		 accountType, 
+        		 domain, 
+        		 domainId, 
+        		 timeZone, 
+        		 apiKey, 
+        		 secretKey,
+        		 isCallerChildDomain,
+        		 isDefault);
       }
 
       public T fromUser(User in) {
@@ -206,12 +243,15 @@ public class User {
                .created(in.getCreated())
                .state(in.getState())
                .account(in.getAccount())
+               .accountId(in.getAccountId())
                .accountType(in.getAccountType())
                .domain(in.getDomain())
                .domainId(in.getDomainId())
                .timeZone(in.getTimeZone())
                .apiKey(in.getApiKey())
-               .secretKey(in.getSecretKey());
+               .secretKey(in.getSecretKey())
+               .isCallerChildDomain(in.isCallerchilddomain())
+               .isDefault(in.isDefault());
       }
    }
 
@@ -230,21 +270,25 @@ public class User {
    private final Date created;
    private final User.State state;
    private final String account;
+   private final String accountId;
    private final Account.Type accountType;
    private final String domain;
    private final String domainId;
    private final String timeZone;
    private final String apiKey;
    private final String secretKey;
+   private final boolean isCallerChildDomain;
+   private final boolean isDefault;
 
    @ConstructorProperties({
-         "id", "username", "firstname", "lastname", "email", "created", "state", "account", "accounttype", "domain",
-         "domainid", "timezone", "apikey", "secretkey"
+         "id", "username", "firstname", "lastname", "email", 
+         "created", "state", "account", "accountId", "accounttype", "domain",
+         "domainid", "timezone", "apikey", "secretkey", "iscallerchilddomain", "isdefault"
    })
    protected User(String id, @Nullable String name, @Nullable String firstName, @Nullable String lastName,
-                  @Nullable String email, @Nullable Date created, @Nullable User.State state, @Nullable String account,
+                  @Nullable String email, @Nullable Date created, @Nullable User.State state, @Nullable String account, @Nullable String accountId,
                   @Nullable Account.Type accountType, @Nullable String domain, @Nullable String domainId, @Nullable String timeZone,
-                  @Nullable String apiKey, @Nullable String secretKey) {
+                  @Nullable String apiKey, @Nullable String secretKey, @Nullable boolean isCallerChildDomain, @Nullable boolean isDefault) {
       this.id = checkNotNull(id, "id");
       this.name = name;
       this.firstName = firstName;
@@ -253,12 +297,15 @@ public class User {
       this.created = created;
       this.state = state;
       this.account = account;
+      this.accountId = accountId;
       this.accountType = accountType;
       this.domain = domain;
       this.domainId = domainId;
       this.timeZone = timeZone;
       this.apiKey = apiKey;
       this.secretKey = secretKey;
+      this.isCallerChildDomain = isCallerChildDomain;
+      this.isDefault = isDefault;
    }
 
    /**
@@ -371,10 +418,28 @@ public class User {
    public String getSecretKey() {
       return this.secretKey;
    }
+   
+    @Nullable
+   	public String getAccountId() {
+		return accountId;
+	}
+   
+	@Nullable
+	public boolean isCallerchilddomain() {
+		return isCallerChildDomain;
+	}
+
+	@Nullable
+	public boolean isDefault() {
+		return isDefault;
+	}
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(id, name, firstName, lastName, email, created, state, account, accountType, domain, domainId, timeZone, apiKey, secretKey);
+      return Objects.hashCode(id, name, firstName, lastName,
+    		  email, created, state, account, accountType, domain, 
+    		  domainId, timeZone, apiKey, secretKey, 
+    		  isCallerChildDomain, isDefault);
    }
 
    @Override
@@ -390,19 +455,23 @@ public class User {
             && Objects.equal(this.created, that.created)
             && Objects.equal(this.state, that.state)
             && Objects.equal(this.account, that.account)
+            && Objects.equal(this.accountId, that.accountId)
             && Objects.equal(this.accountType, that.accountType)
             && Objects.equal(this.domain, that.domain)
             && Objects.equal(this.domainId, that.domainId)
             && Objects.equal(this.timeZone, that.timeZone)
             && Objects.equal(this.apiKey, that.apiKey)
-            && Objects.equal(this.secretKey, that.secretKey);
+            && Objects.equal(this.secretKey, that.secretKey)
+            && Objects.equal(this.isCallerChildDomain, that.isCallerChildDomain)
+            && Objects.equal(this.isDefault, that.isDefault);
    }
 
    protected ToStringHelper string() {
       return Objects.toStringHelper(this)
             .add("id", id).add("name", name).add("firstName", firstName).add("lastName", lastName).add("email", email)
-            .add("created", created).add("state", state).add("account", account).add("accountType", accountType).add("domain", domain)
-            .add("domainId", domainId).add("timeZone", timeZone).add("apiKey", apiKey).add("secretKey", secretKey);
+            .add("created", created).add("state", state).add("account", account).add("accountId", accountId).add("accountType", accountType).add("domain", domain)
+            .add("domainId", domainId).add("timeZone", timeZone).add("apiKey", apiKey).add("secretKey", secretKey)
+            .add("isCallerChildDomain", isCallerChildDomain).add("isDefault", isDefault);
    }
 
    @Override
