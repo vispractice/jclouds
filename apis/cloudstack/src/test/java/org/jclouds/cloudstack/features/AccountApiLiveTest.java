@@ -57,26 +57,24 @@ public class AccountApiLiveTest extends BaseCloudStackApiLiveTest {
          assert user.getId() != null : user;
          assert user.getState() != null : user;
       }
-      assert account.getIPsAvailable() == null || account.getIPsAvailable() >= 0 : account;
-      assert account.getIPLimit() == null || account.getIPLimit() >= 0 : account;
-      assert account.getIPs() >= 0 : account;
+      assert account.getIpAvailable() == null || account.getIpAvailable() >= 0 : account;
+      assert account.getIpLimit() == null || account.getIpLimit() >= 0 : account;
+      assert account.getIpTotal() >= 0 : account;
       assert account.getReceivedBytes() >= 0 : account;
       assert account.getSentBytes() >= 0 : account;
-      assert account.getSnapshotsAvailable() == null || account.getSnapshotsAvailable() >= 0 : account;
+      assert account.getSnapshotAvailable() == null || account.getSnapshotAvailable() >= 0 : account;
       assert account.getSnapshotLimit() == null || account.getSnapshotLimit() >= 0 : account;
-      assert account.getSnapshots() >= 0 : account;
+      assert account.getSnapshotTotal() >= 0 : account;
       assert account.getState() != null && account.getState() != Account.State.UNRECOGNIZED : account;
-      assert account.getTemplatesAvailable() == null || account.getTemplatesAvailable() >= 0 : account;
+      assert account.getTemplateAvailable() == null || account.getTemplateAvailable() >= 0 : account;
       assert account.getTemplateLimit() == null || account.getTemplateLimit() >= 0 : account;
-      assert account.getTemplates() >= 0 : account;
-      assert account.getVMsAvailable() == null || account.getVMsAvailable() >= 0 : account;
-      assert account.getVMLimit() == null || account.getVMLimit() >= 0 : account;
-      assert account.getVMsRunning() >= 0 : account;
-      assert account.getVMsStopped() >= 0 : account;
-      assert account.getVMs() >= 0 : account;
-      assert account.getVolumesAvailable() == null || account.getVolumesAvailable() >= 0 : account;
+      assert account.getTemplateTotal() >= 0 : account;
+      assert account.getVmAvailable() == null || account.getVmAvailable() >= 0 : account;
+      assert account.getVmLimit() == null || account.getVmLimit() >= 0 : account;
+      assert account.getVmTotal() >= 0 : account;
+      assert account.getVolumeAvailable() == null || account.getVolumeAvailable() >= 0 : account;
       assert account.getVolumeLimit() == null || account.getVolumeLimit() >= 0 : account;
-      assert account.getVolumes() >= 0 : account;
+      assert account.getVolumeTotal() >= 0 : account;
    }
 
 }

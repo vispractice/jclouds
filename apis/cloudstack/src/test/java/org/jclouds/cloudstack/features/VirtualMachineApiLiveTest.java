@@ -174,7 +174,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
       return vm;
    }
 
-   @Test
+   @Test(enabled = false)
    public void testCreateVirtualMachine() throws Exception {
       String defaultTemplate = template != null ? template.getImageId() : null;
       vm = createVirtualMachine(client, defaultTemplate, jobComplete, virtualMachineRunning);
@@ -186,7 +186,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
       checkVm(vm);
    }
 
-   @Test
+   @Test(enabled = false)
    public void testCreateVirtualMachineWithSpecificIp() throws Exception {
       skipIfNotGlobalAdmin();
 
@@ -295,7 +295,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
       }
    }
 
-   @Test(dependsOnMethods = "testCreateVirtualMachine")
+   @Test(enabled = false ,dependsOnMethods = "testCreateVirtualMachine")
    public void testLifeCycle() throws Exception {
       String job = client.getVirtualMachineApi().stopVirtualMachine(vm.getId());
       assertTrue(jobComplete.apply(job));
