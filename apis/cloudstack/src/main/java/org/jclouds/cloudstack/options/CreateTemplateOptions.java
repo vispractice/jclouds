@@ -55,6 +55,14 @@ public class CreateTemplateOptions extends BaseHttpRequestOptions {
       this.queryParameters.replaceValues("ispublic", ImmutableSet.of(isPublic + ""));
       return this;
    }
+   
+   /**
+    * true if template contains XS/VMWare tools inorder to support dynamic scaling of VM cpu/memory
+    */
+   public CreateTemplateOptions isDynamicallyScalable(boolean isdynamicallyscalable){
+	   this.queryParameters.replaceValues("isdynamicallyscalable", ImmutableSet.of(isdynamicallyscalable + ""));
+	   return this;
+   }
 
    /**
     * true if the template supports the password reset feature; default is false
@@ -103,6 +111,11 @@ public class CreateTemplateOptions extends BaseHttpRequestOptions {
       public static CreateTemplateOptions isPublic(boolean isPublic) {
          CreateTemplateOptions options = new CreateTemplateOptions();
          return options.isPublic(isPublic);
+      }
+      
+      public static CreateTemplateOptions isDynamicallyScalable(boolean isDynamicallyScalable) {
+         CreateTemplateOptions options = new CreateTemplateOptions();
+         return options.isDynamicallyScalable(isDynamicallyScalable);
       }
 
       public static CreateTemplateOptions passwordEnabled(boolean passwordEnabled) {

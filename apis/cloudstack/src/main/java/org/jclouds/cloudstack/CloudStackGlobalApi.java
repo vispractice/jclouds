@@ -25,6 +25,7 @@ import org.jclouds.cloudstack.features.GlobalHostApi;
 import org.jclouds.cloudstack.features.GlobalOfferingApi;
 import org.jclouds.cloudstack.features.GlobalPodApi;
 import org.jclouds.cloudstack.features.GlobalStoragePoolApi;
+import org.jclouds.cloudstack.features.GlobalTemplateApi;
 import org.jclouds.cloudstack.features.GlobalUsageApi;
 import org.jclouds.cloudstack.features.GlobalUserApi;
 import org.jclouds.cloudstack.features.GlobalVlanApi;
@@ -125,4 +126,10 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     */
    @Delegate
    GlobalVlanApi getVlanClient();
+   
+   /**
+    * Provides synchronous access to Template features.
+    */
+   @Delegate
+   GlobalTemplateApi getTemplateApi();
 }

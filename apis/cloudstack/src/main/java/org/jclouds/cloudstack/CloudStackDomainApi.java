@@ -19,6 +19,7 @@ package org.jclouds.cloudstack;
 import org.jclouds.cloudstack.features.DomainAccountApi;
 import org.jclouds.cloudstack.features.DomainDomainApi;
 import org.jclouds.cloudstack.features.DomainLimitApi;
+import org.jclouds.cloudstack.features.DomainTemplateApi;
 import org.jclouds.cloudstack.features.DomainUserApi;
 import org.jclouds.rest.annotations.Delegate;
 
@@ -58,4 +59,10 @@ public interface CloudStackDomainApi extends CloudStackApi {
     */
    @Delegate
    DomainDomainApi getDomainClient();
+   
+   /**
+    * Provides synchronous access to Template features.
+    */
+   @Delegate
+   DomainTemplateApi getTemplateApi();
 }
