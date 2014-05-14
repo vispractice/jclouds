@@ -38,12 +38,18 @@ import org.jclouds.rest.annotations.SelectJson;
 @QueryParams(keys = "response", values = "json")
 public interface GlobalTemplateApi extends DomainTemplateApi {
 
+	/**
+	 * load template into primary storage
+	 */
 	@Named("prepareTemplate")
 	@GET
 	@QueryParams(keys = "command", values = "prepareTemplate")
 	void prepareTemplate(@QueryParam("templateid") String templateId,
 			@QueryParam("zoneid") String zoneId);
 
+	/**
+	 * Upgrades router to use newer template
+	 */
 	@Named("upgradeRouterTemplate")
 	@GET
 	@QueryParams(keys = { "command"}, values = { "upgradeRouterTemplate"})
@@ -51,6 +57,4 @@ public interface GlobalTemplateApi extends DomainTemplateApi {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(EmptySetOnNotFoundOr404.class)
 	AsyncCreateResponse upgradeRouterTemplate(UpgradeRouterTemplateOptions... options);
-	
-	
 }
