@@ -25,12 +25,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.Fallbacks.EmptySetOnNotFoundOr404;
+import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.Cluster;
 import org.jclouds.cloudstack.domain.Host;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.AddClusterOptions;
 import org.jclouds.cloudstack.options.AddHostOptions;
 import org.jclouds.cloudstack.options.AddSecondaryStorageOptions;
+import org.jclouds.cloudstack.options.DedicateHostOptions;
 import org.jclouds.cloudstack.options.DeleteHostOptions;
 import org.jclouds.cloudstack.options.ListClustersOptions;
 import org.jclouds.cloudstack.options.ListHostsOptions;
@@ -41,11 +43,13 @@ import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Provides synchronous access to cloudstack via their REST API.
  * <p/>
  *
- * @see <a href="http://download.cloud.com/releases/2.2.0/api_2.2.12/TOC_Global_Admin.html" />
+ * @see <a href="http://cloudstack.apache.org/docs/api/apidocs-4.3/TOC_Root_Admin.html" />
  * @author Andrei Savu
  */
 @RequestFilters(AuthenticationFilter.class)
@@ -245,4 +249,81 @@ public interface GlobalHostApi {
    @Consumes(MediaType.APPLICATION_JSON)
    void deleteCluster(@QueryParam("id") String clusterId);
 
+   /**
+    * Find hosts suitable for migrating a virtual machine.
+    * @param virtualMachineId find hosts to which this VM can be migrated and flag the hosts with enough CPU/RAM to host the VM
+    */
+   @Named("findHostsForMigration")
+   @GET
+   @QueryParams(keys = "command", values = "findHostsForMigration")
+   @SelectJson("host")
+   @Consumes(MediaType.APPLICATION_JSON)
+   void findHostsForMigration(@QueryParam("virtualmachineid") String virtualMachineId);
+   
+   /**
+    * Releases host reservation.
+    * @param id the host ID
+    */
+   @Named("releaseHostReservation")
+   @GET
+   @QueryParams(keys = "command", values = "releaseHostReservation")
+   @SelectJson({ "releasehostreservation", "releasehostreservationresponse" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse releaseHostReservation(@QueryParam("id") String id);
+   
+   /**
+    * Add a baremetal host.
+    *
+    * @param zoneId the Zone ID for the host
+    * @param podId the Pod ID for the host
+    * @param url the host URL
+    * @param hypervisor hypervisor type of the host
+    * @param username the username for the host
+    * @param password the password for the host
+    * @param options optional arguments
+    * @return the new host.
+    */
+   @Beta
+   @Named("addBaremetalHost")
+   @GET
+   @QueryParams(keys = "command", values = "addBaremetalHost")
+   @SelectJson("host")
+   @Consumes(MediaType.APPLICATION_JSON)
+   Host addBaremetalHost(@QueryParam("zoneid") String zoneId, @QueryParam("podid") String podId, @QueryParam("url") String url, @QueryParam("hypervisor") String hypervisor, @QueryParam("username") String username, @QueryParam("password") String password, AddHostOptions... options);
+
+   /**
+    * Dedicates a host.
+    * @param hostId the ID of the containing domain
+    * @param domainId the ID of the host to update
+    * @param options
+    */
+   @Beta
+   @Named("dedicateHost")
+   @GET
+   @QueryParams(keys = "command", values = "dedicateHost")
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse dedicateHost(@QueryParam("hostid") String hostId, @QueryParam("domainid") String domainId, DedicateHostOptions... options);
+   
+   /**
+    * Release the dedication for host
+    * @param hostId the ID of the host
+    */
+   @Beta
+   @Named("releaseDedicatedHost")
+   @GET
+   @QueryParams(keys = "command", values = "releaseDedicatedHost")
+   @Consumes(MediaType.APPLICATION_JSON)
+   void releaseDedicatedHost(@QueryParam("hostid") String hostId);
+   
+   /**
+    * Lists dedicated hosts.
+    */
+   @Beta
+   @Named("listDedicatedHosts")
+   @GET
+   @QueryParams(keys = { "command"}, values = { "listDedicatedHosts" })
+   @SelectJson("listdedicatedhostsresponse")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   Set<Host> listDedicatedHosts(ListHostsOptions... options);
 }

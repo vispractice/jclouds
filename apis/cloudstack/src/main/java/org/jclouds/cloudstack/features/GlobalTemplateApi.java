@@ -31,6 +31,8 @@ import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 
+import com.google.common.annotations.Beta;
+
 /**
  * @author liwei
  */
@@ -39,8 +41,9 @@ import org.jclouds.rest.annotations.SelectJson;
 public interface GlobalTemplateApi extends DomainTemplateApi {
 
 	/**
-	 * load template into primary storage
+	 * Load template into primary storage
 	 */
+	@Beta
 	@Named("prepareTemplate")
 	@GET
 	@QueryParams(keys = "command", values = "prepareTemplate")
@@ -50,6 +53,7 @@ public interface GlobalTemplateApi extends DomainTemplateApi {
 	/**
 	 * Upgrades router to use newer template
 	 */
+	@Beta
 	@Named("upgradeRouterTemplate")
 	@GET
 	@QueryParams(keys = { "command"}, values = { "upgradeRouterTemplate"})
