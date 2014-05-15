@@ -28,6 +28,7 @@ import org.jclouds.cloudstack.features.GlobalStoragePoolApi;
 import org.jclouds.cloudstack.features.GlobalTemplateApi;
 import org.jclouds.cloudstack.features.GlobalUsageApi;
 import org.jclouds.cloudstack.features.GlobalUserApi;
+import org.jclouds.cloudstack.features.GlobalVirtualMachineApi;
 import org.jclouds.cloudstack.features.GlobalVlanApi;
 import org.jclouds.cloudstack.features.GlobalZoneApi;
 import org.jclouds.rest.annotations.Delegate;
@@ -37,8 +38,9 @@ import org.jclouds.rest.annotations.Delegate;
  * <p/>
  * 
  * @author Adrian Cole
+ * @author liwei
  * @see <a href=
- *      "http://download.cloud.com/releases/2.2.0/api_2.2.12/TOC_Global_Admin.html"
+ *      "http://cloudstack.apache.org/docs/api/apidocs-4.3/TOC_Root_Admin.html"
  *      />
  */
 public interface CloudStackGlobalApi extends CloudStackDomainApi {
@@ -132,4 +134,11 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     */
    @Delegate
    GlobalTemplateApi getTemplateApi();
+   
+   /**
+    * Provides synchronous access to VirtualMachine features.
+    */
+   @Delegate
+   @Override
+   GlobalVirtualMachineApi getVirtualMachineApi();
 }

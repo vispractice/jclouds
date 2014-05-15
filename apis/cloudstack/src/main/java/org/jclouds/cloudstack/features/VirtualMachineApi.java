@@ -29,9 +29,11 @@ import org.jclouds.Fallbacks.NullOnNotFoundOr404;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
+import org.jclouds.cloudstack.options.AddNicToVirtualMachineOptions;
 import org.jclouds.cloudstack.options.AssignVirtualMachineOptions;
 import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
+import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.cloudstack.options.StopVirtualMachineOptions;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
@@ -39,11 +41,13 @@ import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Provides synchronous access to cloudstack via their REST API.
  * <p/>
  * 
- * @see <a href="http://download.cloud.com/releases/2.2.0/api_2.2.12/TOC_User.html" />
+ * @see <a href="http://cloudstack.apache.org/docs/api/apidocs-4.3/TOC_User.html" />
  * @author Adrian Cole
  */
 @RequestFilters(AuthenticationFilter.class)
@@ -240,20 +244,86 @@ public interface VirtualMachineApi {
    String destroyVirtualMachine(@QueryParam("id") String id);
 
    /**
-    * Re-assign a virtual machine to a different account/domain.
-    * 
-    * @param virtualMachineId
-    *           VirtualMachine to re-assign
-    * @param options
-    *           AssignVirtualMachineOptions specifying account and domain to transfer to, and optional network and security group IDs.
-    * @return VirtualMachine or null if not found
+    * Restore a VM to original template/ISO or new template/ISO
+    * @param virtualMachineId Virtual Machine ID
+    * @param options 
     */
-   @Named("assignVirtualMachine")
+   @Beta
+   @Named("restoreVirtualMachine")
    @GET
-   @QueryParams(keys = "command", values = "assignVirtualMachine")
-   @SelectJson("jobid")
+   @QueryParams(keys = "command", values = "restoreVirtualMachine")
+   @SelectJson({ "restorevirtualmachine", "restorevirtualmachineresponse" })
    @Consumes(MediaType.APPLICATION_JSON)
-   VirtualMachine assignVirtualMachine(@QueryParam("virtualmachineid") String virtualMachineId,
-                                                         AssignVirtualMachineOptions... options);
-
+   AsyncCreateResponse restoreVirtualMachine(@QueryParam("virtualmachineid") String virtualMachineId, 
+		   RestoreVirtualMachineOptions... options);
+   
+   /**
+    * Changes the service offering for a virtual machine. The virtual machine must be in a "Stopped" state for this command to take effect.
+    * @param id The ID of the virtual machine
+    * @param serviceOfferingId the service offering ID to apply to the virtual machine
+    */
+   @Beta
+   @Named("changeServiceForVirtualMachine")
+   @GET
+   @QueryParams(keys = "command", values = "changeServiceForVirtualMachine")
+   @SelectJson("virtualmachine")
+   @Consumes(MediaType.APPLICATION_JSON)
+   VirtualMachine changeServiceForVirtualMachine(@QueryParam("id") String id,
+		   @QueryParam("serviceofferingid") String serviceOfferingId);
+   
+   /**
+    * Scales the virtual machine to a new service offering.
+    * @param id The ID of the virtual machine
+    * @param serviceOfferingId the ID of the service offering for the virtual machine
+    */
+   @Beta
+   @Named("scaleVirtualMachine")
+   @GET
+   @QueryParams(keys = "command", values = "scaleVirtualMachine")
+   @SelectJson({ "scalevirtualmachine", "scalevirtualmachineresponse" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse scaleVirtualMachine(@QueryParam("id") String id,
+		   @QueryParam("serviceofferingid") String serviceOfferingId);
+   
+   /**
+    * Adds VM to specified network by creating a NIC
+    * @param networkId Network ID
+    * @param virtualMachineId Virtual Machine ID
+    */
+   @Beta
+   @Named("addNicToVirtualMachine")
+   @GET
+   @QueryParams(keys = "command", values = "addNicToVirtualMachine")
+   @SelectJson({ "addnictovirtualmachine", "addnictovirtualmachineresponse" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse addNicToVirtualMachine(@QueryParam("networkid") String networkId,
+		   @QueryParam("virtualmachineid") String virtualMachineId, AddNicToVirtualMachineOptions... options);
+   
+   /**
+    * Removes VM from specified network by deleting a NIC
+    * @param nicId NIC ID
+    * @param virtualMachineId Virtual Machine ID
+    */
+   @Beta
+   @Named("removeNicFromVirtualMachine")
+   @GET
+   @QueryParams(keys = "command", values = "removeNicFromVirtualMachine")
+   @SelectJson({ "removenicfromvirtualmachine", "removenicfromvirtualmachineresponse" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse removeNicFromVirtualMachine(@QueryParam("nicid") String nicId,
+		   @QueryParam("virtualmachineid") String virtualMachineId);
+   
+   /**
+    * Changes the default NIC on a VM
+    * @param nicId NIC ID
+    * @param virtualMachineId Virtual Machine ID
+    */
+   @Beta
+   @Named("updateDefaultNicForVirtualMachine")
+   @GET
+   @QueryParams(keys = "command", values = "updateDefaultNicForVirtualMachine")
+   @SelectJson({ "updatedefaultnicforvirtualmachine", "updatedefaultnicforvirtualmachineresponse" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse updateDefaultNicForVirtualMachine(@QueryParam("nicid") String nicId,
+		   @QueryParam("virtualmachineid") String virtualMachineId);
 }
