@@ -30,6 +30,7 @@ import org.jclouds.cloudstack.features.GlobalUsageApi;
 import org.jclouds.cloudstack.features.GlobalUserApi;
 import org.jclouds.cloudstack.features.GlobalVirtualMachineApi;
 import org.jclouds.cloudstack.features.GlobalVlanApi;
+import org.jclouds.cloudstack.features.GlobalVolumeApi;
 import org.jclouds.cloudstack.features.GlobalZoneApi;
 import org.jclouds.rest.annotations.Delegate;
 
@@ -141,4 +142,11 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
    @Delegate
    @Override
    GlobalVirtualMachineApi getVirtualMachineApi();
+   
+   /**
+    * Provides synchronous access to Volumes
+    */
+   @Delegate
+   @Override
+   GlobalVolumeApi getVolumeApi();
 }

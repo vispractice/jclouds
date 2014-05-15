@@ -22,6 +22,7 @@ import org.jclouds.cloudstack.features.DomainLimitApi;
 import org.jclouds.cloudstack.features.DomainTemplateApi;
 import org.jclouds.cloudstack.features.DomainUserApi;
 import org.jclouds.cloudstack.features.DomainVirtualMachineApi;
+import org.jclouds.cloudstack.features.DomainVolumeApi;
 import org.jclouds.rest.annotations.Delegate;
 
 /**
@@ -73,4 +74,11 @@ public interface CloudStackDomainApi extends CloudStackApi {
    @Delegate
    @Override
    DomainVirtualMachineApi getVirtualMachineApi();
+   
+   /**
+    * Provides synchronous access to Volumes
+    */
+   @Delegate
+   @Override
+   DomainVolumeApi getVolumeApi();
 }
