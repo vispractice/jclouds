@@ -64,7 +64,7 @@ public class CloudStackApiMetadata extends BaseHttpApiMetadata<CloudStackApi> {
          .name("Citrix CloudStack API")
          .identityName("API Key")
          .credentialName("Secret Key")
-         .documentation(URI.create("http://download.cloud.com/releases/2.2.0/api_2.2.12/TOC_User.html"))
+         .documentation(URI.create("http://cloudstack.apache.org/docs/api/apidocs-4.3/TOC_User.html"))
          .defaultEndpoint("http://localhost:8080/client/api")
          .version("2.2")
          .view(typeToken(CloudStackContext.class))
