@@ -24,8 +24,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
-import org.jclouds.cloudstack.domain.Network;
+import org.jclouds.cloudstack.domain.NetworkService;
 import org.jclouds.cloudstack.domain.NetworkService.Provider;
+import org.jclouds.cloudstack.domain.PhysicalNetwork;
+import org.jclouds.cloudstack.domain.StorageIPRange;
+import org.jclouds.cloudstack.domain.VlanIPRange;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.AddNetworkServiceProviderOptions;
 import org.jclouds.cloudstack.options.CreatePhysicalNetworkOptions;
@@ -39,6 +42,7 @@ import org.jclouds.cloudstack.options.UpdatePhysicalNetworkOptions;
 import org.jclouds.cloudstack.options.UpdateStorageNetworkIpRangeOptions;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
+import org.jclouds.rest.annotations.SelectJson;
 
 import com.google.common.annotations.Beta;
 
@@ -65,7 +69,7 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	@GET
 	@QueryParams(keys = "command", values = "dedicatePublicIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void dedicatePublicIpRange(@QueryParam("id") String id,
+	Set<VlanIPRange> dedicatePublicIpRange(@QueryParam("id") String id,
 			@QueryParam("account") String account,
 			@QueryParam("domainid") String domainId,
 			DedicatePublicIpRangeOptions... options);
@@ -105,11 +109,11 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Lists physical networks
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listPhysicalNetworks")
 	@Consumes(MediaType.APPLICATION_JSON)
-	Set<Network> listPhysicalNetworks(ListPhysicalNetworksOptions... options);
+	@SelectJson("physicalnetwork")
+	Set<PhysicalNetwork> listPhysicalNetworks(ListPhysicalNetworksOptions... options);
 	
 	/**
 	 * Updates a physical network
@@ -123,11 +127,11 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Lists all network services provided by CloudStack or for the given Provider.
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listSupportedNetworkServices")
 	@Consumes(MediaType.APPLICATION_JSON)
-	Set<Network> listSupportedNetworkServices(ListPhysicalNetworksOptions... options);
+	@SelectJson("networkservice")
+	Set<NetworkService> listSupportedNetworkServices(ListPhysicalNetworksOptions... options);
 	
 	/**
 	 * Adds a network serviceProvider to a physical network
@@ -155,10 +159,10 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Lists network serviceproviders for a given physical network.
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listNetworkServiceProviders")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("networkserviceprovider")
 	Set<Provider> listNetworkServiceProviders(ListNetworkServiceProvidersOptions... options);
 	
 	/**
@@ -204,7 +208,8 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	@GET
 	@QueryParams(keys = "command", values = "listStorageNetworkIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void listStorageNetworkIpRange(ListStorageNetworkIpRangeOptions... options);
+	@SelectJson("storagenetworkiprange")
+	Set<StorageIPRange> listStorageNetworkIpRange(ListStorageNetworkIpRangeOptions... options);
 	
 	/**
 	 * Update a Storage network IP range, only allowed when no IPs in this range have been allocated.

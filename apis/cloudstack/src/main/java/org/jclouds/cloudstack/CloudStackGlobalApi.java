@@ -22,6 +22,7 @@ import org.jclouds.cloudstack.features.GlobalCapacityApi;
 import org.jclouds.cloudstack.features.GlobalConfigurationApi;
 import org.jclouds.cloudstack.features.GlobalDomainApi;
 import org.jclouds.cloudstack.features.GlobalHostApi;
+import org.jclouds.cloudstack.features.GlobalNetworkApi;
 import org.jclouds.cloudstack.features.GlobalOfferingApi;
 import org.jclouds.cloudstack.features.GlobalPodApi;
 import org.jclouds.cloudstack.features.GlobalStoragePoolApi;
@@ -149,4 +150,11 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
    @Delegate
    @Override
    GlobalVolumeApi getVolumeApi();
+   
+   /**
+    * Provides synchronous access to Network features.
+    */
+   @Delegate
+   @Override
+   GlobalNetworkApi getNetworkApi();
 }
