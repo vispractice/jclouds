@@ -96,6 +96,7 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     * Provides synchronous access to Usage
     */
    @Delegate
+   @Override
    GlobalUsageApi getUsageClient();
 
    /**
