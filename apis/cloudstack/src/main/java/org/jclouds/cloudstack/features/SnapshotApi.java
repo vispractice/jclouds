@@ -47,8 +47,6 @@ import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 import org.jclouds.rest.annotations.Unwrap;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Provides synchronous access to CloudStack Snapshot features.
  * <p/>
@@ -179,12 +177,11 @@ public interface SnapshotApi {
     * Revert a volume snapshot.
     * @param id The ID of the snapshot
     */
-   @Beta
    @Named("revertSnapshot")
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
    @QueryParams(keys = { "command"}, values = { "revertSnapshot"})
-   @SelectJson("jobid")
+   @SelectJson("revertsnapshotresponse")
    @Fallback(EmptySetOnNotFoundOr404.class)
    AsyncCreateResponse revertSnapshot(@QueryParam("id") String id);
    
@@ -203,11 +200,11 @@ public interface SnapshotApi {
     * Creates snapshot for a vm.
     * @param virtualMachineId The ID of the vm
     */
-   @Beta
    @Named("createVMSnapshot")
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
    @QueryParams(keys = { "command"}, values = { "createVMSnapshot"})
+   @SelectJson("createvmsnapshotresponse")
    AsyncCreateResponse createVMSnapshot(@QueryParam("virtualmachineid") String virtualMachineId,
 		   CreateVMSnapshotOptions... options);
    
@@ -215,23 +212,23 @@ public interface SnapshotApi {
     * Deletes a vmsnapshot.
     * @param vmsnapshotid The ID of the VM snapshot
     */
-   @Beta
    @Named("deleteVMSnapshot")
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
    @QueryParams(keys = { "command"}, values = { "deleteVMSnapshot"})
    @Fallback(EmptySetOnNotFoundOr404.class)
+   @SelectJson("deletevmsnapshotresponse")
    AsyncCreateResponse deleteVMSnapshot(@QueryParam("vmsnapshotid") String vmSnapshotId);
   
    /**
     * Revert VM from a vmsnapshot.
     * @param vmsnapshotid The ID of the VM snapshot
     */
-   @Beta
    @Named("revertToVMSnapshot")
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
    @QueryParams(keys = { "command"}, values = { "revertToVMSnapshot"})
    @Fallback(EmptySetOnNotFoundOr404.class)
+   @SelectJson("reverttovmsnapshotresponse")
    AsyncCreateResponse revertToVMSnapshot(@QueryParam("vmsnapshotid") String vmSnapshotId);
 }
