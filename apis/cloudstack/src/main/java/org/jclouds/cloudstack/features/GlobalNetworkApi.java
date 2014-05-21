@@ -222,6 +222,15 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	AsyncCreateResponse updateStorageNetworkIpRange(@QueryParam("id") String id,
 			UpdateStorageNetworkIpRangeOptions... options);
 	
+	/**
+	 * Lists supported methods of network isolation
+	 */
+	@Beta
+	@GET
+	@QueryParams(keys = "command", values = "listNetworkIsolationMethods")
+	@Consumes(MediaType.APPLICATION_JSON)
+	Set<String> listNetworkIsolationMethods();
+	
 //	void listF5LoadBalancerNetworks();
 //	
 //	void listSrxFirewallNetworks();
@@ -231,6 +240,4 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 //	void listNetscalerLoadBalancerNetworks();
 //	
 //	void listNiciraNvpDeviceNetworks();
-//	
-//	void listNetworkIsolationMethods();
 }

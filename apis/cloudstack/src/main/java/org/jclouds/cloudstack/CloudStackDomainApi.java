@@ -21,6 +21,7 @@ import org.jclouds.cloudstack.features.DomainDomainApi;
 import org.jclouds.cloudstack.features.DomainLimitApi;
 import org.jclouds.cloudstack.features.DomainNetworkApi;
 import org.jclouds.cloudstack.features.DomainTemplateApi;
+import org.jclouds.cloudstack.features.DomainUsageApi;
 import org.jclouds.cloudstack.features.DomainUserApi;
 import org.jclouds.cloudstack.features.DomainVirtualMachineApi;
 import org.jclouds.cloudstack.features.DomainVolumeApi;
@@ -89,4 +90,10 @@ public interface CloudStackDomainApi extends CloudStackApi {
     */
    @Delegate
    DomainNetworkApi getNetworkApi();
+   
+   /**
+    * Provides synchronous access to Usage
+    */
+   @Delegate
+   DomainUsageApi getUsageClient();
 }

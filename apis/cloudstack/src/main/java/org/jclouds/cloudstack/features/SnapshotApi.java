@@ -33,8 +33,10 @@ import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.Snapshot;
 import org.jclouds.cloudstack.domain.SnapshotPolicy;
 import org.jclouds.cloudstack.domain.SnapshotPolicySchedule;
+import org.jclouds.cloudstack.domain.VMSnapshot;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.CreateSnapshotOptions;
+import org.jclouds.cloudstack.options.CreateVMSnapshotOptions;
 import org.jclouds.cloudstack.options.ListSnapshotPoliciesOptions;
 import org.jclouds.cloudstack.options.ListSnapshotsOptions;
 import org.jclouds.rest.annotations.BinderParam;
@@ -45,12 +47,15 @@ import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 import org.jclouds.rest.annotations.Unwrap;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Provides synchronous access to CloudStack Snapshot features.
  * <p/>
  * 
- * @see http://download.cloud.com/releases/2.2.0/api/TOC_User.html
+ * @see http://cloudstack.apache.org/docs/api/apidocs-4.3/TOC_User.html
  * @author Richard Downer
+ * @author liwei
  */
 @RequestFilters(AuthenticationFilter.class)
 @QueryParams(keys = "response", values = "json")
@@ -169,4 +174,64 @@ public interface SnapshotApi {
    @Unwrap
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<SnapshotPolicy> listSnapshotPolicies(@QueryParam("volumeid") String volumeId, ListSnapshotPoliciesOptions... options);
+   
+   /**
+    * Revert a volume snapshot.
+    * @param id The ID of the snapshot
+    */
+   @Beta
+   @Named("revertSnapshot")
+   @GET
+   @Consumes(MediaType.APPLICATION_JSON)
+   @QueryParams(keys = { "command"}, values = { "revertSnapshot"})
+   @SelectJson("jobid")
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   AsyncCreateResponse revertSnapshot(@QueryParam("id") String id);
+   
+   /**
+    * List virtual machine snapshot by conditions
+    */
+   @Named("listVMSnapshot")
+   @GET
+   @Consumes(MediaType.APPLICATION_JSON)
+   @QueryParams(keys = { "command"}, values = { "listVMSnapshot"})
+   @SelectJson("vmSnapshot")
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   Set<VMSnapshot> listVMSnapshot(ListSnapshotsOptions... options);
+   
+   /**
+    * Creates snapshot for a vm.
+    * @param virtualMachineId The ID of the vm
+    */
+   @Beta
+   @Named("createVMSnapshot")
+   @GET
+   @Consumes(MediaType.APPLICATION_JSON)
+   @QueryParams(keys = { "command"}, values = { "createVMSnapshot"})
+   AsyncCreateResponse createVMSnapshot(@QueryParam("virtualmachineid") String virtualMachineId,
+		   CreateVMSnapshotOptions... options);
+   
+   /**
+    * Deletes a vmsnapshot.
+    * @param vmsnapshotid The ID of the VM snapshot
+    */
+   @Beta
+   @Named("deleteVMSnapshot")
+   @GET
+   @Consumes(MediaType.APPLICATION_JSON)
+   @QueryParams(keys = { "command"}, values = { "deleteVMSnapshot"})
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   AsyncCreateResponse deleteVMSnapshot(@QueryParam("vmsnapshotid") String vmSnapshotId);
+  
+   /**
+    * Revert VM from a vmsnapshot.
+    * @param vmsnapshotid The ID of the VM snapshot
+    */
+   @Beta
+   @Named("revertToVMSnapshot")
+   @GET
+   @Consumes(MediaType.APPLICATION_JSON)
+   @QueryParams(keys = { "command"}, values = { "revertToVMSnapshot"})
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   AsyncCreateResponse revertToVMSnapshot(@QueryParam("vmsnapshotid") String vmSnapshotId);
 }
