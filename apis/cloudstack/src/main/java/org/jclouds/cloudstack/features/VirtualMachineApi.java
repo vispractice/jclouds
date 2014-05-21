@@ -262,7 +262,6 @@ public interface VirtualMachineApi {
     * @param id The ID of the virtual machine
     * @param serviceOfferingId the service offering ID to apply to the virtual machine
     */
-   @Beta
    @Named("changeServiceForVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "changeServiceForVirtualMachine")
@@ -276,7 +275,6 @@ public interface VirtualMachineApi {
     * @param id The ID of the virtual machine
     * @param serviceOfferingId the ID of the service offering for the virtual machine
     */
-   @Beta
    @Named("scaleVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "scaleVirtualMachine")
@@ -290,7 +288,6 @@ public interface VirtualMachineApi {
     * @param networkId Network ID
     * @param virtualMachineId Virtual Machine ID
     */
-   @Beta
    @Named("addNicToVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "addNicToVirtualMachine")
@@ -304,7 +301,6 @@ public interface VirtualMachineApi {
     * @param nicId NIC ID
     * @param virtualMachineId Virtual Machine ID
     */
-   @Beta
    @Named("removeNicFromVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "removeNicFromVirtualMachine")
@@ -318,7 +314,6 @@ public interface VirtualMachineApi {
     * @param nicId NIC ID
     * @param virtualMachineId Virtual Machine ID
     */
-   @Beta
    @Named("updateDefaultNicForVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "updateDefaultNicForVirtualMachine")
