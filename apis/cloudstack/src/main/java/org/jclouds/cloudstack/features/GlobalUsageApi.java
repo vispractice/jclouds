@@ -100,11 +100,10 @@ public interface GlobalUsageApi extends DomainUsageApi{
     * Lists traffic types of a given physical network.
     * @param physicalNetworkId the Physical Network ID
     */
-   @Beta
    @Named("listTrafficTypes")
    @GET
    @QueryParams(keys = "command", values = "listTrafficTypes")
-   @SelectJson("listtraffictypesresponse")
+   @SelectJson("traffictype")
    @Consumes(MediaType.APPLICATION_JSON)
    Set<NetworkTrafficType> listTrafficTypes(
 		   @QueryParam("physicalnetworkid") String physicalNetworkId,
@@ -126,7 +125,6 @@ public interface GlobalUsageApi extends DomainUsageApi{
    /**
     * Lists implementors of implementor of a network traffic type or implementors of all network traffic types
     */
-   @Beta
    @Named("listTrafficTypeImplementors")
    @GET
    @QueryParams(keys = "command", values = "listTrafficTypeImplementors")
@@ -137,11 +135,10 @@ public interface GlobalUsageApi extends DomainUsageApi{
    /**
     * List Usage Types
     */
-   @Beta
    @Named("listUsageTypes")
    @GET
    @QueryParams(keys = "command", values = "listUsageTypes")
-   @SelectJson("listusagetypesresponse")
+   @SelectJson("usagetype")
    @Consumes(MediaType.APPLICATION_JSON)
    Set<UsageType> listUsageTypes();
    
