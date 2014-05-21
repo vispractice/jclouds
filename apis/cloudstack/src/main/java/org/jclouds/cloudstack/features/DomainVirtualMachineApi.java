@@ -58,7 +58,7 @@ public interface DomainVirtualMachineApi extends VirtualMachineApi {
 	@Named("assignVirtualMachine")
 	@GET
 	@QueryParams(keys = "command", values = "assignVirtualMachine")
-	@SelectJson("jobid")
+	@SelectJson("virtualmachine")
 	@Consumes(MediaType.APPLICATION_JSON)
 	VirtualMachine assignVirtualMachine(
 			@QueryParam("virtualmachineid") String virtualMachineId,
@@ -70,11 +70,10 @@ public interface DomainVirtualMachineApi extends VirtualMachineApi {
 	 * @param id
 	 *            The ID of the virtual machine
 	 */
-	@Beta
 	@Named("recoverVirtualMachine")
 	@GET
 	@QueryParams(keys = "command", values = "recoverVirtualMachine")
-	@SelectJson("jobid")
+	@SelectJson("virtualmachine")
 	@Consumes(MediaType.APPLICATION_JSON)
 	VirtualMachine recoverVirtualMachine(@QueryParam("id") String id);
 

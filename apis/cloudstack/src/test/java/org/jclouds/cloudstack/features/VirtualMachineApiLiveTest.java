@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.jclouds.cloudstack.CloudStackApi;
+import org.jclouds.cloudstack.domain.Account;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.AsyncJob;
 import org.jclouds.cloudstack.domain.GuestIPType;
@@ -50,12 +51,15 @@ import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.domain.Zone;
 import org.jclouds.cloudstack.internal.BaseCloudStackApiLiveTest;
 import org.jclouds.cloudstack.options.AddNicToVirtualMachineOptions;
+import org.jclouds.cloudstack.options.AssignVirtualMachineOptions;
 import org.jclouds.cloudstack.options.CreateNetworkOptions;
 import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
+import org.jclouds.cloudstack.options.ListAccountsOptions;
 import org.jclouds.cloudstack.options.ListNetworkOfferingsOptions;
 import org.jclouds.cloudstack.options.ListNetworksOptions;
 import org.jclouds.cloudstack.options.ListTemplatesOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
+import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.util.InetAddresses2;
 import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
@@ -490,7 +494,39 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 
 	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
 	public void testRestorevirtualMachine() throws Exception {
-		throw new UnsupportedOperationException();
+		RestoreVirtualMachineOptions options = new RestoreVirtualMachineOptions();
+		String jobId = client.getVirtualMachineApi().restoreVirtualMachine(this.vm.getId(), options);
+		assertTrue(jobComplete.apply(jobId));
+		vm = getVm(this.vm.getId());
+		assertTrue(vm.getState().equals(VirtualMachine.State.RUNNING));
+	}
+	
+	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
+	public void testRestorevirtualMachineToNewTemplate() throws Exception {
+		Template oTemp = client.getTemplateApi().getTemplateInZone(this.vm.getTemplateId(), this.vm.getZoneId());
+		assert oTemp != null;
+		
+		Set<Template> temps = client.getTemplateApi().listTemplates();
+		assert temps != null && temps.size() >= 2;
+		
+		Iterator<Template> tempIterator = temps.iterator();
+		Template newTemp = null;
+		while(tempIterator.hasNext()){
+			Template temp = tempIterator.next();
+			if(!temp.getId().equals(oTemp.getId()) 
+					&& temp.getHypervisor().equals(oTemp.getHypervisor())
+					&& temp.isReady()){
+				newTemp = temp;
+			}
+		}
+		assert newTemp != null;
+		
+		RestoreVirtualMachineOptions options = new RestoreVirtualMachineOptions();
+		options.templateId(newTemp.getId());
+		String jobId = client.getVirtualMachineApi().restoreVirtualMachine(this.vm.getId(), options);
+		assertTrue(jobComplete.apply(jobId));
+		vm = getVm(this.vm.getId());
+		assertTrue(vm.getState().equals(VirtualMachine.State.RUNNING));
 	}
 
 	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
@@ -525,21 +561,38 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 		assert vm.getServiceOfferingId().equals(newServiceOfferingId);
 	}
 
-	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
+	@Test(enabled = false)
 	public void testCleanVMReservations() throws Exception {
 		throw new UnsupportedOperationException();
+//		AsyncCreateResponse job = globalAdminClient.getVirtualMachineApi().cleanVMReservations();
+//		assertTrue(jobComplete.apply(job.getJobId()));
 	}
 
 	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
 	public void testDestroyVirtualMachine() throws Exception {
-		throw new UnsupportedOperationException();
+		String jobId = client.getVirtualMachineApi().destroyVirtualMachine(this.vm.getId());
+		assertTrue(jobComplete.apply(jobId));
+		VirtualMachine vm = getVm(this.vm.getId());
+		logger.info("vm state: " + vm.getState());
+		assertEquals(vm.getState(), VirtualMachine.State.DESTROYED);
 	}
 
 	@Test(enabled = false, dependsOnMethods = "testDestroyVirtualMachine")
+	public void testRecoverVirtualMachine() throws Exception {
+		VirtualMachine vm = domainAdminClient
+				.getVirtualMachineApi().recoverVirtualMachine(this.vm.getId());
+		logger.info("vm state: " + vm.getState());
+		assertEquals(vm.getState(), VirtualMachine.State.STOPPED);
+	}
+	
+	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
 	public void testExpungeVirtualMachine() throws Exception {
 		throw new UnsupportedOperationException();
+//		AsyncCreateResponse job = domainAdminClient
+//				.getVirtualMachineApi().expungeVirtualMachine(this.vm.getId());
+//		assertTrue(jobComplete.apply(job.getJobId()));
 	}
-
+	
 	@Test(enabled = false, dependsOnMethods = "testStopVirtualMachine")
 	public void testMigrateVirtualMachine() throws Exception {
 		throw new UnsupportedOperationException();
@@ -549,10 +602,37 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 	public void testMigrateVirtualMachineWithVolume() throws Exception {
 		throw new UnsupportedOperationException();
 	}
-
-	@Test(enabled = false, dependsOnMethods = "testDestroyVirtualMachine")
-	public void testRecoverVirtualMachine() throws Exception {
-		throw new UnsupportedOperationException();
+	
+	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
+	public void testAssignVirtualMachine() throws Exception {
+		String oAccount = this.vm.getAccount();
+		String oDomainId = this.vm.getDomainId();
+		Set<Account> accounts = globalAdminClient.getAccountApi().listAccounts(new ListAccountsOptions());
+		assert accounts != null && accounts.size() >= 2;
+		
+		String newDomainId = null;
+		String newAccount = null;
+		Iterator<Account> accountIterator = accounts.iterator();
+		while(accountIterator.hasNext()){
+			Account account = accountIterator.next();
+			if(!account.getName().equals(oAccount) 
+					&& !account.getDomainId().equals(oDomainId)){
+				newDomainId = account.getDomainId();
+				newAccount = account.getName();
+				break;
+			}
+		}
+		assert newDomainId != null && newAccount != null;
+		
+		if(this.vm.getState().equals(VirtualMachine.State.RUNNING)){
+			testStopVirtualMachine();
+		}
+		assertEquals(this.vm.getState(), VirtualMachine.State.STOPPED);
+		
+		AssignVirtualMachineOptions options = new AssignVirtualMachineOptions();
+		options.accountInDomain(newAccount, newDomainId);
+		vm = globalAdminClient.getVirtualMachineApi().assignVirtualMachine(this.vm.getId(), options);
+		assert vm.getAccount().equals(newAccount) && vm.getDomainId().equals(newDomainId);
 	}
 
 	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")

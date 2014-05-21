@@ -84,14 +84,4 @@ public interface GlobalVirtualMachineApi extends DomainVirtualMachineApi {
 			@QueryParam("virtualmachineid") String virtualMachineId,
 			MigrateVirtualMachineWithVolumeOptions... options);
 	
-	/**
-	 * @param id The ID of the virtual machine
-	 */
-	@Beta
-	@Named("expungeVirtualMachine")
-	@GET
-	@QueryParams(keys = "command", values = "expungeVirtualMachine")
-	@SelectJson({ "expungevirtualmachine", "expungevirtualmachineresponse" })
-	@Consumes(MediaType.APPLICATION_JSON)
-	AsyncCreateResponse expungeVirtualMachine(@QueryParam("id") String id);
 }

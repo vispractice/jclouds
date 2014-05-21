@@ -247,14 +247,14 @@ public interface VirtualMachineApi {
     * Restore a VM to original template/ISO or new template/ISO
     * @param virtualMachineId Virtual Machine ID
     * @param options 
+    * @return job id related to restore the VM
     */
-   @Beta
    @Named("restoreVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "restoreVirtualMachine")
-   @SelectJson({ "restorevirtualmachine", "restorevirtualmachineresponse" })
+   @SelectJson({"jobid" })
    @Consumes(MediaType.APPLICATION_JSON)
-   AsyncCreateResponse restoreVirtualMachine(@QueryParam("virtualmachineid") String virtualMachineId, 
+   String restoreVirtualMachine(@QueryParam("virtualmachineid") String virtualMachineId, 
 		   RestoreVirtualMachineOptions... options);
    
    /**
