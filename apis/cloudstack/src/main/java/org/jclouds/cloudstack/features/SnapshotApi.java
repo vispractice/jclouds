@@ -33,6 +33,7 @@ import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.Snapshot;
 import org.jclouds.cloudstack.domain.SnapshotPolicy;
 import org.jclouds.cloudstack.domain.SnapshotPolicySchedule;
+import org.jclouds.cloudstack.domain.VMSnapshot;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.CreateSnapshotOptions;
 import org.jclouds.cloudstack.options.CreateVMSnapshotOptions;
@@ -194,9 +195,9 @@ public interface SnapshotApi {
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
    @QueryParams(keys = { "command"}, values = { "listVMSnapshot"})
-   @SelectJson("snapshot")
+   @SelectJson("vmSnapshot")
    @Fallback(EmptySetOnNotFoundOr404.class)
-   Set<Snapshot> listVMSnapshot(ListSnapshotsOptions... options);
+   Set<VMSnapshot> listVMSnapshot(ListSnapshotsOptions... options);
    
    /**
     * Creates snapshot for a vm.
