@@ -32,7 +32,6 @@ import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.AddClusterOptions;
 import org.jclouds.cloudstack.options.AddHostOptions;
 import org.jclouds.cloudstack.options.AddSecondaryStorageOptions;
-import org.jclouds.cloudstack.options.DedicateHostOptions;
 import org.jclouds.cloudstack.options.DeleteHostOptions;
 import org.jclouds.cloudstack.options.ListClustersOptions;
 import org.jclouds.cloudstack.options.ListHostsOptions;
@@ -293,39 +292,39 @@ public interface GlobalHostApi {
    @Consumes(MediaType.APPLICATION_JSON)
    Host addBaremetalHost(@QueryParam("zoneid") String zoneId, @QueryParam("podid") String podId, @QueryParam("url") String url, @QueryParam("hypervisor") String hypervisor, @QueryParam("username") String username, @QueryParam("password") String password, AddHostOptions... options);
 
-   /**
-    * Dedicates a host.
-    * @param hostId the ID of the containing domain
-    * @param domainId the ID of the host to update
-    * @param options
-    */
-   @Beta
-   @Named("dedicateHost")
-   @GET
-   @QueryParams(keys = "command", values = "dedicateHost")
-   @Consumes(MediaType.APPLICATION_JSON)
-   AsyncCreateResponse dedicateHost(@QueryParam("hostid") String hostId, @QueryParam("domainid") String domainId, DedicateHostOptions... options);
-   
-   /**
-    * Release the dedication for host
-    * @param hostId the ID of the host
-    */
-   @Beta
-   @Named("releaseDedicatedHost")
-   @GET
-   @QueryParams(keys = "command", values = "releaseDedicatedHost")
-   @Consumes(MediaType.APPLICATION_JSON)
-   AsyncCreateResponse releaseDedicatedHost(@QueryParam("hostid") String hostId);
-   
-   /**
-    * Lists dedicated hosts.
-    */
-   @Beta
-   @Named("listDedicatedHosts")
-   @GET
-   @QueryParams(keys = { "command"}, values = { "listDedicatedHosts" })
-   @SelectJson("dedicatedhost")
-   @Consumes(MediaType.APPLICATION_JSON)
-   @Fallback(EmptySetOnNotFoundOr404.class)
-   Set<Host> listDedicatedHosts(ListHostsOptions... options);
+//   /**
+//    * Dedicates a host.
+//    * @param hostId the ID of the containing domain
+//    * @param domainId the ID of the host to update
+//    * @param options
+//    */
+//   @Beta
+//   @Named("dedicateHost")
+//   @GET
+//   @QueryParams(keys = "command", values = "dedicateHost")
+//   @Consumes(MediaType.APPLICATION_JSON)
+//   AsyncCreateResponse dedicateHost(@QueryParam("hostid") String hostId, @QueryParam("domainid") String domainId, DedicateHostOptions... options);
+//   
+//   /**
+//    * Release the dedication for host
+//    * @param hostId the ID of the host
+//    */
+//   @Beta
+//   @Named("releaseDedicatedHost")
+//   @GET
+//   @QueryParams(keys = "command", values = "releaseDedicatedHost")
+//   @Consumes(MediaType.APPLICATION_JSON)
+//   AsyncCreateResponse releaseDedicatedHost(@QueryParam("hostid") String hostId);
+//   
+//   /**
+//    * Lists dedicated hosts.
+//    */
+//   @Beta
+//   @Named("listDedicatedHosts")
+//   @GET
+//   @QueryParams(keys = { "command"}, values = { "listDedicatedHosts" })
+//   @SelectJson("dedicatedhost")
+//   @Consumes(MediaType.APPLICATION_JSON)
+//   @Fallback(EmptySetOnNotFoundOr404.class)
+//   Set<Host> listDedicatedHosts(ListHostsOptions... options);
 }
