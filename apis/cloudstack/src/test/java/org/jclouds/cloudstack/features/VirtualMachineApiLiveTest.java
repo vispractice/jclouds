@@ -60,6 +60,7 @@ import org.jclouds.cloudstack.options.ListNetworksOptions;
 import org.jclouds.cloudstack.options.ListTemplatesOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
+import org.jclouds.cloudstack.options.UpdateVirtualMachineOptions;
 import org.jclouds.util.InetAddresses2;
 import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
@@ -87,7 +88,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 
 	private VirtualMachine vm = null;
 
-	private boolean needClean = true;
+	private boolean cleanupVmAfterTest = true;
 
 	private String existVmId = null;
 
@@ -219,8 +220,8 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 	@Override
 	protected Properties setupProperties() {
 		Properties overrides = super.setupProperties();
-		existVmId = setIfTestSystemPropertyPresent(overrides, provider
-				+ ".exist-vm");
+		existVmId = setIfTestSystemPropertyPresent(overrides, provider + ".existVmId");
+		cleanupVmAfterTest = Boolean.valueOf(setIfTestSystemPropertyPresent(overrides, provider + ".cleanupVmAfterTest"));
 		return overrides;
 	}
 
@@ -634,6 +635,17 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 		vm = globalAdminClient.getVirtualMachineApi().assignVirtualMachine(this.vm.getId(), options);
 		assert vm.getAccount().equals(newAccount) && vm.getDomainId().equals(newDomainId);
 	}
+	
+	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
+	public void testUpdateVirtualMachine() throws Exception {
+	    VirtualMachine vm = getVm(this.vm.getId());
+	    UpdateVirtualMachineOptions options = new UpdateVirtualMachineOptions();
+	    String newDisplayName = vm.getDisplayName() + "-updated-" + System.currentTimeMillis();
+	    options.displayname(newDisplayName);
+	    client.getVirtualMachineApi().updateVirtualMachine(vm.getId(), options);
+	    vm = getVm(this.vm.getId());
+	    assertEquals(vm.getDisplayName(), newDisplayName);
+	}
 
 	@Test(enabled = false, dependsOnMethods = "testCreateVirtualMachine")
 	public void testLifeCycle() throws Exception {
@@ -668,7 +680,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 	@AfterGroups(groups = "live")
 	@Override
 	protected void tearDownContext() {
-		if (vm != null && needClean) {
+		if (vm != null && cleanupVmAfterTest) {
 			destroyMachine(vm);
 			vm = null;
 		}
