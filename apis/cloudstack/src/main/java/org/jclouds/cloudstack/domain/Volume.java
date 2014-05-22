@@ -63,6 +63,10 @@ public class Volume {
 		 * development)
 		 */
 		FAILED,
+		
+		UPLOADNOTSTARTED,
+		
+		UPLOADED,
 
 		UNRECOGNIZED;
 
@@ -174,6 +178,7 @@ public class Volume {
 		protected String quiesceVm;
 		protected String status;
 		protected String storageId;
+		protected String url;
 
 		/**
 		 * @see Volume#getId()
@@ -487,6 +492,11 @@ public class Volume {
 			this.storageId = storageId;
 			return self();
 		}
+		
+		public T url(String url){
+			this.url = url;
+			return self();
+		}
 
 		public Volume build() {
 			return new Volume(id, account, attached, created, destroyed,
@@ -499,7 +509,7 @@ public class Volume {
 					vmState, zoneId, zoneName, diskBytesReadRate,
 					diskBytesWriteRate, diskIopsReadRate, diskIopsWriteRate,
 					displayVolume, maxIops, minIops, path, project, projectId,
-					quiesceVm, status, storageId);
+					quiesceVm, status, storageId, url);
 		}
 
 		public T fromVolume(Volume in) {
@@ -538,7 +548,7 @@ public class Volume {
 					.maxIops(in.getMaxIops()).minIops(in.getMinIops())
 					.path(in.getPath()).project(in.getProject())
 					.projectId(in.getProjectId()).quiesceVm(in.getQuiesceVm())
-					.status(in.getStatus()).storageId(in.getStorageId());
+					.status(in.getStatus()).storageId(in.getStorageId()).url(in.getUrl());
 		}
 	}
 
@@ -594,6 +604,7 @@ public class Volume {
 	private final String quiesceVm;
 	private final String status;
 	private final String storageId;
+	private final String url;
 
 	@ConstructorProperties({ "id", "account", "attached", "created",
 			"destroyed", "deviceid", "diskofferingdisplaytext",
@@ -605,7 +616,7 @@ public class Volume {
 			"vmname", "vmstate", "zoneid", "zonename", "diskbytesreadrate",
 			"diskbyteswriterate", "diskiopsreadrate", "diskiopswriterate",
 			"displayvolume", "maxiops", "miniops", "path", "project",
-			"projectid", "quiescevm", "status", "storageid" })
+			"projectid", "quiescevm", "status", "storageid", "url"})
 	protected Volume(String id, @Nullable String account,
 			@Nullable Date attached, @Nullable Date created, boolean destroyed,
 			@Nullable String deviceId,
@@ -628,7 +639,7 @@ public class Volume {
 			long maxIops, long minIops, @Nullable String path,
 			@Nullable String project, @Nullable String projectId,
 			@Nullable String quiesceVm, @Nullable String status,
-			@Nullable String storageId) {
+			@Nullable String storageId, @Nullable String url) {
 		this.id = checkNotNull(id, "id");
 		this.account = account;
 		this.attached = attached;
@@ -673,6 +684,7 @@ public class Volume {
 		this.quiesceVm = quiesceVm;
 		this.status = status;
 		this.storageId = storageId;
+		this.url = url;
 	}
 
 	public String getId() {
@@ -885,6 +897,10 @@ public class Volume {
 		return storageId;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(id, account, attached, created, destroyed,
@@ -896,7 +912,7 @@ public class Volume {
 				vmDisplayName, vmName, vmState, zoneId, zoneName,
 				diskBytesReadRate, diskBytesWriteRate, diskIopsReadRate,
 				diskIopsWriteRate, displayVolume, maxIops, minIops, path,
-				project, projectId, quiesceVm, status, storageId);
+				project, projectId, quiesceVm, status, storageId, url);
 	}
 
 	@Override
@@ -956,7 +972,8 @@ public class Volume {
 				&& Objects.equal(this.projectId, that.projectId)
 				&& Objects.equal(this.quiesceVm, that.quiesceVm)
 				&& Objects.equal(this.status, that.status)
-				&& Objects.equal(this.storageId, that.storageId);
+				&& Objects.equal(this.storageId, that.storageId)
+				&& Objects.equal(this.url, that.url);
 	}
 
 	protected ToStringHelper string() {
@@ -989,7 +1006,7 @@ public class Volume {
 				.add("minIops", minIops).add("path", path)
 				.add("project", project).add("projectId", projectId)
 				.add("quiesceVm", quiesceVm).add("status", status)
-				.add("storageId", storageId);
+				.add("storageId", storageId).add("url", url);
 	}
 
 	@Override
