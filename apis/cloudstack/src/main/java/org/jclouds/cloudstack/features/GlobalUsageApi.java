@@ -151,7 +151,7 @@ public interface GlobalUsageApi extends DomainUsageApi{
    @Named("addTrafficMonitor")
    @GET
    @QueryParams(keys = "command", values = "addTrafficMonitor")
-   @SelectJson("addtrafficmonitorresponse")
+   @SelectJson("trafficmonitor")
    @Consumes(MediaType.APPLICATION_JSON)
    TrafficMonitor addTrafficMonitor(@QueryParam("url") String url,
 		   @QueryParam("zoneid") String zoneId,
@@ -176,7 +176,7 @@ public interface GlobalUsageApi extends DomainUsageApi{
    @Named("listTrafficMonitors")
    @GET
    @QueryParams(keys = "command", values = "listTrafficMonitors")
-   @SelectJson("listtrafficmonitorsresponse")
+   @SelectJson("trafficmonitor")
    @Consumes(MediaType.APPLICATION_JSON)
    Set<TrafficMonitor> listTrafficMonitors(@QueryParam("zoneid") String zoneId);
 }
