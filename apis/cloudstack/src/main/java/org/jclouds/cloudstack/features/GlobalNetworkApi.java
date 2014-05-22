@@ -68,8 +68,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "dedicatePublicIpRange")
+	@SelectJson("dedicatepubliciprangeresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
-	Set<VlanIPRange> dedicatePublicIpRange(@QueryParam("id") String id,
+	VlanIPRange dedicatePublicIpRange(@QueryParam("id") String id,
 			@QueryParam("account") String account,
 			@QueryParam("domainid") String domainId,
 			DedicatePublicIpRangeOptions... options);
@@ -228,6 +229,7 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listNetworkIsolationMethods")
+	@SelectJson("listnetworkisolationmethodsresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	Set<String> listNetworkIsolationMethods();
 	

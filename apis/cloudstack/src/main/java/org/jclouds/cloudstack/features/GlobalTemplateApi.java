@@ -47,6 +47,7 @@ public interface GlobalTemplateApi extends DomainTemplateApi {
 	@Named("prepareTemplate")
 	@GET
 	@QueryParams(keys = "command", values = "prepareTemplate")
+	@SelectJson("preparetemplateresponse")
 	void prepareTemplate(@QueryParam("templateid") String templateId,
 			@QueryParam("zoneid") String zoneId);
 
@@ -57,7 +58,7 @@ public interface GlobalTemplateApi extends DomainTemplateApi {
 	@Named("upgradeRouterTemplate")
 	@GET
 	@QueryParams(keys = { "command"}, values = { "upgradeRouterTemplate"})
-	@SelectJson("upgradeRouterTemplate")
+	@SelectJson("upgraderoutertemplateresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(EmptySetOnNotFoundOr404.class)
 	AsyncCreateResponse upgradeRouterTemplate(UpgradeRouterTemplateOptions... options);

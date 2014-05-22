@@ -253,21 +253,23 @@ public interface GlobalHostApi {
     * Find hosts suitable for migrating a virtual machine.
     * @param virtualMachineId find hosts to which this VM can be migrated and flag the hosts with enough CPU/RAM to host the VM
     */
+   @Beta
    @Named("findHostsForMigration")
    @GET
    @QueryParams(keys = "command", values = "findHostsForMigration")
    @SelectJson("host")
    @Consumes(MediaType.APPLICATION_JSON)
-   void findHostsForMigration(@QueryParam("virtualmachineid") String virtualMachineId);
+   Set<Host> findHostsForMigration(@QueryParam("virtualmachineid") String virtualMachineId);
    
    /**
     * Releases host reservation.
     * @param id the host ID
     */
+   @Beta
    @Named("releaseHostReservation")
    @GET
    @QueryParams(keys = "command", values = "releaseHostReservation")
-   @SelectJson({ "releasehostreservation", "releasehostreservationresponse" })
+   @SelectJson({ "releasehostreservationresponse" })
    @Consumes(MediaType.APPLICATION_JSON)
    AsyncCreateResponse releaseHostReservation(@QueryParam("id") String id);
    
@@ -287,7 +289,7 @@ public interface GlobalHostApi {
    @Named("addBaremetalHost")
    @GET
    @QueryParams(keys = "command", values = "addBaremetalHost")
-   @SelectJson("host")
+   @SelectJson("addbaremetalhostresponse")
    @Consumes(MediaType.APPLICATION_JSON)
    Host addBaremetalHost(@QueryParam("zoneid") String zoneId, @QueryParam("podid") String podId, @QueryParam("url") String url, @QueryParam("hypervisor") String hypervisor, @QueryParam("username") String username, @QueryParam("password") String password, AddHostOptions... options);
 
@@ -313,7 +315,7 @@ public interface GlobalHostApi {
    @GET
    @QueryParams(keys = "command", values = "releaseDedicatedHost")
    @Consumes(MediaType.APPLICATION_JSON)
-   void releaseDedicatedHost(@QueryParam("hostid") String hostId);
+   AsyncCreateResponse releaseDedicatedHost(@QueryParam("hostid") String hostId);
    
    /**
     * Lists dedicated hosts.
@@ -322,7 +324,7 @@ public interface GlobalHostApi {
    @Named("listDedicatedHosts")
    @GET
    @QueryParams(keys = { "command"}, values = { "listDedicatedHosts" })
-   @SelectJson("listdedicatedhostsresponse")
+   @SelectJson("dedicatedhost")
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<Host> listDedicatedHosts(ListHostsOptions... options);
