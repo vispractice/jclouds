@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Test(groups = "live", singleThreaded = true, testName = "GlobalNetworkApiLiveTest")
 public class GlobalNetworkApiLiveTest extends BaseCloudStackApiLiveTest {
 
-   @Test(groups = "live", enabled = false)
+   @Test(groups = "live", enabled = true)
    public void testListPhysicalNetworks() throws Exception {
       skipIfNotGlobalAdmin();
 
@@ -41,7 +41,7 @@ public class GlobalNetworkApiLiveTest extends BaseCloudStackApiLiveTest {
       
    }
    
-   @Test(groups = "live", enabled = false)
+   @Test(groups = "live", enabled = true)
    public void testListSupportedNetworkServices() throws Exception {
       skipIfNotGlobalAdmin();
 
@@ -49,7 +49,7 @@ public class GlobalNetworkApiLiveTest extends BaseCloudStackApiLiveTest {
       
    }
    
-   @Test(groups = "live", enabled = false)
+   @Test(groups = "live", enabled = true)
    public void testListNetworkServiceProviders() throws Exception {
       skipIfNotGlobalAdmin();
 

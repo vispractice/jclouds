@@ -205,7 +205,6 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * List a storage network IP range.
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listStorageNetworkIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
