@@ -19,6 +19,7 @@ package org.jclouds.cloudstack.options;
 import org.jclouds.cloudstack.domain.NetworkType;
 import org.jclouds.cloudstack.domain.TrafficType;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -203,6 +204,38 @@ public class ListNetworksOptions extends AccountInDomainOptions {
          ListNetworksOptions options = new ListNetworksOptions();
          return options.domainId(domainId);
       }
+      
+      public static ListNetworksOptions name(String name) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.domainId(name);
+       }
+      
+      public static ListNetworksOptions cidr(String cidr) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.domainId(cidr);
+       }
+      
+      public static ListNetworksOptions vlanId(String vlanid) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.vlanId(vlanid);
+       }
    }
+   
+   @Beta
+   public ListNetworksOptions name(String name) {
+       this.queryParameters.replaceValues("name", ImmutableSet.of(name));
+       return this;
+    }
+   
+   @Beta
+   public ListNetworksOptions cidr(String cidr) {
+       this.queryParameters.replaceValues("cidr", ImmutableSet.of(cidr));
+       return this;
+    }
 
+   @Beta
+   public ListNetworksOptions vlanId(String vlanid) {
+       this.queryParameters.replaceValues("vlanid", ImmutableSet.of(vlanid));
+       return this;
+    }
 }

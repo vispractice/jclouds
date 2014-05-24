@@ -16,6 +16,7 @@
  */
 package org.jclouds.cloudstack.options;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -221,9 +222,19 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
        * @see ListVirtualMachinesOptions#usesVirtualNetwork
        */
       public static ListVirtualMachinesOptions usesVirtualNetwork(boolean usesVirtualNetwork) {
-         ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
-         return options.usesVirtualNetwork(usesVirtualNetwork);
-      }
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.usesVirtualNetwork(usesVirtualNetwork);
+       }
+      
+      public static ListVirtualMachinesOptions nameOrIp(String nameorip) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.nameOrIp(nameorip);
+       }
+      
+      public static ListVirtualMachinesOptions guestOsId(String guestosid) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.guestOsId(guestosid);
+       }
    }
 
    /**
@@ -241,4 +252,16 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
    public ListVirtualMachinesOptions domainId(String domainId) {
       return ListVirtualMachinesOptions.class.cast(super.domainId(domainId));
    }
+   
+   @Beta
+   public ListVirtualMachinesOptions nameOrIp(String nameorip) {
+       this.queryParameters.replaceValues("nameorip", ImmutableSet.of(nameorip));
+       return this;
+    }
+   
+   @Beta
+   public ListVirtualMachinesOptions guestOsId(String guestosid) {
+       this.queryParameters.replaceValues("guestosid", ImmutableSet.of(guestosid));
+       return this;
+    }
 }

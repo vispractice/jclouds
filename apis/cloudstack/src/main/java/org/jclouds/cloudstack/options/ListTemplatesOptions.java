@@ -18,6 +18,7 @@ package org.jclouds.cloudstack.options;
 
 import org.jclouds.cloudstack.domain.TemplateFilter;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -90,6 +91,11 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("hypervisor", ImmutableSet.of(hypervisor));
       return this;
    }
+   
+   public ListTemplatesOptions keyWord(String keyword) {
+       this.queryParameters.replaceValues("keyword", ImmutableSet.of(keyword));
+       return this;
+    }
 
    public static class Builder {
 
@@ -156,6 +162,21 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
          ListTemplatesOptions options = new ListTemplatesOptions();
          return options.hypervisor(hypervisor);
       }
+      
+      public static ListTemplatesOptions keyWord(String keyword) {
+          ListTemplatesOptions options = new ListTemplatesOptions();
+          return options.keyWord(keyword);
+       }
+      
+      public static ListTemplatesOptions ostypeid(String ostypeid) {
+          ListTemplatesOptions options = new ListTemplatesOptions();
+          return options.osTypeId(ostypeid);
+       }
+      
+      public static ListTemplatesOptions isready(boolean isready) {
+          ListTemplatesOptions options = new ListTemplatesOptions();
+          return options.isReady(isready);
+       }
    }
 
    /**
@@ -165,12 +186,24 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
    public ListTemplatesOptions accountInDomain(String account, String domain) {
       return ListTemplatesOptions.class.cast(super.accountInDomain(account, domain));
    }
-
+   
    /**
     * {@inheritDoc}
     */
    @Override
    public ListTemplatesOptions domainId(String domainId) {
       return ListTemplatesOptions.class.cast(super.domainId(domainId));
+   }
+   
+   @Beta
+   public ListTemplatesOptions osTypeId(String ostypeid){
+       this.queryParameters.replaceValues("ostypeid", ImmutableSet.of(ostypeid));
+       return this;
+   }
+   
+   @Beta
+   public ListTemplatesOptions isReady(boolean isready){
+       this.queryParameters.replaceValues("isready", ImmutableSet.of(String.valueOf(isready)));
+       return this;
    }
 }
