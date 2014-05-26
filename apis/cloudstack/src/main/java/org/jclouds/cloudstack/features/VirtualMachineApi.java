@@ -35,6 +35,7 @@ import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.cloudstack.options.StopVirtualMachineOptions;
+import org.jclouds.cloudstack.options.UpdateVirtualMachineOptions;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
 import org.jclouds.rest.annotations.QueryParams;
@@ -159,6 +160,7 @@ public interface VirtualMachineApi {
     *           If present, whether to force stop.
     * @return job id related to destroying the VM
     */
+   @Named("stopVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "stopVirtualMachine")
    @SelectJson("jobid")
@@ -222,9 +224,9 @@ public interface VirtualMachineApi {
    @Named("updateVirtualMachine")
    @GET
    @QueryParams(keys = "command", values = "updateVirtualMachine")
-   @SelectJson("jobid")
+   @SelectJson("virtualmachine")
    @Consumes(MediaType.APPLICATION_JSON)
-   String updateVirtualMachine(@QueryParam("id") String id);
+   VirtualMachine updateVirtualMachine(@QueryParam("id") String id, UpdateVirtualMachineOptions options);
 
    /**
     * Destroys a virtual machine. Once destroyed, only the administrator can

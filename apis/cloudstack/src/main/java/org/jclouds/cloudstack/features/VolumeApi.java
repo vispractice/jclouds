@@ -128,6 +128,7 @@ public interface VolumeApi {
 	 *
 	 * @return volume list, empty if not found
 	 */
+	@Named("createVolume")
 	@GET
 	@QueryParams(keys = "command", values = "createVolume")
 	@Unwrap
@@ -205,10 +206,10 @@ public interface VolumeApi {
 	 * @param zoneId the ID of the zone the volume is to be hosted on
 	 * @param options
 	 */
-	@Beta
 	@Named("uploadVolume")
 	@GET
 	@QueryParams(keys = "command", values = "uploadVolume")
+	@Unwrap
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse uploadVolume(@QueryParam("format") String format,
 			@QueryParam("name") String name, @QueryParam("url") String url,
@@ -221,10 +222,10 @@ public interface VolumeApi {
 	 * @param zoneId the ID of the zone where the volume is located
 	 * @param options
 	 */
-	@Beta
 	@Named("extractVolume")
 	@GET
 	@QueryParams(keys = "command", values = "extractVolume")
+	@Unwrap
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse extractVolume(@QueryParam("id") String id,
 			@QueryParam("mode") String mode, @QueryParam("zoneid") String zoneId, 
@@ -248,12 +249,12 @@ public interface VolumeApi {
 	 * Resizes a volume
 	 * @param options
 	 */
-	@Beta
 	@Named("resizeVolume")
 	@GET
 	@QueryParams(keys = "command", values = "resizeVolume")
+	@SelectJson("jobid")
 	@Consumes(MediaType.APPLICATION_JSON)
-	AsyncCreateResponse resizeVolume(ResizeVolumeOptions... options);
+	String resizeVolume(ResizeVolumeOptions... options);
 
 	/**
 	 * Create a volume
