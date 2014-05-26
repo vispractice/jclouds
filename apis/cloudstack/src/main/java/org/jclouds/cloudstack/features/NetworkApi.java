@@ -125,10 +125,10 @@ public interface NetworkApi {
 	@Named("deleteNetwork")
 	@GET
 	@QueryParams(keys = "command", values = "deleteNetwork")
-	@SelectJson("jobid")
+	@SelectJson("deletenetworkresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(NullOnNotFoundOr404.class)
-	String deleteNetwork(@QueryParam("id") String id);
+	AsyncCreateResponse deleteNetwork(@QueryParam("id") String id);
 
 	
 	/**
@@ -141,6 +141,7 @@ public interface NetworkApi {
 	@GET
 	@QueryParams(keys = "command", values = "restartNetwork")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("restartnetworkresponse")
 	AsyncCreateResponse restartNetwork(@QueryParam("id") String id,
 			RestartNetworkOptions... options);
 	
@@ -154,6 +155,7 @@ public interface NetworkApi {
 	@GET
 	@QueryParams(keys = "command", values = "updateNetwork")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("updatenetworkresponse")
 	AsyncCreateResponse updateNetwork(@QueryParam("id") String id,
 			UpdateNetworkOptions... options);
 

@@ -61,7 +61,7 @@ public class CloudStackExperimentLiveTest extends BaseCloudStackApiLiveTest {
       URI broadcastUri = URI.create("vlan://" + vlanId);
       for (Network net : networks) {
          if (broadcastUri.equals(net.getBroadcastURI())) {
-            String jobId = domainAdminClient.getNetworkApi().deleteNetwork(net.getId());
+            String jobId = domainAdminClient.getNetworkApi().deleteNetwork(net.getId()).getJobId();
             adminJobComplete.apply(jobId);
          }
       }

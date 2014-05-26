@@ -181,7 +181,7 @@ public class NetworkService implements Comparable<NetworkService> {
 			protected String physicalNetworkId;
 			protected boolean canEnableIndividualService;
 			protected boolean destinationPhysicalNetworkId;
-			protected String serviceList;
+			protected ImmutableSet.Builder<String> serviceList = ImmutableSet.<String>builder();
 			protected String state;
 
 			public T id(String id) {
@@ -211,8 +211,8 @@ public class NetworkService implements Comparable<NetworkService> {
 				return self();
 			}
 
-			public T serviceList(String serviceList) {
-				this.serviceList = serviceList;
+			public T serviceList(Iterable<String> serviceList) {
+				this.serviceList = ImmutableSet.<String>builder().addAll(serviceList);
 				return self();
 			}
 
@@ -224,7 +224,7 @@ public class NetworkService implements Comparable<NetworkService> {
 			public Provider build() {
 				return new Provider(id, name, physicalNetworkId,
 						canEnableIndividualService,
-						destinationPhysicalNetworkId, serviceList, state);
+						destinationPhysicalNetworkId, serviceList.build(), state);
 			}
 
 			public T fromProvider(Provider in) {
@@ -253,7 +253,7 @@ public class NetworkService implements Comparable<NetworkService> {
 		private final String physicalNetworkId;
 		private final boolean canEnableIndividualService;
 		private final boolean destinationPhysicalNetworkId;
-		private final String serviceList;
+		private final Set<String> serviceList;
 		private final String state;
 
 		@ConstructorProperties({ "id", "name", "physicalnetworkid",
@@ -263,13 +263,13 @@ public class NetworkService implements Comparable<NetworkService> {
 				@Nullable String physicalNetworkId,
 				boolean canEnableIndividualService,
 				boolean destinationPhysicalNetworkId,
-				@Nullable String serviceList, @Nullable String state) {
+				@Nullable Iterable<String> serviceList, @Nullable String state) {
 			this.id = checkNotNull(id, "id");
 			this.name = name;
 			this.physicalNetworkId = physicalNetworkId;
 			this.canEnableIndividualService = canEnableIndividualService;
 			this.destinationPhysicalNetworkId = destinationPhysicalNetworkId;
-			this.serviceList = serviceList;
+			this.serviceList = serviceList != null ? ImmutableSet.copyOf(serviceList) : ImmutableSet.<String> of();
 			this.state = state;
 		}
 
@@ -293,7 +293,7 @@ public class NetworkService implements Comparable<NetworkService> {
 			return destinationPhysicalNetworkId;
 		}
 
-		public String getServiceList() {
+		public Set<String> getServiceList() {
 			return serviceList;
 		}
 

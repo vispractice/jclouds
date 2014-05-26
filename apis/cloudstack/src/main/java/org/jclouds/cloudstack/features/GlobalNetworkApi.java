@@ -24,6 +24,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
+import org.jclouds.cloudstack.domain.IsolationMethod;
 import org.jclouds.cloudstack.domain.NetworkService;
 import org.jclouds.cloudstack.domain.NetworkService.Provider;
 import org.jclouds.cloudstack.domain.PhysicalNetwork;
@@ -81,6 +82,7 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "releasePublicIpRange")
+	@SelectJson("releasepubliciprangeresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse releasePublicIpRange(@QueryParam("id") String id);
 	
@@ -89,10 +91,10 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * @param name the name of the physical network
 	 * @param zoneId the Zone ID for the physical network
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "createPhysicalNetwork")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("createphysicalnetworkresponse")
 	AsyncCreateResponse createPhysicalNetwork(@QueryParam("name") String name,
 			@QueryParam("zoneid") String zoneId,
 			CreatePhysicalNetworkOptions... options);
@@ -101,9 +103,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * Deletes a Physical Network.
 	 * @param id the ID of the Physical network
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "deletePhysicalNetwork")
+	@SelectJson("deletephysicalnetworkresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse deletePhysicalNetwork(@QueryParam("id") String id);
 	
@@ -119,9 +121,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Updates a physical network
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "updatePhysicalNetwork")
+	@SelectJson("updatephysicalnetworkresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse updatePhysicalNetwork(UpdatePhysicalNetworkOptions... options);
 	
@@ -139,9 +141,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * @param name the name for the physical network service provider
 	 * @param physicalNetworkId the Physical Network ID to add the provider to
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "addNetworkServiceProvider")
+	@SelectJson("addnetworkserviceproviderresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse addNetworkServiceProvider(@QueryParam("name") String name,
 			@QueryParam("physicalnetworkid") String physicalNetworkId,
@@ -151,9 +153,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * Deletes a Network Service Provider.
 	 * @param id the ID of the network service provider
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "deleteNetworkServiceProvider")
+	@SelectJson("deletenetworkserviceproviderresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse deleteNetworkServiceProvider(@QueryParam("id") String id);
 	
@@ -169,10 +171,10 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Updates a network serviceProvider of a physical network
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "updateNetworkServiceProvider")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("updatenetworkserviceproviderresponse")
 	AsyncCreateResponse updateNetworkServiceProvider(UpdateNetworkServiceProviderOptions... options);
 	
 	/**
@@ -182,10 +184,10 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * @param podId UUID of pod where the ip range belongs to
 	 * @param startIp the beginning IP address
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "createStorageNetworkIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("createstoragenetworkiprangeresponse")
 	AsyncCreateResponse createStorageNetworkIpRange(@QueryParam("gateway") String gateway,
 			@QueryParam("netmask") String netmask,
 			@QueryParam("podid") String podId,
@@ -196,16 +198,15 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * Deletes a storage network IP Range.
 	 * @param id the uuid of the storage network ip range
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "deleteStorageNetworkIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@SelectJson("deletestoragenetworkiprangeresponse")
 	AsyncCreateResponse deleteStorageNetworkIpRange(@QueryParam("id") String id);
 	
 	/**
 	 * List a storage network IP range.
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listStorageNetworkIpRange")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -216,9 +217,9 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	 * Update a Storage network IP range, only allowed when no IPs in this range have been allocated.
 	 * @param id UUID of storage network ip range
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "updateStorageNetworkIpRange")
+	@SelectJson("updatestoragenetworkiprangeresponse")
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse updateStorageNetworkIpRange(@QueryParam("id") String id,
 			UpdateStorageNetworkIpRangeOptions... options);
@@ -226,12 +227,11 @@ public interface GlobalNetworkApi extends DomainNetworkApi {
 	/**
 	 * Lists supported methods of network isolation
 	 */
-	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "listNetworkIsolationMethods")
-	@SelectJson("listnetworkisolationmethodsresponse")
+	@SelectJson("isolationmethod")
 	@Consumes(MediaType.APPLICATION_JSON)
-	Set<String> listNetworkIsolationMethods();
+	Set<IsolationMethod> listNetworkIsolationMethods();
 	
 //	void listF5LoadBalancerNetworks();
 //	

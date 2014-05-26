@@ -285,7 +285,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 					}
 
 					assertTrue(adminJobComplete.apply(adminClient
-							.getNetworkApi().deleteNetwork(net.getId())),
+							.getNetworkApi().deleteNetwork(net.getId()).getJobId()),
 							net.toString());
 				}
 			}
@@ -347,7 +347,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 			}
 			if (network != null) {
 				String jobId = adminClient.getNetworkApi().deleteNetwork(
-						network.getId());
+						network.getId()).getJobId();
 				adminJobComplete.apply(jobId);
 				network = null;
 			}
