@@ -87,7 +87,7 @@ public class NetworkApiLiveTest extends BaseCloudStackApiLiveTest {
          Logger.getAnonymousLogger().log(Level.SEVERE, "couldn't create a network, skipping test", e);
       } finally {
          if (network != null) {
-            String jobId = client.getNetworkApi().deleteNetwork(network.getId());
+            String jobId = client.getNetworkApi().deleteNetwork(network.getId()).getJobId();
             if (jobId != null)
                jobComplete.apply(jobId);
          }
@@ -122,7 +122,7 @@ public class NetworkApiLiveTest extends BaseCloudStackApiLiveTest {
          Logger.getAnonymousLogger().log(Level.SEVERE, "couldn't create a network, skipping test", e);
       } finally {
          if (network != null) {
-            String jobId = adminClient.getNetworkApi().deleteNetwork(network.getId());
+            String jobId = adminClient.getNetworkApi().deleteNetwork(network.getId()).getJobId();
             if (jobId != null)
                adminJobComplete.apply(jobId);
          }
