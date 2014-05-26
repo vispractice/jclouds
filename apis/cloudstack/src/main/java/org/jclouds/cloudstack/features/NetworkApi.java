@@ -136,6 +136,7 @@ public interface NetworkApi {
 	 * @param id the ID of the network
 	 * @param options
 	 */
+	@Named("restartNetwork")
 	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "restartNetwork")
@@ -148,6 +149,7 @@ public interface NetworkApi {
 	 * @param id the ID of the network
 	 * @param options
 	 */
+	@Named("updateNetwork")
 	@Beta
 	@GET
 	@QueryParams(keys = "command", values = "updateNetwork")
