@@ -219,6 +219,16 @@ public class ListNetworksOptions extends AccountInDomainOptions {
           ListNetworksOptions options = new ListNetworksOptions();
           return options.vlanId(vlanid);
        }
+      
+      public static ListNetworksOptions page(long page) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.page(page);
+       }
+      
+      public static ListNetworksOptions pageSize(long pageSize) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.pageSize(pageSize);
+       }
    }
    
    @Beta
@@ -238,4 +248,20 @@ public class ListNetworksOptions extends AccountInDomainOptions {
        this.queryParameters.replaceValues("vlanid", ImmutableSet.of(vlanid));
        return this;
     }
+   
+   /**
+    * @param page
+    */
+   public ListNetworksOptions page(long page) {
+      this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+      return this;
+   }
+
+   /**
+    * @param pageSize the page size
+    */
+   public ListNetworksOptions pageSize(long pageSize) {
+      this.queryParameters.replaceValues("pagesize", ImmutableSet.of(pageSize + ""));
+      return this;
+   }
 }

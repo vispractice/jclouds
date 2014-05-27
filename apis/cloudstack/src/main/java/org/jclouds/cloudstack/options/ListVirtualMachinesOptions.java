@@ -235,6 +235,16 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
           ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
           return options.guestOsId(guestosid);
        }
+      
+      public static ListVirtualMachinesOptions page(long page) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.page(page);
+       }
+      
+      public static ListVirtualMachinesOptions pageSize(long pageSize) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.pageSize(pageSize);
+       }
    }
 
    /**
@@ -264,4 +274,20 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
        this.queryParameters.replaceValues("guestosid", ImmutableSet.of(guestosid));
        return this;
     }
+   
+   /**
+    * @param page
+    */
+   public ListVirtualMachinesOptions page(long page) {
+      this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+      return this;
+   }
+
+   /**
+    * @param pageSize the page size
+    */
+   public ListVirtualMachinesOptions pageSize(long pageSize) {
+      this.queryParameters.replaceValues("pagesize", ImmutableSet.of(pageSize + ""));
+      return this;
+   }
 }

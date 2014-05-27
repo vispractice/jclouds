@@ -177,6 +177,16 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
           ListTemplatesOptions options = new ListTemplatesOptions();
           return options.isReady(isready);
        }
+      
+      public static ListTemplatesOptions page(long page) {
+          ListTemplatesOptions options = new ListTemplatesOptions();
+          return options.page(page);
+       }
+      
+      public static ListTemplatesOptions pageSize(long pageSize) {
+          ListTemplatesOptions options = new ListTemplatesOptions();
+          return options.pageSize(pageSize);
+       }
    }
 
    /**
@@ -205,5 +215,21 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
    public ListTemplatesOptions isReady(boolean isready){
        this.queryParameters.replaceValues("isready", ImmutableSet.of(String.valueOf(isready)));
        return this;
+   }
+   
+   /**
+    * @param page
+    */
+   public ListTemplatesOptions page(long page) {
+      this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+      return this;
+   }
+
+   /**
+    * @param pageSize the page size
+    */
+   public ListTemplatesOptions pageSize(long pageSize) {
+      this.queryParameters.replaceValues("pagesize", ImmutableSet.of(pageSize + ""));
+      return this;
    }
 }

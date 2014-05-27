@@ -215,6 +215,16 @@ public class ListVolumesOptions extends AccountInDomainOptions {
          ListVolumesOptions options = new ListVolumesOptions();
          return options.projectId(id);
       }
+      
+      public static ListVolumesOptions page(long page) {
+          ListVolumesOptions options = new ListVolumesOptions();
+          return options.page(page);
+       }
+      
+      public static ListVolumesOptions pageSize(long pageSize) {
+          ListVolumesOptions options = new ListVolumesOptions();
+          return options.pageSize(pageSize);
+       }
    }
 
    /**
@@ -231,5 +241,21 @@ public class ListVolumesOptions extends AccountInDomainOptions {
    @Override
    public ListVolumesOptions domainId(String domainId) {
       return ListVolumesOptions.class.cast(super.domainId(domainId));
+   }
+   
+   /**
+    * @param page
+    */
+   public ListVolumesOptions page(long page) {
+      this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+      return this;
+   }
+
+   /**
+    * @param pageSize the page size
+    */
+   public ListVolumesOptions pageSize(long pageSize) {
+      this.queryParameters.replaceValues("pagesize", ImmutableSet.of(pageSize + ""));
+      return this;
    }
 }
