@@ -194,11 +194,11 @@ public interface TemplateApi {
    
    @Named("listTemplates")
    @GET
-   @QueryParams(keys = { "command", "listAll", "templatefilter" }, values = { "listTemplates", "true", "executable" })
+   @QueryParams(keys = { "command", "listAll" }, values = { "listTemplates", "true" })
    @SelectJson("listtemplatesresponse")
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
-   ListTemplatesResponse pagingToListTemplates();
+   ListTemplatesResponse pagingToListTemplates(ListTemplatesOptions options);
 
    /**
     * List all public, private, and privileged templates.
