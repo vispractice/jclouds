@@ -61,6 +61,7 @@ import org.jclouds.cloudstack.options.ListTemplatesOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.cloudstack.options.UpdateVirtualMachineOptions;
+import org.jclouds.cloudstack.response.ListVirtualMachinesResponse;
 import org.jclouds.util.InetAddresses2;
 import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
@@ -701,6 +702,17 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 			checkVm(vm);
 		}
 	}
+	
+	@Test(enabled = false)
+    public void testPagingtoListVirtualMachines() throws Exception {
+	    int size = 5;
+	    ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+	    options.page(1);
+	    options.pageSize(size);
+        ListVirtualMachinesResponse response = client.getVirtualMachineApi().pagingTolistVirtualMachines(options);
+        assert null != response;
+        assert response.getVirtualmachine() != null && response.getVirtualmachine().size() <= size;
+    }
 	
 	protected Network getNewNetwork(String vmId){
 		VirtualMachine vm = getVm(vmId);

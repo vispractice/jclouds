@@ -36,6 +36,7 @@ import org.jclouds.cloudstack.options.ListVolumesOptions;
 import org.jclouds.cloudstack.options.MigrateVolumeOptions;
 import org.jclouds.cloudstack.options.ResizeVolumeOptions;
 import org.jclouds.cloudstack.options.UploadVolumeOptions;
+import org.jclouds.cloudstack.response.ListVolumesResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
 import org.jclouds.rest.annotations.QueryParams;
@@ -77,6 +78,15 @@ public interface VolumeApi {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(EmptySetOnNotFoundOr404.class)
 	Set<Volume> listVolumes(ListVolumesOptions... options);
+	
+	@Named("listVolumes")
+    @GET
+    @QueryParams(keys = { "command", "listAll" }, values = { "listVolumes",
+            "true" })
+    @SelectJson("listvolumesresponse")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Fallback(EmptySetOnNotFoundOr404.class)
+    ListVolumesResponse pagingToListVolumes(ListVolumesOptions... options);
 
 	/**
 	 * Create a volume with given name, size and diskOfferingId

@@ -41,6 +41,7 @@ import org.jclouds.cloudstack.options.ListTemplatesOptions;
 import org.jclouds.cloudstack.options.RegisterTemplateOptions;
 import org.jclouds.cloudstack.options.UpdateTemplateOptions;
 import org.jclouds.cloudstack.options.UpdateTemplatePermissionsOptions;
+import org.jclouds.cloudstack.response.ListTemplatesResponse;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
@@ -190,6 +191,14 @@ public interface TemplateApi {
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<Template> listTemplates();
+   
+   @Named("listTemplates")
+   @GET
+   @QueryParams(keys = { "command", "listAll", "templatefilter" }, values = { "listTemplates", "true", "executable" })
+   @SelectJson("listtemplatesresponse")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   ListTemplatesResponse pagingToListTemplates();
 
    /**
     * List all public, private, and privileged templates.

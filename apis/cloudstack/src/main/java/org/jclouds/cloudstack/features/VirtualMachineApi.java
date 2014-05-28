@@ -16,6 +16,7 @@
  */
 package org.jclouds.cloudstack.features;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -36,6 +37,8 @@ import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.cloudstack.options.StopVirtualMachineOptions;
 import org.jclouds.cloudstack.options.UpdateVirtualMachineOptions;
+import org.jclouds.cloudstack.response.ListResponse;
+import org.jclouds.cloudstack.response.ListVirtualMachinesResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
 import org.jclouds.rest.annotations.QueryParams;
@@ -70,6 +73,22 @@ public interface VirtualMachineApi {
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<VirtualMachine> listVirtualMachines(ListVirtualMachinesOptions... options);
+   
+   /**
+    * Lists VirtualMachines
+    * 
+    * @param options
+    *           if present, how to constrain the list.
+    * @return VirtualMachines matching query, or empty set, if no
+    *         VirtualMachines are found
+    */
+   @Named("listVirtualMachines")
+   @GET
+   @QueryParams(keys = { "command", "listAll" }, values = { "listVirtualMachines", "false" })
+   @Consumes(MediaType.APPLICATION_JSON)
+   @SelectJson("listvirtualmachinesresponse")
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   ListVirtualMachinesResponse pagingTolistVirtualMachines(ListVirtualMachinesOptions... options);
 
    /**
     * get a specific VirtualMachine by id

@@ -33,6 +33,7 @@ import org.jclouds.cloudstack.options.CreateNetworkOptions;
 import org.jclouds.cloudstack.options.ListNetworksOptions;
 import org.jclouds.cloudstack.options.RestartNetworkOptions;
 import org.jclouds.cloudstack.options.UpdateNetworkOptions;
+import org.jclouds.cloudstack.response.ListNetworksResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
 import org.jclouds.rest.annotations.QueryParams;
@@ -70,6 +71,15 @@ public interface NetworkApi {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(EmptySetOnNotFoundOr404.class)
 	Set<Network> listNetworks(ListNetworksOptions... options);
+	
+	@Named("listNetworks")
+    @GET
+    @QueryParams(keys = { "command", "listAll" }, values = { "listNetworks",
+            "true" })
+    @SelectJson("listnetworksresponse")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Fallback(EmptySetOnNotFoundOr404.class)
+    ListNetworksResponse pagingToListNetworks(ListNetworksOptions... options);
 
 	/**
 	 * get a specific network by id

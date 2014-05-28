@@ -37,6 +37,7 @@ import org.jclouds.cloudstack.options.ListClustersOptions;
 import org.jclouds.cloudstack.options.ListHostsOptions;
 import org.jclouds.cloudstack.options.UpdateClusterOptions;
 import org.jclouds.cloudstack.options.UpdateHostOptions;
+import org.jclouds.cloudstack.response.ListHostsResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -70,6 +71,14 @@ public interface GlobalHostApi {
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<Host> listHosts(ListHostsOptions... options);
+   
+   @Named("listHosts")
+   @GET
+   @QueryParams(keys = { "command", "listAll" }, values = { "listHosts", "true" })
+   @SelectJson("listhostsresponse")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   ListHostsResponse pagingToListHosts(ListHostsOptions... options);
 
    /**
     * Adds a new host.
