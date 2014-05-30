@@ -124,6 +124,7 @@ public class VirtualMachine {
 		protected String zoneId;
 		protected String zoneName;
 		protected Set<NIC> nics = ImmutableSet.of();
+		protected Set<ResourceTag> tags = ImmutableSet.of();
 		protected String hypervisor;
 		protected Set<SecurityGroup> securityGroups = ImmutableSet.of();
 
@@ -458,6 +459,15 @@ public class VirtualMachine {
 		public T nics(NIC... in) {
 			return nics(ImmutableSet.copyOf(in));
 		}
+		
+		public T tags(Set<ResourceTag> tags) {
+            this.tags = ImmutableSet.copyOf(checkNotNull(tags, "tags"));
+            return self();
+        }
+
+        public T tags(ResourceTag... in) {
+            return tags(ImmutableSet.copyOf(in));
+        }
 
 		/**
 		 * @see VirtualMachine#getHypervisor()
@@ -549,7 +559,7 @@ public class VirtualMachine {
 					password, passwordEnabled, publicIP, publicIPId,
 					rootDeviceId, rootDeviceType, serviceOfferingId,
 					serviceOfferingName, state, templateDisplayText,
-					templateId, templateName, zoneId, zoneName, nics,
+					templateId, templateName, zoneId, zoneName, nics,tags,
 					hypervisor, securityGroups, details,
 					diskIoRead, diskIoWrite, diskKbsRead, diskKbsWrite,
 					instanceName, dynamicallyScalable, keypair,
@@ -585,7 +595,7 @@ public class VirtualMachine {
 					.templateId(in.getTemplateId())
 					.templateName(in.getTemplateName()).zoneId(in.getZoneId())
 					.zoneName(in.getZoneName()).nics(in.getNICs())
-					.hypervisor(in.getHypervisor())
+					.tags(in.getTags()).hypervisor(in.getHypervisor())
 					.securityGroups(in.getSecurityGroups());
 		}
 	}
@@ -660,6 +670,7 @@ public class VirtualMachine {
 	private final String zoneId;
 	private final String zoneName;
 	private final Set<NIC> nics;
+	private final Set<ResourceTag> tags;
 	private final String hypervisor;
 	private final Set<SecurityGroup> securityGroups;
 
@@ -697,6 +708,7 @@ public class VirtualMachine {
 			@Nullable String templateDisplayText, @Nullable String templateId,
 			@Nullable String templateName, @Nullable String zoneId,
 			@Nullable String zoneName, @Nullable Set<NIC> nics,
+			@Nullable Set<ResourceTag> tags,
 			@Nullable String hypervisor,
 			@Nullable Set<SecurityGroup> securityGroups,
 			@Nullable String details,
@@ -756,6 +768,8 @@ public class VirtualMachine {
 		this.zoneName = zoneName;
 		this.nics = nics == null ? ImmutableSet.<NIC> of() : ImmutableSet
 				.copyOf(nics);
+		this.tags = tags == null ? ImmutableSet.<ResourceTag> of() : ImmutableSet
+                .copyOf(tags);
 		this.hypervisor = hypervisor;
 		this.securityGroups = securityGroups == null ? ImmutableSet
 				.<SecurityGroup> of() : ImmutableSet.copyOf(securityGroups);
@@ -1097,6 +1111,10 @@ public class VirtualMachine {
 	public Set<NIC> getNICs() {
 		return this.nics;
 	}
+	
+	public Set<ResourceTag> getTags(){
+	    return this.tags;
+	}
 
 	/**
 	 * @return type of the hypervisor
@@ -1200,7 +1218,7 @@ public class VirtualMachine {
 				passwordEnabled, publicIP, publicIPId, rootDeviceId,
 				rootDeviceType, serviceOfferingId, serviceOfferingName, state,
 				templateDisplayText, templateId, templateName, zoneId,
-				zoneName, nics, hypervisor, securityGroups,
+				zoneName, nics, tags, hypervisor, securityGroups,
 				details, diskIoRead, diskIoWrite, diskKbsRead,
 				diskKbsWrite, instanceName, dynamicallyScalable, keypair,
 				project, projectId, serviceState);
@@ -1257,6 +1275,7 @@ public class VirtualMachine {
 				&& Objects.equal(this.zoneId, that.zoneId)
 				&& Objects.equal(this.zoneName, that.zoneName)
 				&& Objects.equal(this.nics, that.nics)
+				&& Objects.equal(this.tags, that.tags)
 				&& Objects.equal(this.hypervisor, that.hypervisor)
 				&& Objects.equal(this.securityGroups, that.securityGroups)
 				&& Objects.equal(this.details, that.details)
@@ -1299,7 +1318,7 @@ public class VirtualMachine {
 				.add("templateDisplayText", templateDisplayText)
 				.add("templateId", templateId)
 				.add("templateName", templateName).add("zoneId", zoneId)
-				.add("zoneName", zoneName).add("nics", nics)
+				.add("zoneName", zoneName).add("nics", nics).add("tags", tags)
 				.add("hypervisor", hypervisor)
 				.add("securityGroups", securityGroups)
 				.add("details", details)

@@ -118,6 +118,11 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("ipaddress", ImmutableSet.of(ipOnDefaultNetwork));
       return this;
    }
+   
+   public DeployVirtualMachineOptions ip6OnDefaultNetwork(String ip6OnDefaultNetwork) {
+       this.queryParameters.replaceValues("ip6address", ImmutableSet.of(ip6OnDefaultNetwork));
+       return this;
+    }
 
    /**
     * @param ipsToNetworks
@@ -126,9 +131,10 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
    public DeployVirtualMachineOptions ipsToNetworks(Map<String, String> ipsToNetworks) {
       int count = 0;
       for (Map.Entry<String, String> entry : ipsToNetworks.entrySet()) {
-         this.queryParameters.replaceValues(String.format("iptonetworklist[%d].ip", count), ImmutableSet.of(entry.getKey()));
-         this.queryParameters.replaceValues(String.format("iptonetworklist[%d].networkid", count),
-               ImmutableSet.of(entry.getValue()));
+          this.queryParameters.replaceValues(String.format("iptonetworklist[%d].networkid", count), ImmutableSet.of(entry.getKey()));
+          if(entry.getValue() != null && !entry.getValue().trim().equals("")){
+              this.queryParameters.replaceValues(String.format("iptonetworklist[%d].ip", count), ImmutableSet.of(entry.getValue()));
+          }
          count += 1;
       }
       return this;
@@ -186,6 +192,11 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("securitygroupids", ImmutableSet.of(securityGroupId + ""));
       return this;
    }
+   
+   public DeployVirtualMachineOptions securityGroupName(String securityGroupName) {
+       this.queryParameters.replaceValues("securitygroupnames", ImmutableSet.of(securityGroupName));
+       return this;
+    }
 
    /**
     * @param securityGroupIds
@@ -356,9 +367,54 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
        * @see DeployVirtualMachineOptions#domainId
        */
       public static DeployVirtualMachineOptions domainId(String domainId) {
-         DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
-         return options.domainId(domainId);
+          DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+          return options.domainId(domainId);
       }
+      
+        public static DeployVirtualMachineOptions affinityGroupIds(String affinityGroupIds) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.affinityGroupIds(affinityGroupIds);
+        }
+      
+        public static DeployVirtualMachineOptions affinityGroupNames(String affinityGroupNames) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.affinityGroupNames(affinityGroupNames);
+        }
+        
+        public static DeployVirtualMachineOptions details(String details) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.details(details);
+        }
+        
+        public static DeployVirtualMachineOptions displayVm(boolean displayVm) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.displayVm(displayVm);
+        }
+        
+        public static DeployVirtualMachineOptions hostId(String hostId) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.hostId(hostId);
+        }
+        
+        public static DeployVirtualMachineOptions keyboard(String keyboard) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.keyboard(keyboard);
+        }
+        
+        public static DeployVirtualMachineOptions startVm(boolean startVm) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.startVm(startVm);
+        }
+        
+        public static DeployVirtualMachineOptions securityGroupName(String securityGroupName) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.securityGroupName(securityGroupName);
+        }
+        
+        public static DeployVirtualMachineOptions ip6OnDefaultNetwork(String ip6OnDefaultNetwork) {
+            DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+            return options.ip6OnDefaultNetwork(ip6OnDefaultNetwork);
+        }
    }
 
    /**
@@ -376,4 +432,46 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
    public DeployVirtualMachineOptions domainId(String domainId) {
       return DeployVirtualMachineOptions.class.cast(super.domainId(domainId));
    }
+   
+    public DeployVirtualMachineOptions affinityGroupIds(String affinityGroupIds) {
+        this.queryParameters.replaceValues("affinitygroupids",
+                ImmutableSet.of(affinityGroupIds));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions affinityGroupNames(String affinityGroupNames) {
+        this.queryParameters.replaceValues("affinitygroupnames",
+                ImmutableSet.of(affinityGroupNames));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions details(String details) {
+        this.queryParameters.replaceValues("details",
+                ImmutableSet.of(details));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions displayVm(boolean displayVm) {
+        this.queryParameters.replaceValues("displayvm",
+                ImmutableSet.of(displayVm + ""));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions hostId(String hostId) {
+        this.queryParameters.replaceValues("hostid",
+                ImmutableSet.of(hostId));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions keyboard(String keyboard) {
+        this.queryParameters.replaceValues("keyboard",
+                ImmutableSet.of(keyboard));
+        return this;
+    }
+    
+    public DeployVirtualMachineOptions startVm(boolean startVm) {
+        this.queryParameters.replaceValues("startvm",
+                ImmutableSet.of(startVm + ""));
+        return this;
+    }
 }

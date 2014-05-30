@@ -16,10 +16,14 @@
  */
 package org.jclouds.cloudstack.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.beans.ConstructorProperties;
 
+import org.jclouds.cloudstack.domain.VirtualMachine.State;
 import org.jclouds.javax.annotation.Nullable;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 
@@ -29,6 +33,20 @@ import com.google.common.base.Objects.ToStringHelper;
  * @author liwei
  */
 public class ResourceTag {
+    
+    public static enum Type {
+        UserVm, Template, ISO, Volume, Snapshot, Network, Nic, LoadBalancer, PortForwardingRule, FirewallRule, 
+        SecurityGroup, PublicIpAddress, Project, Vpc, NetworkACL, StaticRoute, VMSnapshot, RemoteAccessVpn, 
+        Zone, ServiceOffering, Storage, PrivateGateway, NetworkACLList, VpnGateway, CustomerGateway, VpnConnection, UNRECOGNIZED;
+
+        public static Type fromValue(String type) {
+            try {
+                return valueOf(checkNotNull(type, "type"));
+            } catch (IllegalArgumentException e) {
+                return UNRECOGNIZED;
+            }
+        }
+    }
 
 	public static Builder<?> builder() {
 		return new ConcreteBuilder();

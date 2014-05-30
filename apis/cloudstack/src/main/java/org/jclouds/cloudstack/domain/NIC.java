@@ -55,6 +55,11 @@ public class NIC {
       protected String networkId;
       protected TrafficType trafficType;
       protected GuestIPType guestIPType;
+      protected String IP6Address;
+      protected String IP6Cidr;
+      protected String IP6Gateway;
+      protected String networkName;
+      protected String secondaryIP;
 
       /**
        * @see NIC#getId()
@@ -143,9 +148,35 @@ public class NIC {
          this.guestIPType = guestIPType;
          return self();
       }
-
+      
+      public T IP6Address(String IP6Address) {
+          this.IP6Address = IP6Address;
+          return self();
+       }
+      
+      public T IP6Cidr(String IP6Cidr) {
+          this.IP6Cidr = IP6Cidr;
+          return self();
+       }
+      
+      public T IP6Gateway(String IP6Gateway) {
+          this.IP6Gateway = IP6Gateway;
+          return self();
+       }
+      
+      public T networkName(String networkName) {
+          this.networkName = networkName;
+          return self();
+       }
+      
+      public T secondaryIP(String secondaryIP) {
+          this.secondaryIP = secondaryIP;
+          return self();
+       }
+       
       public NIC build() {
-         return new NIC(id, broadcastURI, gateway, IPAddress, isDefault, isolationURI, netmask, macAddress, networkId, trafficType, guestIPType);
+         return new NIC(id, broadcastURI, gateway, IPAddress, isDefault, isolationURI, netmask, macAddress, networkId, 
+                 trafficType, guestIPType, IP6Address, IP6Cidr, IP6Gateway, networkName, secondaryIP);
       }
 
       public T fromNIC(NIC in) {
@@ -160,7 +191,13 @@ public class NIC {
                .macAddress(in.getMacAddress())
                .networkId(in.getNetworkId())
                .trafficType(in.getTrafficType())
-               .guestIPType(in.getGuestIPType());
+               .guestIPType(in.getGuestIPType())
+               .IP6Address(in.getIP6Address())
+               .IP6Cidr(in.getIP6Cidr())
+               .IP6Gateway(in.getIP6Gateway())
+               .networkName(in.getNetworkName())
+               .secondaryIP(in.getSecondaryIP());
+         
       }
    }
 
@@ -182,13 +219,20 @@ public class NIC {
    private final String networkId;
    private final TrafficType trafficType;
    private final GuestIPType guestIPType;
+   private final String IP6Address;
+   private final String IP6Cidr;
+   private final String IP6Gateway;
+   private final String networkName;
+   private final String secondaryIP;
 
    @ConstructorProperties({
-         "id", "broadcasturi", "gateway", "ipaddress", "isdefault", "isolationuri", "netmask", "macaddress", "networkid", "traffictype", "type"
+         "id", "broadcasturi", "gateway", "ipaddress", "isdefault", "isolationuri", "netmask", "macaddress", "networkid", "traffictype", "type",
+         "ip6address", "ip6cidr", "ip6gateway", "networkname", "secondaryip"
    })
    protected NIC(String id, @Nullable URI broadcastURI, @Nullable String gateway, @Nullable String IPAddress, boolean isDefault,
                  @Nullable URI isolationURI, @Nullable String netmask, @Nullable String macAddress, @Nullable String networkId,
-                 @Nullable TrafficType trafficType, @Nullable GuestIPType guestIPType) {
+                 @Nullable TrafficType trafficType, @Nullable GuestIPType guestIPType, @Nullable String IP6Address, @Nullable String IP6Cidr, 
+                 @Nullable String IP6Gateway, @Nullable String networkName, @Nullable String secondaryIP) {
       this.id = checkNotNull(id, "id");
       this.broadcastURI = broadcastURI;
       this.gateway = gateway;
@@ -200,6 +244,11 @@ public class NIC {
       this.networkId = networkId;
       this.trafficType = trafficType;
       this.guestIPType = guestIPType;
+      this.IP6Address = IP6Address;
+      this.IP6Gateway = IP6Gateway;
+      this.IP6Cidr = IP6Cidr;
+      this.networkName = networkName;
+      this.secondaryIP = secondaryIP;
    }
 
    /**
@@ -287,10 +336,36 @@ public class NIC {
    public GuestIPType getGuestIPType() {
       return this.guestIPType;
    }
+   
+    @Nullable
+    public String getIP6Address() {
+        return IP6Address;
+    }
 
-   @Override
+    @Nullable
+    public String getIP6Cidr() {
+        return IP6Cidr;
+    }
+
+    @Nullable
+    public String getIP6Gateway() {
+        return IP6Gateway;
+    }
+
+    @Nullable
+    public String getNetworkName() {
+        return networkName;
+    }
+
+    @Nullable
+    public String getSecondaryIP() {
+        return secondaryIP;
+    }
+
+    @Override
    public int hashCode() {
-      return Objects.hashCode(id, broadcastURI, gateway, IPAddress, isDefault, isolationURI, netmask, macAddress, networkId, trafficType, guestIPType);
+      return Objects.hashCode(id, broadcastURI, gateway, IPAddress, isDefault, isolationURI, netmask, macAddress, networkId, trafficType, 
+              guestIPType, IP6Address, IP6Cidr, IP6Gateway, networkName, secondaryIP);
    }
 
    @Override
@@ -308,14 +383,20 @@ public class NIC {
             && Objects.equal(this.macAddress, that.macAddress)
             && Objects.equal(this.networkId, that.networkId)
             && Objects.equal(this.trafficType, that.trafficType)
-            && Objects.equal(this.guestIPType, that.guestIPType);
+            && Objects.equal(this.guestIPType, that.guestIPType)
+            && Objects.equal(this.IP6Address, that.IP6Address)
+            && Objects.equal(this.IP6Cidr, that.IP6Cidr)
+            && Objects.equal(this.IP6Gateway, that.IP6Gateway)
+            && Objects.equal(this.networkName, that.networkName)
+            && Objects.equal(this.secondaryIP, that.secondaryIP);
    }
 
    protected ToStringHelper string() {
       return Objects.toStringHelper(this)
             .add("id", id).add("broadcastURI", broadcastURI).add("gateway", gateway).add("IPAddress", IPAddress)
             .add("isDefault", isDefault).add("isolationURI", isolationURI).add("netmask", netmask).add("macAddress", macAddress)
-            .add("networkId", networkId).add("trafficType", trafficType).add("guestIPType", guestIPType);
+            .add("networkId", networkId).add("trafficType", trafficType).add("guestIPType", guestIPType).add("IP6Address", IP6Address)
+            .add("IP6Cidr", IP6Cidr).add("IP6Gateway", IP6Gateway).add("networkName", networkName).add("secondaryIP", secondaryIP);
    }
 
    @Override

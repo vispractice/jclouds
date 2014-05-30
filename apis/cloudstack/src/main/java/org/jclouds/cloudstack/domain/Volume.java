@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.jclouds.javax.annotation.Nullable;
 
@@ -179,6 +180,7 @@ public class Volume {
 		protected String status;
 		protected String storageId;
 		protected String url;
+		protected Set<ResourceTag> tags = ImmutableSet.of();
 
 		/**
 		 * @see Volume#getId()
@@ -497,6 +499,15 @@ public class Volume {
 			this.url = url;
 			return self();
 		}
+		
+		public T tags(Set<ResourceTag> tags) {
+            this.tags = ImmutableSet.copyOf(checkNotNull(tags, "tags"));
+            return self();
+        }
+
+        public T tags(ResourceTag... in) {
+            return tags(ImmutableSet.copyOf(in));
+        }
 
 		public Volume build() {
 			return new Volume(id, account, attached, created, destroyed,
@@ -509,7 +520,7 @@ public class Volume {
 					vmState, zoneId, zoneName, diskBytesReadRate,
 					diskBytesWriteRate, diskIopsReadRate, diskIopsWriteRate,
 					displayVolume, maxIops, minIops, path, project, projectId,
-					quiesceVm, status, storageId, url);
+					quiesceVm, status, storageId, url, tags);
 		}
 
 		public T fromVolume(Volume in) {
@@ -548,7 +559,8 @@ public class Volume {
 					.maxIops(in.getMaxIops()).minIops(in.getMinIops())
 					.path(in.getPath()).project(in.getProject())
 					.projectId(in.getProjectId()).quiesceVm(in.getQuiesceVm())
-					.status(in.getStatus()).storageId(in.getStorageId()).url(in.getUrl());
+					.status(in.getStatus()).storageId(in.getStorageId())
+					.url(in.getUrl()).tags(in.getTags());
 		}
 	}
 
@@ -605,6 +617,7 @@ public class Volume {
 	private final String status;
 	private final String storageId;
 	private final String url;
+	private final Set<ResourceTag> tags;
 
 	@ConstructorProperties({ "id", "account", "attached", "created",
 			"destroyed", "deviceid", "diskofferingdisplaytext",
@@ -616,7 +629,7 @@ public class Volume {
 			"vmname", "vmstate", "zoneid", "zonename", "diskbytesreadrate",
 			"diskbyteswriterate", "diskiopsreadrate", "diskiopswriterate",
 			"displayvolume", "maxiops", "miniops", "path", "project",
-			"projectid", "quiescevm", "status", "storageid", "url"})
+			"projectid", "quiescevm", "status", "storageid", "url", "tags"})
 	protected Volume(String id, @Nullable String account,
 			@Nullable Date attached, @Nullable Date created, boolean destroyed,
 			@Nullable String deviceId,
@@ -639,7 +652,7 @@ public class Volume {
 			long maxIops, long minIops, @Nullable String path,
 			@Nullable String project, @Nullable String projectId,
 			@Nullable String quiesceVm, @Nullable String status,
-			@Nullable String storageId, @Nullable String url) {
+			@Nullable String storageId, @Nullable String url, @Nullable Set<ResourceTag> tags) {
 		this.id = checkNotNull(id, "id");
 		this.account = account;
 		this.attached = attached;
@@ -685,6 +698,8 @@ public class Volume {
 		this.status = status;
 		this.storageId = storageId;
 		this.url = url;
+		this.tags = tags == null ? ImmutableSet.<ResourceTag> of() : ImmutableSet
+                .copyOf(tags);
 	}
 
 	public String getId() {
@@ -897,9 +912,15 @@ public class Volume {
 		return storageId;
 	}
 
+	@Nullable
 	public String getUrl() {
-		return url;
-	}
+        return url;
+    }
+	
+	@Nullable
+	public Set<ResourceTag> getTags() {
+        return tags;
+    }
 
 	@Override
 	public int hashCode() {
@@ -912,7 +933,7 @@ public class Volume {
 				vmDisplayName, vmName, vmState, zoneId, zoneName,
 				diskBytesReadRate, diskBytesWriteRate, diskIopsReadRate,
 				diskIopsWriteRate, displayVolume, maxIops, minIops, path,
-				project, projectId, quiesceVm, status, storageId, url);
+				project, projectId, quiesceVm, status, storageId, url, tags);
 	}
 
 	@Override
@@ -973,7 +994,8 @@ public class Volume {
 				&& Objects.equal(this.quiesceVm, that.quiesceVm)
 				&& Objects.equal(this.status, that.status)
 				&& Objects.equal(this.storageId, that.storageId)
-				&& Objects.equal(this.url, that.url);
+				&& Objects.equal(this.url, that.url)
+				&& Objects.equal(this.tags, that.tags);
 	}
 
 	protected ToStringHelper string() {
@@ -1006,7 +1028,7 @@ public class Volume {
 				.add("minIops", minIops).add("path", path)
 				.add("project", project).add("projectId", projectId)
 				.add("quiesceVm", quiesceVm).add("status", status)
-				.add("storageId", storageId).add("url", url);
+				.add("storageId", storageId).add("url", url).add("tags", tags);
 	}
 
 	@Override

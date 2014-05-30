@@ -168,9 +168,9 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
           return options.keyWord(keyword);
        }
       
-      public static ListTemplatesOptions ostypeid(String ostypeid) {
+      public static ListTemplatesOptions guestOsId(String guestOsId) {
           ListTemplatesOptions options = new ListTemplatesOptions();
-          return options.osTypeId(ostypeid);
+          return options.guestOsId(guestOsId);
        }
       
       public static ListTemplatesOptions isready(boolean isready) {
@@ -206,8 +206,8 @@ public class ListTemplatesOptions extends AccountInDomainOptions {
    }
    
    @Beta
-   public ListTemplatesOptions osTypeId(String ostypeid){
-       this.queryParameters.replaceValues("ostypeid", ImmutableSet.of(ostypeid));
+   public ListTemplatesOptions guestOsId(String guestOsId){
+       this.queryParameters.replaceValues("guestosid", ImmutableSet.of(guestOsId));
        return this;
    }
    

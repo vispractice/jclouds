@@ -20,12 +20,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.beans.ConstructorProperties;
 import java.util.Date;
+import java.util.Set;
 
 import com.google.common.base.Strings;
+
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * @author Adrian Cole
@@ -184,6 +187,11 @@ public class Template implements Comparable<Template> {
 		protected String project;
 		protected String projectId;
 		protected boolean sshkeyEnabled;
+		
+		private boolean isDynamicallyScalable;
+		private boolean isRouting;
+		private String url;
+		protected Set<ResourceTag> tags = ImmutableSet.of();
 
 		/**
 		 * @see Template#getId()
@@ -455,6 +463,30 @@ public class Template implements Comparable<Template> {
 			this.sshkeyEnabled = sshkeyEnabled;
 			return self();
 		}
+	        
+	    public T isDynamicallyScalable(boolean isDynamicallyScalable){
+	        this.isDynamicallyScalable = isDynamicallyScalable;
+	        return self();
+	    }
+	    
+	    public T isRouting(boolean isRouting){
+            this.isRouting = isRouting;
+            return self();
+        }
+	    
+	    public T url(String url){
+            this.url = url;
+            return self();
+        }
+	    
+	    public T tags(Set<ResourceTag> tags) {
+            this.tags = ImmutableSet.copyOf(checkNotNull(tags, "tags"));
+            return self();
+        }
+
+        public T tags(ResourceTag... in) {
+            return tags(ImmutableSet.copyOf(in));
+        }
 
 		public Template build() {
 			return new Template(id, displayText, domain, domainId, account,
@@ -462,7 +494,8 @@ public class Template implements Comparable<Template> {
 					status, format, hypervisor, size, created, removed,
 					crossZones, bootable, extractable, featured, isPublic,
 					ready, passwordEnabled, jobId, jobStatus, checksum, hostId,
-					hostName, sourceTemplateId, templateTag, project, projectId, sshkeyEnabled);
+					hostName, sourceTemplateId, templateTag, project, projectId, sshkeyEnabled, 
+					isDynamicallyScalable, isRouting, url, tags);
 		}
 
 		public T fromTemplate(Template in) {
@@ -477,7 +510,7 @@ public class Template implements Comparable<Template> {
 					.created(in.getCreated()).removed(in.getRemoved())
 					.crossZones(in.isCrossZones()).bootable(in.isBootable())
 					.extractable(in.isExtractable()).featured(in.isFeatured())
-					.isPublic(in.ispublic()).ready(in.isReady())
+					.isPublic(in.isPublic()).ready(in.isReady())
 					.passwordEnabled(in.isPasswordEnabled())
 					.jobId(in.getJobId()).jobStatus(in.getJobStatus())
 					.checksum(in.getChecksum()).hostId(in.getHostId())
@@ -486,7 +519,7 @@ public class Template implements Comparable<Template> {
 					.templateTag(in.getTemplateTag())
 					.project(in.getProject())
 					.projectId(in.getProjectId())
-					.sshkeyEnabled(in.isSshkeyEnabled());
+					.sshkeyEnabled(in.isSshkeyEnabled()).tags(in.getTags());
 		}
 	}
 
@@ -519,7 +552,7 @@ public class Template implements Comparable<Template> {
 	private final boolean bootable;
 	private final boolean extractable;
 	private final boolean featured;
-	private final boolean ispublic;
+	private final boolean isPublic;
 	private final boolean ready;
 	private final boolean passwordEnabled;
 
@@ -534,6 +567,11 @@ public class Template implements Comparable<Template> {
 	private final String hostName;
 	private final String sourceTemplateId;
 	private final String templateTag;
+	
+    private final boolean isDynamicallyScalable;
+    private final boolean isRouting;
+    private final String url;
+    private final Set<ResourceTag> tags;
 
 	@ConstructorProperties({ "id", "displaytext", "domain", "domainid",
 			"account", "accountid", "zonename", "zoneid", "ostypename",
@@ -542,7 +580,8 @@ public class Template implements Comparable<Template> {
 			"bootable", "isextractable", "isfeatured", "ispublic", "isready",
 			"passwordenabled", "jobid", "jobstatus", "checksum", "hostId",
 			"hostname", "sourcetemplateid", "templatetag", "project",
-			"projectid", "sshkeyenabled" })
+			"projectid", "sshkeyenabled", "isdynamicallyscalable",
+			"isrouting", "url", "tags"})
 	protected Template(String id, @Nullable String displayText,
 			@Nullable String domain, @Nullable String domainId,
 			@Nullable String account, @Nullable String accountId,
@@ -553,12 +592,14 @@ public class Template implements Comparable<Template> {
 			@Nullable String hypervisor, @Nullable Long size,
 			@Nullable Date created, @Nullable Date removed, boolean crossZones,
 			boolean bootable, boolean extractable, boolean featured,
-			boolean ispublic, boolean ready, boolean passwordEnabled,
+			boolean isPublic, boolean ready, boolean passwordEnabled,
 			@Nullable String jobId, @Nullable String jobStatus,
 			@Nullable String checksum, @Nullable String hostId,
 			@Nullable String hostName, @Nullable String sourceTemplateId,
 			@Nullable String templateTag, @Nullable String project,
-			@Nullable String projectId, boolean sshkeyEnabled) {
+			@Nullable String projectId, boolean sshkeyEnabled,
+			@Nullable boolean isDynamicallyScalable, @Nullable boolean isRouting,
+			@Nullable String url, @Nullable Set<ResourceTag> tags) {
 		this.id = checkNotNull(id, "id");
 		this.displayText = displayText;
 		this.domain = domain;
@@ -581,7 +622,7 @@ public class Template implements Comparable<Template> {
 		this.bootable = bootable;
 		this.extractable = extractable;
 		this.featured = featured;
-		this.ispublic = ispublic;
+		this.isPublic = isPublic;
 		this.ready = ready;
 		this.passwordEnabled = passwordEnabled;
 		this.jobId = jobId;
@@ -594,6 +635,11 @@ public class Template implements Comparable<Template> {
 		this.project = project;
 		this.projectId = projectId;
 		this.sshkeyEnabled = sshkeyEnabled;
+		this.isDynamicallyScalable = isDynamicallyScalable;
+		this.isRouting = isRouting;
+		this.url = url;
+		this.tags = tags == null ? ImmutableSet.<ResourceTag> of() : ImmutableSet
+                .copyOf(tags);
 	}
 
 	/**
@@ -778,8 +824,8 @@ public class Template implements Comparable<Template> {
 		return this.featured;
 	}
 
-	public boolean ispublic() {
-		return this.ispublic;
+	public boolean isPublic() {
+		return this.isPublic;
 	}
 
 	/**
@@ -857,6 +903,7 @@ public class Template implements Comparable<Template> {
 	/**
 	 * @return the project name of the template
 	 */
+	@Nullable
 	public String getProject() {
 		return project;
 	}
@@ -864,6 +911,7 @@ public class Template implements Comparable<Template> {
 	/**
 	 * @return the project id of the template
 	 */
+	@Nullable
 	public String getProjectId() {
 		return projectId;
 	}
@@ -871,18 +919,40 @@ public class Template implements Comparable<Template> {
 	/**
 	 * @return true if template is sshkey enabled, false otherwise
 	 */
+	@Nullable
 	public boolean isSshkeyEnabled() {
 		return sshkeyEnabled;
 	}
 
-	@Override
+	@Nullable
+	public boolean isDynamicallyScalable() {
+        return isDynamicallyScalable;
+    }
+
+	@Nullable
+    public boolean isRouting() {
+        return isRouting;
+    }
+
+	@Nullable
+    public String getUrl() {
+        return url;
+    }
+	
+	@Nullable
+    public Set<ResourceTag> getTags() {
+        return tags;
+    }
+
+    @Override
 	public int hashCode() {
 		return Objects.hashCode(id, displayText, domain, domainId, account,
 				accountId, zone, zoneId, OSType, OSTypeId, name, type, status,
 				format, hypervisor, size, created, removed, crossZones,
-				bootable, extractable, featured, ispublic, ready,
+				bootable, extractable, featured, isPublic, ready,
 				passwordEnabled, jobId, jobStatus, checksum, hostId, hostName,
-				sourceTemplateId, templateTag, project, projectId, sshkeyEnabled);
+				sourceTemplateId, templateTag, project, projectId, sshkeyEnabled,
+				isDynamicallyScalable, isRouting, url, tags);
 	}
 
 	@Override
@@ -914,7 +984,7 @@ public class Template implements Comparable<Template> {
 				&& Objects.equal(this.bootable, that.bootable)
 				&& Objects.equal(this.extractable, that.extractable)
 				&& Objects.equal(this.featured, that.featured)
-				&& Objects.equal(this.ispublic, that.ispublic)
+				&& Objects.equal(this.isPublic, that.isPublic)
 				&& Objects.equal(this.ready, that.ready)
 				&& Objects.equal(this.passwordEnabled, that.passwordEnabled)
 				&& Objects.equal(this.jobId, that.jobId)
@@ -926,7 +996,11 @@ public class Template implements Comparable<Template> {
 				&& Objects.equal(this.templateTag, that.templateTag)
 				&& Objects.equal(this.project, that.project)
 				&& Objects.equal(this.projectId, that.projectId)
-				&& Objects.equal(this.sshkeyEnabled, that.sshkeyEnabled);
+				&& Objects.equal(this.sshkeyEnabled, that.sshkeyEnabled)
+				&& Objects.equal(this.isDynamicallyScalable, that.isDynamicallyScalable)
+				&& Objects.equal(this.isRouting, that.isRouting)
+				&& Objects.equal(this.url, that.url)
+				&& Objects.equal(this.tags, that.tags);
 	}
 
 	protected ToStringHelper string() {
@@ -941,7 +1015,7 @@ public class Template implements Comparable<Template> {
 				.add("created", created).add("removed", removed)
 				.add("crossZones", crossZones).add("bootable", bootable)
 				.add("extractable", extractable).add("featured", featured)
-				.add("ispublic", ispublic).add("ready", ready)
+				.add("ispublic", isPublic).add("ready", ready)
 				.add("passwordEnabled", passwordEnabled).add("jobId", jobId)
 				.add("jobStatus", jobStatus).add("checksum", checksum)
 				.add("hostId", hostId).add("hostName", hostName)
@@ -949,7 +1023,9 @@ public class Template implements Comparable<Template> {
 				.add("templateTag", templateTag)
 				.add("project", project)
 				.add("projectId", projectId)
-				.add("sshkeyEnabled", sshkeyEnabled);
+				.add("sshkeyEnabled", sshkeyEnabled)
+				.add("isDynamicallyScalable", isDynamicallyScalable)
+				.add("isRouting", isRouting).add("url", url).add("tags", tags);
 	}
 
 	@Override

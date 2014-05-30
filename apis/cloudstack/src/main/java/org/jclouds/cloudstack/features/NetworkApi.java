@@ -65,12 +65,27 @@ public interface NetworkApi {
 	 */
 	@Named("listNetworks")
 	@GET
-	@QueryParams(keys = { "command", "listAll" }, values = { "listNetworks",
-			"true" })
+	@QueryParams(keys = { "command"}, values = { "listNetworks"})
 	@SelectJson("network")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Fallback(EmptySetOnNotFoundOr404.class)
 	Set<Network> listNetworks(ListNetworksOptions... options);
+	
+	/**
+     * Lists all networks
+     * 
+     * @param options
+     *            if present, how to constrain the list.
+     * @return networks matching query, or empty set, if no networks are found
+     */
+    @Named("listNetworks")
+    @GET
+    @QueryParams(keys = { "command", "listAll" }, values = { "listNetworks",
+            "true" })
+    @SelectJson("network")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Fallback(EmptySetOnNotFoundOr404.class)
+    Set<Network> listAllNetworks(ListNetworksOptions... options);
 	
 	@Named("listNetworks")
     @GET
