@@ -683,7 +683,7 @@ public class VirtualMachine {
 			"publicip", "publicipid", "rootdeviceid", "rootdevicetype",
 			"serviceofferingid", "serviceofferingname", "state",
 			"templatedisplaytext", "templateid", "templatename", "zoneid",
-			"zonename", "nic", "hypervisor", "securitygroup",
+			"zonename", "nic", "tags", "hypervisor", "securitygroup",
 			"details", "diskIoRead", "diskIoWrite", "diskKbsRead",
 			"diskKbsWrite", "instanceName", "dynamicallyScalable", "keypair",
 			"project", "projectId", "serviceState"})
