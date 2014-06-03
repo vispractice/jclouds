@@ -141,6 +141,6 @@ public class GlobalDomainApiExpectTest extends BaseCloudStackExpectTest<GlobalDo
 
    @Override
    protected GlobalDomainApi clientFrom(CloudStackContext context) {
-      return context.getGlobalApi().getDomainClient();
+      return context.getGlobalApi().getDomainApi();
    }
 }

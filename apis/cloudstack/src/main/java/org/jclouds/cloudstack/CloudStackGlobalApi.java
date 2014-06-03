@@ -59,19 +59,19 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     */
    @Delegate
    @Override
-   GlobalUserApi getUserClient();
+   GlobalUserApi getUserApi();
 
    /**
     * Provides synchronous access to Alerts
     */
    @Delegate
-   GlobalAlertApi getAlertClient();
+   GlobalAlertApi getAlertApi();
 
    /**
     * Provides synchronous access to Capacities
     */
    @Delegate
-   GlobalCapacityApi getCapacityClient();
+   GlobalCapacityApi getCapacityApi();
 
    /**
     * Provides synchronous access to Offerings
@@ -84,20 +84,20 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     * Provides synchronous access to Hosts
     */
    @Delegate
-   GlobalHostApi getHostClient();
+   GlobalHostApi getHostApi();
 
    /**
     * Provides synchronous access to Storage Pools
     */
    @Delegate
-   GlobalStoragePoolApi getStoragePoolClient();
+   GlobalStoragePoolApi getStoragePoolApi();
 
    /**
     * Provides synchronous access to Usage
     */
    @Delegate
    @Override
-   GlobalUsageApi getUsageClient();
+   GlobalUsageApi getUsageApi();
 
    /**
     * Provides synchronous access to Configuration
@@ -111,7 +111,7 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     */
    @Delegate
    @Override
-   GlobalDomainApi getDomainClient();
+   GlobalDomainApi getDomainApi();
 
    /**
     * Provides synchronous access to Zone
@@ -124,13 +124,13 @@ public interface CloudStackGlobalApi extends CloudStackDomainApi {
     * Provides synchronous access to Pod
     */
    @Delegate
-   GlobalPodApi getPodClient();
+   GlobalPodApi getPodApi();
 
    /**
     * Provides synchronous access to Vlan
     */
    @Delegate
-   GlobalVlanApi getVlanClient();
+   GlobalVlanApi getVlanApi();
    
    /**
     * Provides synchronous access to Template features.

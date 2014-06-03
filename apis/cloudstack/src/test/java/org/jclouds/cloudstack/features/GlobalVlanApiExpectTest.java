@@ -166,6 +166,6 @@ public class GlobalVlanApiExpectTest extends BaseCloudStackExpectTest<GlobalVlan
 
    @Override
    protected GlobalVlanApi clientFrom(CloudStackContext context) {
-      return context.getGlobalApi().getVlanClient();
+      return context.getGlobalApi().getVlanApi();
    }
 }

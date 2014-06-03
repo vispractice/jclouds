@@ -96,7 +96,7 @@ public interface GlobalHostApi {
    @QueryParams(keys = "command", values = "addHost")
    @SelectJson("host")
    @Consumes(MediaType.APPLICATION_JSON)
-   Host addHost(@QueryParam("zoneid") String zoneId, @QueryParam("url") String url, @QueryParam("hypervisor") String hypervisor, @QueryParam("username") String username, @QueryParam("password") String password, AddHostOptions... options);
+   Host[] addHost(@QueryParam("zoneid") String zoneId, @QueryParam("url") String url, @QueryParam("hypervisor") String hypervisor, @QueryParam("username") String username, @QueryParam("password") String password, AddHostOptions... options);
 
    /**
     * Updates a host.

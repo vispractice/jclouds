@@ -60,7 +60,7 @@ public class SessionApiLiveTest extends BaseCloudStackApiLiveTest {
 
          checkLoginAsTheNewUser(expectedUsername);
 
-         ApiKeyPair expected = globalAdminClient.getUserClient().registerUserKeys(testUser.getId());
+         ApiKeyPair expected = globalAdminClient.getUserApi().registerUserKeys(testUser.getId());
          ApiKeyPair actual = ApiKeyPairs.loginToEndpointAsUsernameInDomainWithPasswordAndReturnApiKeyPair(
             URI.create(endpoint), prefix + "-user", "password", "");
 
@@ -68,7 +68,7 @@ public class SessionApiLiveTest extends BaseCloudStackApiLiveTest {
 
       } finally {
          if (testUser != null)
-            globalAdminClient.getUserClient().deleteUser(testUser.getId());
+            globalAdminClient.getUserApi().deleteUser(testUser.getId());
          if (testAccount != null)
             globalAdminClient.getAccountApi().deleteAccount(testAccount.getId());
       }

@@ -41,7 +41,7 @@ public class GlobalStoragePoolApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListStoragePools() throws Exception {
       skipIfNotGlobalAdmin();
 
-      Set<StoragePool> result = globalAdminClient.getStoragePoolClient().listStoragePools();
+      Set<StoragePool> result = globalAdminClient.getStoragePoolApi().listStoragePools();
       assertNotNull(result);
       assertTrue(result.size() > 0);
       for (StoragePool pool : result) {

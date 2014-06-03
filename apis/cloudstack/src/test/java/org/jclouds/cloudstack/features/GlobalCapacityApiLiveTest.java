@@ -38,7 +38,7 @@ public class GlobalCapacityApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListCapacity() throws Exception {
       skipIfNotGlobalAdmin();
 
-      final Set<Capacity> response = globalAdminClient.getCapacityClient().listCapacity();
+      final Set<Capacity> response = globalAdminClient.getCapacityApi().listCapacity();
       assertNotNull(response);
       assertNotEquals(0, response.size());
       int count = 0;

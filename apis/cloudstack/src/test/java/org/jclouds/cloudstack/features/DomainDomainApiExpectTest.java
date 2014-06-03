@@ -153,6 +153,6 @@ public class DomainDomainApiExpectTest extends BaseCloudStackExpectTest<DomainDo
 
    @Override
    protected DomainDomainApi clientFrom(CloudStackContext context) {
-      return context.getDomainApi().getDomainClient();
+      return context.getDomainApi().getDomainApi();
    }
 }

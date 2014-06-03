@@ -57,13 +57,13 @@ public interface CloudStackDomainApi extends CloudStackApi {
     * Provides synchronous access to Users
     */
    @Delegate
-   DomainUserApi getUserClient();
+   DomainUserApi getUserApi();
 
    /**
     * Provides synchronous access to Domains
     */
    @Delegate
-   DomainDomainApi getDomainClient();
+   DomainDomainApi getDomainApi();
    
    /**
     * Provides synchronous access to Template features.
@@ -95,5 +95,5 @@ public interface CloudStackDomainApi extends CloudStackApi {
     * Provides synchronous access to Usage
     */
    @Delegate
-   DomainUsageApi getUsageClient();
+   DomainUsageApi getUsageApi();
 }

@@ -41,7 +41,7 @@ public class GlobalDomainApiLiveTest extends BaseCloudStackApiLiveTest {
 
    @BeforeMethod
    public void before() {
-      domainClient = globalAdminClient.getDomainClient();
+      domainClient = globalAdminClient.getDomainApi();
       rootDomain = find(domainClient.listDomains(), new Predicate<Domain>() {
          @Override
          public boolean apply(Domain domain) {

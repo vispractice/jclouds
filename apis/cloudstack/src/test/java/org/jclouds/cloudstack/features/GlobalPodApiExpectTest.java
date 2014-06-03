@@ -203,6 +203,6 @@ public class GlobalPodApiExpectTest extends BaseCloudStackExpectTest<GlobalPodAp
 
    @Override
    protected GlobalPodApi clientFrom(CloudStackContext context) {
-      return context.getGlobalApi().getPodClient();
+      return context.getGlobalApi().getPodApi();
    }
 }

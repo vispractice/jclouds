@@ -48,11 +48,11 @@ public class GlobalUsageApiLiveTest extends BaseCloudStackApiLiveTest {
       c.add(Calendar.MONTH, -1);
       Date start = c.getTime();
 
-      JobResult result = globalAdminClient.getUsageClient().generateUsageRecords(start, end, GenerateUsageRecordsOptions.NONE);
+      JobResult result = globalAdminClient.getUsageApi().generateUsageRecords(start, end, GenerateUsageRecordsOptions.NONE);
       assertNotNull(result);
       assertTrue(result.isSuccess(), result.getDisplayText());
 
-      Set<UsageRecord> records = globalAdminClient.getUsageClient().listUsageRecords(start, end, ListUsageRecordsOptions.NONE);
+      Set<UsageRecord> records = globalAdminClient.getUsageApi().listUsageRecords(start, end, ListUsageRecordsOptions.NONE);
       assertNotNull(records);
       assertTrue(records.size() >= 0);
    }

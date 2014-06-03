@@ -52,16 +52,16 @@ public class GlobalPodApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListPods() throws Exception {
       skipIfNotGlobalAdmin();
 
-      Set<Pod> response = globalAdminClient.getPodClient().listPods();
+      Set<Pod> response = globalAdminClient.getPodApi().listPods();
       assert null != response;
       long podCount = response.size();
       assertTrue(podCount >= 0);
 
       for (Pod pod : response) {
-         Pod newDetails = Iterables.getOnlyElement(globalAdminClient.getPodClient().listPods(
+         Pod newDetails = Iterables.getOnlyElement(globalAdminClient.getPodApi().listPods(
             ListPodsOptions.Builder.id(pod.getId())));
          assertEquals(pod, newDetails);
-         assertEquals(pod, globalAdminClient.getPodClient().getPod(pod.getId()));
+         assertEquals(pod, globalAdminClient.getPodApi().getPod(pod.getId()));
          assertNotNull(pod.getId());
          assertFalse(Strings.isNullOrEmpty(pod.getName()));
          assertNotNull(pod.getZoneId());
@@ -79,7 +79,7 @@ public class GlobalPodApiLiveTest extends BaseCloudStackApiLiveTest {
       skipIfNotGlobalAdmin();
 
       zone = globalAdminClient.getZoneApi().createZone(prefix + "-zone-for-pod", NetworkType.BASIC, "8.8.8.8", "10.10.10.10");
-      pod = globalAdminClient.getPodClient().createPod(prefix + "-pod", zone.getId(), "172.20.0.1", "172.20.0.250", "172.20.0.254", "255.255.255.0",
+      pod = globalAdminClient.getPodApi().createPod(prefix + "-pod", zone.getId(), "172.20.0.1", "172.20.0.250", "172.20.0.254", "255.255.255.0",
       CreatePodOptions.Builder.allocationState(AllocationState.ENABLED));
 
       assertNotNull(pod);
@@ -95,7 +95,7 @@ public class GlobalPodApiLiveTest extends BaseCloudStackApiLiveTest {
 
    @Test(dependsOnMethods = "testCreatePod")
    public void testUpdatePod() {
-      Pod updated = globalAdminClient.getPodClient().updatePod(pod.getId(), UpdatePodOptions.Builder
+      Pod updated = globalAdminClient.getPodApi().updatePod(pod.getId(), UpdatePodOptions.Builder
          .name(prefix + "-updatedpod")
          .startIp("172.21.0.129")
          .endIp("172.21.0.250")
@@ -119,7 +119,7 @@ public class GlobalPodApiLiveTest extends BaseCloudStackApiLiveTest {
    @Override
    protected void tearDownContext() {
       if (pod != null) {
-         globalAdminClient.getPodClient().deletePod(pod.getId());
+         globalAdminClient.getPodApi().deletePod(pod.getId());
          pod = null;
       }
       if (zone != null) {

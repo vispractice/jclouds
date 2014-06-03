@@ -41,7 +41,7 @@ public class DomainUserApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListUsers() {
       skipIfNotDomainAdmin();
 
-      Set<User> users = domainAdminClient.getUserClient().listUsers();
+      Set<User> users = domainAdminClient.getUserApi().listUsers();
 
       assert users.size() > 0;
       assert users.contains(user); // contains the current user
@@ -67,7 +67,7 @@ public class DomainUserApiLiveTest extends BaseCloudStackApiLiveTest {
          testAccount = createTestAccount(globalAdminClient, prefix);
          testUser = createTestUser(globalAdminClient, testAccount, prefix);
 
-         AsyncCreateResponse response = domainAdminClient.getUserClient().disableUser(testUser.getId());
+         AsyncCreateResponse response = domainAdminClient.getUserApi().disableUser(testUser.getId());
          assertNotNull(response);
          assertTrue(adminJobComplete.apply(response.getJobId()));
 
@@ -75,13 +75,13 @@ public class DomainUserApiLiveTest extends BaseCloudStackApiLiveTest {
          assertNotNull(job);
          assertEquals(job.getResult().getState(), User.State.DISABLED);
 
-         User updated = domainAdminClient.getUserClient().enableUser(testUser.getId());
+         User updated = domainAdminClient.getUserApi().enableUser(testUser.getId());
          assertNotNull(updated);
          assertEquals(updated.getState(), User.State.ENABLED);
 
       } finally {
          if (testUser != null) {
-            globalAdminClient.getUserClient().deleteUser(testUser.getId());
+            globalAdminClient.getUserApi().deleteUser(testUser.getId());
          }
          if (testAccount != null) {
             globalAdminClient.getAccountApi().deleteAccount(testAccount.getId());

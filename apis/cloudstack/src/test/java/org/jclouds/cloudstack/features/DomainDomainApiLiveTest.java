@@ -46,7 +46,7 @@ public class DomainDomainApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListDomains() {
       skipIfNotDomainAdmin();
 
-      Set<Domain> domains = domainAdminClient.getDomainClient().listDomains();
+      Set<Domain> domains = domainAdminClient.getDomainApi().listDomains();
       for (Domain candidate : domains) {
          checkDomain(candidate);
       }
@@ -67,13 +67,13 @@ public class DomainDomainApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListDomainChildren() {
       skipIfNotDomainAdmin();
 
-      Set<Domain> domains = domainAdminClient.getDomainClient().listDomains();
+      Set<Domain> domains = domainAdminClient.getDomainApi().listDomains();
       Domain root = findRootOfVisibleTree(domains);
       if (domains.size() > 1) {
          assertTrue(root.hasChild());
       }
 
-      Set<Domain> children = domainAdminClient.getDomainClient()
+      Set<Domain> children = domainAdminClient.getDomainApi()
          .listDomainChildren(parentDomainId(root.getId()).isRecursive(true));
       assertEquals(domains.size() - 1, children.size());
       assertTrue(Sets.difference(domains, children).contains(root));

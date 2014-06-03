@@ -59,16 +59,16 @@ public class GlobalVlanApiLiveTest extends BaseCloudStackApiLiveTest {
    public void testListVlanIPRanges() throws Exception {
       skipIfNotGlobalAdmin();
 
-      Set<VlanIPRange> response = globalAdminClient.getVlanClient().listVlanIPRanges();
+      Set<VlanIPRange> response = globalAdminClient.getVlanApi().listVlanIPRanges();
       assert null != response;
       long rangeCount = response.size();
       assertTrue(rangeCount >= 0);
 
       for (VlanIPRange range : response) {
-         VlanIPRange newDetails = Iterables.getOnlyElement(globalAdminClient.getVlanClient().listVlanIPRanges(
+         VlanIPRange newDetails = Iterables.getOnlyElement(globalAdminClient.getVlanApi().listVlanIPRanges(
             ListVlanIPRangesOptions.Builder.id(range.getId())));
          assertEquals(range, newDetails);
-         assertEquals(range, globalAdminClient.getVlanClient().getVlanIPRange(range.getId()));
+         assertEquals(range, globalAdminClient.getVlanApi().getVlanIPRange(range.getId()));
          assertNull(range.getId());
          assertNull(range.getZoneId());
          assertFalse(Strings.isNullOrEmpty(range.getVlan()));
@@ -111,7 +111,7 @@ public class GlobalVlanApiLiveTest extends BaseCloudStackApiLiveTest {
             usingExistingNetwork = false;
          }
          
-         range = globalAdminClient.getVlanClient().createVlanIPRange("172.19.1.1", "172.19.1.199", CreateVlanIPRangeOptions.Builder
+         range = globalAdminClient.getVlanApi().createVlanIPRange("172.19.1.1", "172.19.1.199", CreateVlanIPRangeOptions.Builder
                                                                      .accountInDomain(user.getAccount(), user.getDomainId())
                                                                      .forVirtualNetwork(true)
                                                                      .vlan(1001)
@@ -124,7 +124,7 @@ public class GlobalVlanApiLiveTest extends BaseCloudStackApiLiveTest {
    @Override
    protected void tearDownContext() {
       if (range != null) {
-         globalAdminClient.getVlanClient().deleteVlanIPRange(range.getId());
+         globalAdminClient.getVlanApi().deleteVlanIPRange(range.getId());
          range = null;
       }
       if (network != null && !usingExistingNetwork) {

@@ -122,10 +122,10 @@ public class GlobalHostApiExpectTest extends BaseCloudStackExpectTest<GlobalHost
       Date created = makeDate(2011, Calendar.NOVEMBER, 26, 23, 28, 36, "GMT+02:00");
       Host expected = Host.builder().id("1").name("cs2-xevsrv.alucloud.local").state(Host.State.UP).type(Host.Type.ROUTING).ipAddress("10.26.26.107").zoneId("1").zoneName("Dev Zone 1").podId("1").podName("Dev Pod 1").version("2.2.12.20110928142833").hypervisor("XenServer").cpuNumber(24).cpuSpeed(2266).cpuAllocated("2.76%").cpuUsed("0.1%").cpuWithOverProvisioning(54384.0F).networkKbsRead(4443).networkKbsWrite(15048).memoryTotal(100549733760L).memoryAllocated(3623878656L).memoryUsed(3623878656L).capabilities("xen-3.0-x86_64 , xen-3.0-x86_32p , hvm-3.0-x86_32 , hvm-3.0-x86_32p , hvm-3.0-x86_64").lastPinged(lastPinged).managementServerId("223098941760041").clusterId("1").clusterName("Xen Clust 1").clusterType(Host.ClusterType.CLOUD_MANAGED).localStorageActive(false).created(created).events("PrepareUnmanaged; HypervisorVersionChanged; ManagementServerDown; PingTimeout; AgentDisconnected; MaintenanceRequested; HostDown; AgentConnected; StartAgentRebalance; ShutdownRequested; Ping").hasEnoughCapacity(false).allocationState(AllocationState.ENABLED).build();
 
-      Host actual = requestSendsResponse(addHost, response).addHost("1", "http://example.com", "XenServer", "fred", "sekrit",
+      Host[] actual = requestSendsResponse(addHost, response).addHost("1", "http://example.com", "XenServer", "fred", "sekrit",
          AddHostOptions.Builder.hostTags(ImmutableSet.<String>of()).allocationState(AllocationState.ENABLED).clusterId("1").clusterName("Xen Clust 1").podId("1"));
 
-      assertEquals(actual, expected);
+      assertEquals(actual[0], expected);
    }
 
    @Test
@@ -372,6 +372,6 @@ public class GlobalHostApiExpectTest extends BaseCloudStackExpectTest<GlobalHost
 
    @Override
    protected GlobalHostApi clientFrom(CloudStackContext context) {
-      return context.getGlobalApi().getHostClient();
+      return context.getGlobalApi().getHostApi();
    }
 }

@@ -684,9 +684,9 @@ public class VirtualMachine {
 			"serviceofferingid", "serviceofferingname", "state",
 			"templatedisplaytext", "templateid", "templatename", "zoneid",
 			"zonename", "nic", "tags", "hypervisor", "securitygroup",
-			"details", "diskIoRead", "diskIoWrite", "diskKbsRead",
-			"diskKbsWrite", "instanceName", "dynamicallyScalable", "keypair",
-			"project", "projectId", "serviceState"})
+			"details", "diskioread", "diskiowrite", "diskkbsread",
+			"diskkbswrite", "instancename", "dynamicallyscalable", "keypair",
+			"project", "projectid", "servicestate"})
 	protected VirtualMachine(String id, @Nullable String account,
 			long cpuCount, long cpuSpeed, @Nullable String cpuUsed,
 			@Nullable String displayName, @Nullable Date created,

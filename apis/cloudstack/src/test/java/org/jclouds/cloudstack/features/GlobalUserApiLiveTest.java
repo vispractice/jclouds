@@ -44,7 +44,7 @@ import org.testng.annotations.Test;
 public class GlobalUserApiLiveTest extends BaseCloudStackApiLiveTest {
 
    public static User createTestUser(CloudStackGlobalApi client, Account account, String prefix) {
-      return client.getUserClient().createUser(prefix + "-user", account.getName(), "dummy2@example.com",
+      return client.getUserApi().createUser(prefix + "-user", account.getName(), "dummy2@example.com",
             base16().lowerCase().encode(md5().hashString("password", UTF_8).asBytes()), "First", "Last");
    }
 
@@ -61,13 +61,13 @@ public class GlobalUserApiLiveTest extends BaseCloudStackApiLiveTest {
          assertEquals(testUser.getName(), prefix + "-user");
          assertEquals(testUser.getAccount(), prefix + "-account");
 
-         User updatedUser = globalAdminClient.getUserClient()
+         User updatedUser = globalAdminClient.getUserApi()
             .updateUser(testUser.getId(), userName(prefix + "-user-2"));
 
          assertNotNull(updatedUser);
          assertEquals(updatedUser.getName(), prefix + "-user-2");
 
-         ApiKeyPair apiKeys = globalAdminClient.getUserClient()
+         ApiKeyPair apiKeys = globalAdminClient.getUserApi()
             .registerUserKeys(updatedUser.getId());
 
          assertNotNull(apiKeys.getApiKey());
@@ -77,7 +77,7 @@ public class GlobalUserApiLiveTest extends BaseCloudStackApiLiveTest {
 
       } finally {
          if (testUser != null) {
-            globalAdminClient.getUserClient().deleteUser(testUser.getId());
+            globalAdminClient.getUserApi().deleteUser(testUser.getId());
          }
          globalAdminClient.getAccountApi().deleteAccount(testAccount.getId());
       }
