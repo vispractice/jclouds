@@ -84,7 +84,11 @@ public class Template implements Comparable<Template> {
 		/**
 		 * the resource upload is in progress.
 		 */
-		UPLOAD_IN_PROGRESS, UNRECOGNIZED;
+		UPLOAD_IN_PROGRESS, 
+		
+		CONNECTION_REFUSED,
+		
+		UNRECOGNIZED;
 
 		public static Status fromValue(String state) {
 			// Statuses are in free text form. These are the ones in CloudStack
@@ -102,6 +106,8 @@ public class Template implements Comparable<Template> {
 				return DOWNLOAD_IN_PROGRESS;
 			} else if (state.equals("Download Complete")) {
 				return DOWNLOADED;
+			} else if(state.equals("Connection Refused")){
+			    return CONNECTION_REFUSED;
 			}
 			try {
 				return valueOf(checkNotNull(state, "state"));
