@@ -16,7 +16,6 @@
  */
 package org.jclouds.cloudstack.options;
 
-import static org.jclouds.cloudstack.options.ListHostsOptions.Builder.allocationState;
 import static org.jclouds.cloudstack.options.ListHostsOptions.Builder.clusterId;
 import static org.jclouds.cloudstack.options.ListHostsOptions.Builder.id;
 import static org.jclouds.cloudstack.options.ListHostsOptions.Builder.keyword;
@@ -55,13 +54,13 @@ public class ListHostsOptionsTest {
    }
 
    public void testAllocationState() {
-      ListHostsOptions options = new ListHostsOptions().allocationState(AllocationState.ENABLED);
-      assertEquals(ImmutableList.of("Enabled"), options.buildQueryParameters().get("allocationstate"));
+      ListHostsOptions options = new ListHostsOptions().resourceState(Host.State.ENABLED);
+      assertEquals(ImmutableList.of("Enabled"), options.buildQueryParameters().get("resourcestate"));
    }
 
    public void testAllocationStateStatic() {
-      ListHostsOptions options = allocationState(AllocationState.ENABLED);
-      assertEquals(ImmutableList.of("Enabled"), options.buildQueryParameters().get("allocationstate"));
+      ListHostsOptions options = new ListHostsOptions().resourceState(Host.State.ENABLED);
+      assertEquals(ImmutableList.of("Enabled"), options.buildQueryParameters().get("resourcestate"));
    }
 
    public void testClusterId() {

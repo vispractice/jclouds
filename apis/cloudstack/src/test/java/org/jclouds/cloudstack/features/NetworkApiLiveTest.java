@@ -150,7 +150,7 @@ public class NetworkApiLiveTest extends BaseCloudStackApiLiveTest {
       assert network.getId() != null : network;
       assert network.getName() != null : network;
       assert network.getDNS().size() != 0 : network;
-      assert network.getGuestIPType() != null && network.getGuestIPType() != GuestIPType.UNRECOGNIZED : network;
+      assert network.getType() != null && network.getType() != GuestIPType.UNRECOGNIZED : network;
       assert network.getBroadcastDomainType() != null : network;
       assert network.getDisplayText() != null : network;
       // Network domain can be null sometimes
@@ -165,7 +165,7 @@ public class NetworkApiLiveTest extends BaseCloudStackApiLiveTest {
       assert network.getTrafficType() != null : network;
       assert network.getZoneId() != null : network;
       assert network.getDomain() != null : network;
-      switch (network.getGuestIPType()) {
+      switch (network.getType()) {
       case VIRTUAL:
          assert network.getNetmask() == null : network;
          assert network.getGateway() == null : network;

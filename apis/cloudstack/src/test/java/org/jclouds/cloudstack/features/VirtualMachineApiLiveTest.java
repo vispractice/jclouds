@@ -316,7 +316,7 @@ public class VirtualMachineApiLiveTest extends BaseCloudStackApiLiveTest {
 						@Override
 						public boolean apply(Network network) {
 							return network.isDefault()
-									&& network.getGuestIPType() == GuestIPType.VIRTUAL;
+									&& network.getType() == GuestIPType.VIRTUAL;
 						}
 					}));
 			logger.info("Required network: " + requiredNetwork);

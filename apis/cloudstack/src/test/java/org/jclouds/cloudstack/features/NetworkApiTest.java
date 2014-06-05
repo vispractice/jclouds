@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import org.jclouds.Fallbacks.EmptySetOnNotFoundOr404;
 import org.jclouds.Fallbacks.NullOnNotFoundOr404;
-import org.jclouds.cloudstack.domain.NetworkType;
+import org.jclouds.cloudstack.domain.GuestIPType;
 import org.jclouds.cloudstack.internal.BaseCloudStackApiTest;
 import org.jclouds.cloudstack.options.CreateNetworkOptions;
 import org.jclouds.cloudstack.options.ListNetworksOptions;
@@ -64,7 +64,7 @@ public class NetworkApiTest extends BaseCloudStackApiTest<NetworkApi> {
 
    public void testListNetworksOptions() throws SecurityException, NoSuchMethodException, IOException {
       Invokable<?, ?> method = method(NetworkApi.class, "listNetworks", ListNetworksOptions[].class);
-      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListNetworksOptions.Builder.type(NetworkType.ADVANCED)
+      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListNetworksOptions.Builder.type(GuestIPType.ISOLATED)
             .domainId("6").id("5")));
 
       assertRequestLineEquals(httpRequest,

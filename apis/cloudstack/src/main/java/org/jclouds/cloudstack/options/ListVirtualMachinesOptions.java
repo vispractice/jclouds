@@ -63,7 +63,7 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
     *           list virtual machines by groupId.
     */
    public ListVirtualMachinesOptions groupId(String groupId) {
-      this.queryParameters.replaceValues("groupid", ImmutableSet.of(groupId + ""));
+      this.queryParameters.replaceValues("groupid", ImmutableSet.of(groupId));
       return this;
 
    }

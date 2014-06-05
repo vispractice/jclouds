@@ -69,7 +69,7 @@ public class ListNetworksResponseTest extends BaseSetParserTest<Network> {
                   .related("204")
                   .broadcastURI(URI.create("vlan://240"))
                   .DNS(ImmutableList.of("8.8.8.8"))
-                  .guestIPType(GuestIPType.VIRTUAL)
+                  .type(GuestIPType.VIRTUAL)
                   .domain("ROOT")
                   .domainId("1")
                   .isDefault(true)

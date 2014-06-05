@@ -79,7 +79,7 @@ public class NetworkPredicates {
 
       @Override
       public boolean apply(Network arg0) {
-         boolean network = isVirtualNetwork.apply(checkNotNull(arg0, "network").getGuestIPType());
+         boolean network = isVirtualNetwork.apply(checkNotNull(arg0, "network").getType());
          return network;
       }
 
@@ -94,7 +94,7 @@ public class NetworkPredicates {
 
       @Override
       public boolean apply(Network arg0) {
-         boolean network = isSharedNetwork.apply(checkNotNull(arg0, "network").getGuestIPType());
+         boolean network = isSharedNetwork.apply(checkNotNull(arg0, "network").getType());
          return network;
       }
 
@@ -109,7 +109,7 @@ public class NetworkPredicates {
 
       @Override
       public boolean apply(Network arg0) {
-         boolean network = isIsolatedNetwork.apply(checkNotNull(arg0, "network").getGuestIPType());
+         boolean network = isIsolatedNetwork.apply(checkNotNull(arg0, "network").getType());
          return network;
       }
 

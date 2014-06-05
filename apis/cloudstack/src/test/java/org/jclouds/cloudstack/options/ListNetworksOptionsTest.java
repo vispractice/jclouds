@@ -27,7 +27,7 @@ import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.type;
 import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.zoneId;
 import static org.testng.Assert.assertEquals;
 
-import org.jclouds.cloudstack.domain.NetworkType;
+import org.jclouds.cloudstack.domain.GuestIPType;
 import org.jclouds.cloudstack.domain.TrafficType;
 import org.testng.annotations.Test;
 
@@ -133,12 +133,12 @@ public class ListNetworksOptionsTest {
    }
 
    public void testType() {
-      ListNetworksOptions options = new ListNetworksOptions().type(NetworkType.ADVANCED);
-      assertEquals(ImmutableList.of("Advanced"), options.buildQueryParameters().get("type"));
+      ListNetworksOptions options = new ListNetworksOptions().type(GuestIPType.SHARED);
+      assertEquals(ImmutableList.of("Shared"), options.buildQueryParameters().get("type"));
    }
 
    public void testTypeStatic() {
-      ListNetworksOptions options = type(NetworkType.ADVANCED);
-      assertEquals(ImmutableList.of("Advanced"), options.buildQueryParameters().get("type"));
+      ListNetworksOptions options = type(GuestIPType.SHARED);
+      assertEquals(ImmutableList.of("Shared"), options.buildQueryParameters().get("type"));
    }
 }
