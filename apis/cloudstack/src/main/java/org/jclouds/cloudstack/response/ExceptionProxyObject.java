@@ -16,19 +16,41 @@
  */
 package org.jclouds.cloudstack.response;
 
-import java.util.Set;
-
-import org.jclouds.cloudstack.domain.Network;
+import java.io.Serializable;
 
 
-public class ListNetworksResponse extends ListResponse {
-    protected Set<Network> network;
+public class ExceptionProxyObject implements Serializable {
+    private String uuid;
+    private String description;
 
-    public Set<Network> getNetwork() {
-        return network;
+    public ExceptionProxyObject(){
+
     }
 
-    public void setNetwork(Set<Network> network) {
-        this.network = network;
+    public ExceptionProxyObject(String uuid, String desc){
+        this.uuid = uuid;
+        description = desc;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "ExceptionProxyObject [uuid=" + uuid + ", description="
+                + description + "]";
     }
 }
