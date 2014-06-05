@@ -16,6 +16,9 @@
  */
 package org.jclouds.cloudstack.options;
 
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -93,6 +96,40 @@ public class RegisterTemplateOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("requireshvm", ImmutableSet.of(requiresHVM + ""));
       return this;
    }
+   
+   public RegisterTemplateOptions details(List<Map<String, String>> details) {
+       if(details == null || details.size() == 0){
+           return this;
+       }
+       for (int i = 0; i < details.size(); i++) {
+           Map<String, String> map = details.get(i);
+           for(Map.Entry<String, String> entry : map.entrySet()){
+               this.queryParameters.replaceValues(String.format("details[%d].%s", i, entry.getKey()), 
+                       ImmutableSet.of(entry.getValue()));
+           }
+       }
+       return this;
+    }
+   
+   public RegisterTemplateOptions isDynamicallyScalable(boolean isDynamicallyScalable) {
+       this.queryParameters.replaceValues("isdynamicallyscalable", ImmutableSet.of(isDynamicallyScalable + ""));
+       return this;
+    }
+   
+   public RegisterTemplateOptions isRouting(boolean isRouting) {
+       this.queryParameters.replaceValues("isrouting", ImmutableSet.of(isRouting + ""));
+       return this;
+    }
+   
+   public RegisterTemplateOptions sshKeyEnabled(boolean sshKeyEnabled) {
+       this.queryParameters.replaceValues("sshkeyenabled", ImmutableSet.of(sshKeyEnabled + ""));
+       return this;
+    }
+   
+   public RegisterTemplateOptions templateTag(String templateTag) {
+       this.queryParameters.replaceValues("templatetag", ImmutableSet.of(templateTag + ""));
+       return this;
+    }
 
    public static class Builder {
 
@@ -151,6 +188,31 @@ public class RegisterTemplateOptions extends AccountInDomainOptions {
          RegisterTemplateOptions options = new RegisterTemplateOptions();
          return (RegisterTemplateOptions)options.domainId(domainId);
       }
+      
+      public static RegisterTemplateOptions details(List<Map<String, String>> details) {
+          RegisterTemplateOptions options = new RegisterTemplateOptions();
+          return options.details(details);
+       }
+      
+      public static RegisterTemplateOptions isDynamicallyScalable(boolean isDynamicallyScalable) {
+          RegisterTemplateOptions options = new RegisterTemplateOptions();
+          return options.isDynamicallyScalable(isDynamicallyScalable);
+       }
+      
+      public static RegisterTemplateOptions isRouting(boolean isRouting) {
+          RegisterTemplateOptions options = new RegisterTemplateOptions();
+          return options.isRouting(isRouting);
+       }
+      
+      public static RegisterTemplateOptions sshKeyEnabled(boolean sshKeyEnabled) {
+          RegisterTemplateOptions options = new RegisterTemplateOptions();
+          return options.sshKeyEnabled(sshKeyEnabled);
+       }
+      
+      public static RegisterTemplateOptions templateTag(String templateTag) {
+          RegisterTemplateOptions options = new RegisterTemplateOptions();
+          return options.templateTag(templateTag);
+       }
    }
    
 }
