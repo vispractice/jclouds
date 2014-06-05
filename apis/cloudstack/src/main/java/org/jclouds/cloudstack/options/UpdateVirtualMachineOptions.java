@@ -47,6 +47,11 @@ public class UpdateVirtualMachineOptions extends BaseHttpRequestOptions {
         return this;
     }
     
+    public UpdateVirtualMachineOptions group(String group){
+        this.queryParameters.replaceValues("group", ImmutableSet.<String>of(group));
+        return this;
+    }
+    
     public UpdateVirtualMachineOptions userData(byte[] unencodedData) {
         int length = checkNotNull(unencodedData, "unencodedData").length;
         checkArgument(length > 0, "userData cannot be empty");
@@ -84,6 +89,11 @@ public class UpdateVirtualMachineOptions extends BaseHttpRequestOptions {
         public static UpdateVirtualMachineOptions ostypeid(String ostypeid) {
             UpdateVirtualMachineOptions options = new UpdateVirtualMachineOptions();
             return options.ostypeid(ostypeid);
+        }
+        
+        public static UpdateVirtualMachineOptions group(String group) {
+            UpdateVirtualMachineOptions options = new UpdateVirtualMachineOptions();
+            return options.ostypeid(group);
         }
         
         public static UpdateVirtualMachineOptions userData(byte[] unencodedData) {
