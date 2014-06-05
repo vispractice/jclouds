@@ -42,14 +42,6 @@ public class ListHostsOptions extends AccountInDomainOptions {
    }
 
    /**
-    * @param allocationState list hosts by allocation state
-    */
-   public ListHostsOptions allocationState(AllocationState allocationState) {
-      this.queryParameters.replaceValues("allocationstate", ImmutableSet.of(allocationState.toString()));
-      return this;
-   }
-
-   /**
     * @param clusterId lists hosts existing in particular cluster
     */
    public ListHostsOptions clusterId(String clusterId) {
@@ -145,6 +137,29 @@ public class ListHostsOptions extends AccountInDomainOptions {
    public ListHostsOptions domainId(String domainId) {
       return ListHostsOptions.class.cast(super.domainId(domainId));
    }
+   
+   public ListHostsOptions details(String details) {
+       this.queryParameters.replaceValues("details", ImmutableSet.of(details));
+       return this;
+    }
+   
+   public ListHostsOptions haHost(boolean haHost) {
+       this.queryParameters.replaceValues("hahost", ImmutableSet.of(haHost + ""));
+       return this;
+    }
+   
+   public ListHostsOptions hypervisor(String hypervisor) {
+       this.queryParameters.replaceValues("hypervisor", ImmutableSet.of(hypervisor));
+       return this;
+    }
+
+   /**
+    * @param resourceState list hosts by resource state
+    */
+   public ListHostsOptions resourceState(Host.State resourceState) {
+      this.queryParameters.replaceValues("resourcestate", ImmutableSet.of(resourceState.toString()));
+      return this;
+   }
 
    public static class Builder {
       /**
@@ -158,9 +173,9 @@ public class ListHostsOptions extends AccountInDomainOptions {
       /**
        * @see ListHostsOptions#allocationState
        */
-      public static ListHostsOptions allocationState(AllocationState allocationState) {
+      public static ListHostsOptions resourceState(Host.State resourceState) {
          ListHostsOptions options = new ListHostsOptions();
-         return options.allocationState(allocationState);
+         return options.resourceState(resourceState);
       }
 
       /**
@@ -258,6 +273,21 @@ public class ListHostsOptions extends AccountInDomainOptions {
          ListHostsOptions options = new ListHostsOptions();
          return options.domainId(domainId);
       }
+      
+      public static ListHostsOptions details(String details) {
+          ListHostsOptions options = new ListHostsOptions();
+          return options.details(details);
+       }
+      
+      public static ListHostsOptions haHost(boolean haHost) {
+          ListHostsOptions options = new ListHostsOptions();
+          return options.haHost(haHost);
+       }
+      
+      public static ListHostsOptions hypervisor(String hypervisor) {
+          ListHostsOptions options = new ListHostsOptions();
+          return options.hypervisor(hypervisor);
+       }
    }
 
 }
