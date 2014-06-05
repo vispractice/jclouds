@@ -74,12 +74,11 @@ public class Network {
 		protected String startIP;
 		protected String name;
 		protected String state;
-		protected GuestIPType guestIPType;
+		protected GuestIPType type;
 		protected String VLAN;
 		protected TrafficType trafficType;
 		protected String zoneId;
-		protected ImmutableSet.Builder<String> tags = ImmutableSet
-				.<String> builder();
+		protected Set<ResourceTag> tags = ImmutableSet.of();
 		protected boolean securityGroupEnabled;
 		protected Set<? extends NetworkService> services = ImmutableSortedSet
 				.of();
@@ -291,10 +290,10 @@ public class Network {
 		}
 
 		/**
-		 * @see Network#getGuestIPType()
+		 * @see Network#getType()
 		 */
-		public T guestIPType(GuestIPType guestIPType) {
-			this.guestIPType = guestIPType;
+		public T type(GuestIPType type) {
+			this.type = type;
 			return self();
 		}
 
@@ -325,18 +324,18 @@ public class Network {
 		/**
 		 * @see Network#getTags()
 		 */
-		public T tags(Iterable<String> tags) {
-			this.tags = ImmutableSet.<String> builder().addAll(tags);
-			return self();
-		}
+        public T tags(Set<ResourceTag> tags) {
+            this.tags = ImmutableSet.copyOf(checkNotNull(tags, "tags"));
+            return self();
+        }
 
 		/**
 		 * @see Network#getTags()
 		 */
-		public T tag(String tag) {
-			this.tags.add(tag);
-			return self();
-		}
+        public T tags(ResourceTag... in) {
+            return tags(ImmutableSet.copyOf(in));
+        }
+
 
 		/**
 		 * @see Network#isSecurityGroupEnabled()
@@ -443,15 +442,15 @@ public class Network {
 			this.vpcId = vpcId;
 			return self();
 		}
-
+		
 		public Network build() {
 			return new Network(id, account, broadcastDomainType, broadcastURI,
 					displayText, DNS1, DNS2, domain, domainId, endIP, gateway,
 					isDefault, isShared, isSystem, netmask, networkDomain,
 					networkOfferingAvailability, networkOfferingDisplayText,
 					networkOfferingId, networkOfferingName, related, startIP,
-					name, state, guestIPType, VLAN, trafficType, zoneId,
-					tags.build(), securityGroupEnabled, services, aclId,
+					name, state, type, VLAN, trafficType, zoneId,
+					tags, securityGroupEnabled, services, aclId,
 					aclType, canUseForDeploy, cidr, displayNetwork, ip6Cidr,
 					ip6Gateway, isPersistent, networkCidr,
 					networkOfferingConserveMode, physicalNetworkId, project,
@@ -486,7 +485,7 @@ public class Network {
 					.startIP(in.getStartIP())
 					.name(in.getName())
 					.state(in.getState())
-					.guestIPType(in.getGuestIPType())
+					.type(in.getType())
 					.VLAN(in.getVLAN())
 					.trafficType(in.getTrafficType())
 					.zoneId(in.getZoneId())
@@ -545,11 +544,11 @@ public class Network {
 	private final String startIP;
 	private final String name;
 	private final String state;
-	private final GuestIPType guestIPType;
+	private final GuestIPType type;
 	private final String VLAN;
 	private final TrafficType trafficType;
 	private final String zoneId;
-	private final Set<String> tags;
+	private final Set<ResourceTag> tags;
 	private final boolean securityGroupEnabled;
 	private final Set<? extends NetworkService> services;
 
@@ -584,7 +583,7 @@ public class Network {
 			"ip6gateway", "ispersistent", "networkcidr",
 			"networkofferingconservemode", "physicalnetworkid", "project",
 			"projectid", "reservediprange", "restartrequired",
-			"specifyipranges", "subdomainaccess", "vpcid" })
+			"specifyipranges", "subdomainaccess", "vpcid"})
 	protected Network(String id, @Nullable String account,
 			@Nullable String broadcastDomainType, @Nullable URI broadcastURI,
 			@Nullable String displayText, @Nullable String DNS1,
@@ -598,9 +597,9 @@ public class Network {
 			@Nullable String networkOfferingId,
 			@Nullable String networkOfferingName, @Nullable String related,
 			@Nullable String startIP, @Nullable String name,
-			@Nullable String state, @Nullable GuestIPType guestIPType,
+			@Nullable String state, @Nullable GuestIPType type,
 			@Nullable String VLAN, @Nullable TrafficType trafficType,
-			@Nullable String zoneId, @Nullable Iterable<String> tags,
+			@Nullable String zoneId, @Nullable Set<ResourceTag> tags,
 			boolean securityGroupEnabled,
 			Set<? extends NetworkService> services, @Nullable String aclId,
 			@Nullable String aclType, boolean canUseForDeploy,
@@ -636,12 +635,12 @@ public class Network {
 		this.startIP = startIP;
 		this.name = name;
 		this.state = state;
-		this.guestIPType = guestIPType;
+		this.type = type;
 		this.VLAN = VLAN;
 		this.trafficType = trafficType;
 		this.zoneId = zoneId;
-		this.tags = tags != null ? ImmutableSet.copyOf(tags) : ImmutableSet
-				.<String> of();
+		this.tags = tags == null ? ImmutableSet.<ResourceTag> of() : ImmutableSet
+                .copyOf(tags);
 		this.securityGroupEnabled = securityGroupEnabled;
 		this.services = ImmutableSortedSet.copyOf(services);
 
@@ -849,8 +848,8 @@ public class Network {
 	/**
 	 * @return the GuestIPType of the network
 	 */
-	public GuestIPType getGuestIPType() {
-		return this.guestIPType;
+	public GuestIPType getType() {
+		return this.type;
 	}
 
 	/**
@@ -880,9 +879,9 @@ public class Network {
 	/**
 	 * @return the tags for the Network
 	 */
-	public Set<String> getTags() {
-		return this.tags;
-	}
+    public Set<ResourceTag> getTags(){
+        return this.tags;
+    }
 
 	/**
 	 * @return true if security group is enabled, false otherwise
@@ -1027,7 +1026,7 @@ public class Network {
 	public String getVpcId() {
 		return vpcId;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(id, account, broadcastDomainType, broadcastURI,
@@ -1035,7 +1034,7 @@ public class Network {
 				isDefault, isShared, isSystem, netmask, networkDomain,
 				networkOfferingAvailability, networkOfferingDisplayText,
 				networkOfferingId, networkOfferingName, related, startIP, name,
-				state, guestIPType, VLAN, trafficType, zoneId, tags,
+				state, type, VLAN, trafficType, zoneId, tags,
 				securityGroupEnabled, services, aclId, aclType,
 				canUseForDeploy, cidr, displayNetwork, ip6Cidr, ip6Gateway,
 				isPersistent, networkCidr, networkOfferingConserveMode,
@@ -1079,7 +1078,7 @@ public class Network {
 				&& Objects.equal(this.startIP, that.startIP)
 				&& Objects.equal(this.name, that.name)
 				&& Objects.equal(this.state, that.state)
-				&& Objects.equal(this.guestIPType, that.guestIPType)
+				&& Objects.equal(this.type, that.type)
 				&& Objects.equal(this.VLAN, that.VLAN)
 				&& Objects.equal(this.trafficType, that.trafficType)
 				&& Objects.equal(this.zoneId, that.zoneId)
@@ -1114,7 +1113,7 @@ public class Network {
 				.add("networkOfferingName", networkOfferingName)
 				.add("related", related).add("startIP", startIP)
 				.add("name", name).add("state", state)
-				.add("guestIPType", guestIPType).add("VLAN", VLAN)
+				.add("type", type).add("VLAN", VLAN)
 				.add("trafficType", trafficType).add("zoneId", zoneId)
 				.add("tags", tags)
 				.add("securityGroupEnabled", securityGroupEnabled)
@@ -1134,8 +1133,7 @@ public class Network {
 				.add("reservedIpRange", reservedIpRange)
 				.add("restartRequired", restartRequired)
 				.add("specifyIpRanges", specifyIpRanges)
-				.add("subDomainAccess", subDomainAccess)
-				.add("vpcId", vpcId);
+				.add("subDomainAccess", subDomainAccess);
 	}
 
 	@Override

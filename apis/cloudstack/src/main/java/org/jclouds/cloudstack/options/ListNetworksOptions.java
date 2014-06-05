@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudstack.options;
 
-import org.jclouds.cloudstack.domain.NetworkType;
+import org.jclouds.cloudstack.domain.GuestIPType;
 import org.jclouds.cloudstack.domain.TrafficType;
 
 import com.google.common.annotations.Beta;
@@ -65,7 +65,7 @@ public class ListNetworksOptions extends AccountInDomainOptions {
     * @param type
     *           the type of the network
     */
-   public ListNetworksOptions type(NetworkType type) {
+   public ListNetworksOptions type(GuestIPType type) {
       this.queryParameters.replaceValues("type", ImmutableSet.of(type.toString()));
       return this;
    }
@@ -152,7 +152,7 @@ public class ListNetworksOptions extends AccountInDomainOptions {
       /**
        * @see ListNetworksOptions#type
        */
-      public static ListNetworksOptions type(NetworkType type) {
+      public static ListNetworksOptions type(GuestIPType type) {
          ListNetworksOptions options = new ListNetworksOptions();
          return options.type(type);
       }
