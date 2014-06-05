@@ -93,7 +93,7 @@ public interface NetworkApi {
             "true" })
     @SelectJson("listnetworksresponse")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Fallback(EmptySetOnNotFoundOr404.class)
+    @Fallback(NullOnNotFoundOr404.class)
     ListNetworksResponse pagingToListNetworks(ListNetworksOptions... options);
 
 	/**

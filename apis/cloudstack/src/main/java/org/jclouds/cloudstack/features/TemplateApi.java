@@ -197,7 +197,7 @@ public interface TemplateApi {
    @QueryParams(keys = { "command", "listAll" }, values = { "listTemplates", "true" })
    @SelectJson("listtemplatesresponse")
    @Consumes(MediaType.APPLICATION_JSON)
-   @Fallback(EmptySetOnNotFoundOr404.class)
+   @Fallback(NullOnNotFoundOr404.class)
    ListTemplatesResponse pagingToListTemplates(ListTemplatesOptions options);
 
    /**

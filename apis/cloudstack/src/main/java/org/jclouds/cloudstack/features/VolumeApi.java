@@ -85,7 +85,7 @@ public interface VolumeApi {
             "true" })
     @SelectJson("listvolumesresponse")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Fallback(EmptySetOnNotFoundOr404.class)
+    @Fallback(NullOnNotFoundOr404.class)
     ListVolumesResponse pagingToListVolumes(ListVolumesOptions... options);
 
 	/**

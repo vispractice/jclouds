@@ -25,6 +25,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.Fallbacks.EmptySetOnNotFoundOr404;
+import org.jclouds.Fallbacks.NullOnNotFoundOr404;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.Cluster;
 import org.jclouds.cloudstack.domain.Host;
@@ -77,7 +78,7 @@ public interface GlobalHostApi {
    @QueryParams(keys = { "command", "listAll" }, values = { "listHosts", "true" })
    @SelectJson("listhostsresponse")
    @Consumes(MediaType.APPLICATION_JSON)
-   @Fallback(EmptySetOnNotFoundOr404.class)
+   @Fallback(NullOnNotFoundOr404.class)
    ListHostsResponse pagingToListHosts(ListHostsOptions... options);
 
    /**

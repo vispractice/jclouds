@@ -87,7 +87,7 @@ public interface VirtualMachineApi {
    @QueryParams(keys = { "command", "listAll" }, values = { "listVirtualMachines", "false" })
    @Consumes(MediaType.APPLICATION_JSON)
    @SelectJson("listvirtualmachinesresponse")
-   @Fallback(EmptySetOnNotFoundOr404.class)
+   @Fallback(NullOnNotFoundOr404.class)
    ListVirtualMachinesResponse pagingTolistVirtualMachines(ListVirtualMachinesOptions... options);
 
    /**
