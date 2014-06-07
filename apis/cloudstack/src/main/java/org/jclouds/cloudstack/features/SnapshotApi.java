@@ -39,6 +39,7 @@ import org.jclouds.cloudstack.options.CreateSnapshotOptions;
 import org.jclouds.cloudstack.options.CreateVMSnapshotOptions;
 import org.jclouds.cloudstack.options.ListSnapshotPoliciesOptions;
 import org.jclouds.cloudstack.options.ListSnapshotsOptions;
+import org.jclouds.cloudstack.options.ListVMSnapshotsOptions;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
@@ -194,7 +195,7 @@ public interface SnapshotApi {
    @QueryParams(keys = { "command"}, values = { "listVMSnapshot"})
    @SelectJson("vmSnapshot")
    @Fallback(EmptySetOnNotFoundOr404.class)
-   Set<VMSnapshot> listVMSnapshot(ListSnapshotsOptions... options);
+   Set<VMSnapshot> listVMSnapshot(ListVMSnapshotsOptions... options);
    
    /**
     * Creates snapshot for a vm.

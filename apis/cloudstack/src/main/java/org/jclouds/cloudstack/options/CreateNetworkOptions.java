@@ -110,7 +110,62 @@ public class CreateNetworkOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("projectid", ImmutableSet.of(projectId + ""));
       return this;
    }
-
+   
+   public CreateNetworkOptions aclId(String aclId) {
+       this.queryParameters.replaceValues("aclid", ImmutableSet.of(aclId));
+       return this;
+    }
+   
+   public CreateNetworkOptions aclType(String aclType) {
+       this.queryParameters.replaceValues("acltype", ImmutableSet.of(aclType));
+       return this;
+    }
+   
+   public CreateNetworkOptions displayNetwork(boolean displayNetwork) {
+       this.queryParameters.replaceValues("displaynetwork", ImmutableSet.of(displayNetwork + ""));
+       return this;
+    }
+   
+   public CreateNetworkOptions startIpv6(String startIpv6) {
+       this.queryParameters.replaceValues("startipv6", ImmutableSet.of(startIpv6));
+       return this;
+    }
+   
+   public CreateNetworkOptions endIpv6(String endIpv6) {
+       this.queryParameters.replaceValues("endipv6", ImmutableSet.of(endIpv6));
+       return this;
+    }
+   
+   public CreateNetworkOptions ip6Gateway(String ip6Gateway) {
+       this.queryParameters.replaceValues("ip6gateway", ImmutableSet.of(ip6Gateway));
+       return this;
+    }
+   
+   public CreateNetworkOptions ip6Cidr(String ip6Cidr) {
+       this.queryParameters.replaceValues("ip6cidr", ImmutableSet.of(ip6Cidr));
+       return this;
+    }
+   
+    public CreateNetworkOptions isolatedPvlan(String isolatedPvlan) {
+        this.queryParameters.replaceValues("isolatedpvlan", ImmutableSet.of(isolatedPvlan));
+        return this;
+     }
+    
+    public CreateNetworkOptions physicalNetworkId(String physicalNetworkId) {
+        this.queryParameters.replaceValues("physicalnetworkid", ImmutableSet.of(physicalNetworkId));
+        return this;
+     }
+    
+    public CreateNetworkOptions subdomainAccess(boolean subdomainAccess) {
+        this.queryParameters.replaceValues("subdomainaccess", ImmutableSet.of(subdomainAccess + ""));
+        return this;
+     }
+    
+    public CreateNetworkOptions vpcId(String vpcId) {
+        this.queryParameters.replaceValues("vpcid", ImmutableSet.of(vpcId));
+        return this;
+     }
+    
    public static class Builder {
       /**
        * @see CreateNetworkOptions#isDefault
@@ -199,6 +254,61 @@ public class CreateNetworkOptions extends AccountInDomainOptions {
          CreateNetworkOptions options = new CreateNetworkOptions();
          return options.projectId(projectId);
       }
+      
+      public static CreateNetworkOptions aclId(String aclId) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.aclId(aclId);
+       }
+      
+      public static CreateNetworkOptions aclType(String aclType) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.aclType(aclType);
+       }
+      
+      public static CreateNetworkOptions displayNetwork(boolean displayNetwork) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.displayNetwork(displayNetwork);
+       }
+      
+      public static CreateNetworkOptions startIpv6(String startIpv6) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.startIpv6(startIpv6);
+       }
+      
+      public static CreateNetworkOptions endIpv6(String endIpv6) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.endIpv6(endIpv6);
+       }
+      
+      public static CreateNetworkOptions ip6Gateway(String ip6Gateway) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.ip6Gateway(ip6Gateway);
+       }
+      
+      public static CreateNetworkOptions ip6Cidr(String ip6Cidr) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.ip6Cidr(ip6Cidr);
+       }
+      
+      public static CreateNetworkOptions isolatedPvlan(String isolatedPvlan) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.isolatedPvlan(isolatedPvlan);
+       }
+      
+      public static CreateNetworkOptions physicalNetworkId(String physicalNetworkId) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.physicalNetworkId(physicalNetworkId);
+       }
+      
+      public static CreateNetworkOptions subdomainAccess(boolean subdomainAccess) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.subdomainAccess(subdomainAccess);
+       }
+      
+      public static CreateNetworkOptions vpcId(String vpcId) {
+          CreateNetworkOptions options = new CreateNetworkOptions();
+          return options.vpcId(vpcId);
+       }
    }
 
    /**

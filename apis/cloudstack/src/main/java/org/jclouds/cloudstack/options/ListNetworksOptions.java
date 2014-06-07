@@ -16,6 +16,8 @@
  */
 package org.jclouds.cloudstack.options;
 
+import java.util.Map;
+
 import org.jclouds.cloudstack.domain.GuestIPType;
 import org.jclouds.cloudstack.domain.TrafficType;
 
@@ -123,7 +125,69 @@ public class ListNetworksOptions extends AccountInDomainOptions {
    public ListNetworksOptions domainId(String domainId) {
       return ListNetworksOptions.class.cast(super.domainId(domainId));
    }
+   
+   public ListNetworksOptions aclType(String aclType) {
+       this.queryParameters.replaceValues("acltype", ImmutableSet.of(aclType));
+       return this;
+    }
+   
+   public ListNetworksOptions canUseForDeploy(boolean canUseForDeploy) {
+       this.queryParameters.replaceValues("canusefordeploy", ImmutableSet.of(canUseForDeploy + ""));
+       return this;
+    }
 
+   public ListNetworksOptions forVpc(boolean forVpc) {
+       this.queryParameters.replaceValues("forvpc", ImmutableSet.of(forVpc + ""));
+       return this;
+    }
+   
+   public ListNetworksOptions isRecursive(boolean isRecursive) {
+       this.queryParameters.replaceValues("isrecursive", ImmutableSet.of(isRecursive + ""));
+       return this;
+    }
+   
+   public ListNetworksOptions keyword(String keyword) {
+       this.queryParameters.replaceValues("keyword", ImmutableSet.of(keyword));
+       return this;
+    }
+   
+   public ListNetworksOptions physicalNetworkId(String physicalNetworkId) {
+       this.queryParameters.replaceValues("physicalnetworkid", ImmutableSet.of(physicalNetworkId));
+       return this;
+    }
+   
+   public ListNetworksOptions restartRequired(boolean restartRequired) {
+       this.queryParameters.replaceValues("restartrequired", ImmutableSet.of(restartRequired + ""));
+       return this;
+    }
+   
+   public ListNetworksOptions specifyIpRanges(boolean specifyIpRanges) {
+       this.queryParameters.replaceValues("specifyipranges", ImmutableSet.of(specifyIpRanges + ""));
+       return this;
+    }
+   
+   public ListNetworksOptions supportedServices(String supportedServices) {
+       this.queryParameters.replaceValues("supportedservices", ImmutableSet.of(supportedServices));
+       return this;
+    }
+   
+   public ListNetworksOptions vpcId(String vpcId) {
+       this.queryParameters.replaceValues("vpcid", ImmutableSet.of(vpcId));
+       return this;
+    }
+   
+   public ListNetworksOptions tags(Map<String, String> tagMap) {
+       int count = 0;
+       for (Map.Entry<String, String> entry : tagMap.entrySet()) {
+           this.queryParameters.replaceValues(String.format("tags[%d].key", count), ImmutableSet.of(entry.getKey()));
+           if(entry.getValue() != null && !entry.getValue().trim().equals("")){
+               this.queryParameters.replaceValues(String.format("tags[%d].value", count), ImmutableSet.of(entry.getValue()));
+           }
+          count += 1;
+       }
+       return this;
+    }
+   
    public static class Builder {
       /**
        * @see ListNetworksOptions#isDefault
@@ -228,6 +292,61 @@ public class ListNetworksOptions extends AccountInDomainOptions {
       public static ListNetworksOptions pageSize(long pageSize) {
           ListNetworksOptions options = new ListNetworksOptions();
           return options.pageSize(pageSize);
+       }
+      
+      public static ListNetworksOptions aclType(String aclType) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.aclType(aclType);
+       }
+      
+      public static ListNetworksOptions canUseForDeploy(boolean canUseForDeploy) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.canUseForDeploy(canUseForDeploy);
+       }
+      
+      public static ListNetworksOptions forVpc(boolean forVpc) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.forVpc(forVpc);
+       }
+      
+      public static ListNetworksOptions isRecursive(boolean isRecursive) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.isRecursive(isRecursive);
+       }
+      
+      public static ListNetworksOptions keyword(String keyword) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.keyword(keyword);
+       }
+      
+      public static ListNetworksOptions physicalNetworkId(String physicalNetworkId) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.physicalNetworkId(physicalNetworkId);
+       }
+      
+      public static ListNetworksOptions restartRequired(boolean restartRequired) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.restartRequired(restartRequired);
+       }
+      
+      public static ListNetworksOptions specifyIpRanges(boolean specifyIpRanges) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.specifyIpRanges(specifyIpRanges);
+       }
+      
+      public static ListNetworksOptions supportedServices(String supportedServices) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.supportedServices(supportedServices);
+       }
+      
+      public static ListNetworksOptions vpcId(String vpcId) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.vpcId(vpcId);
+       }
+      
+      public static ListNetworksOptions tags(Map<String, String> tagMap) {
+          ListNetworksOptions options = new ListNetworksOptions();
+          return options.tags(tagMap);
        }
    }
    

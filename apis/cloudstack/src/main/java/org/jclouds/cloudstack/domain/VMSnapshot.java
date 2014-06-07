@@ -65,7 +65,9 @@ public class VMSnapshot {
 
 		public static Type fromValue(String type) {
 			try {
-				return valueOf(checkNotNull(type, "type"));
+				return valueOf(CaseFormat.UPPER_CAMEL.to(
+                        CaseFormat.UPPER_UNDERSCORE,
+                        checkNotNull(type, "type")));
 			} catch (IllegalArgumentException e) {
 				return UNRECOGNIZED;
 			}
@@ -96,7 +98,7 @@ public class VMSnapshot {
 		protected String parentName;
 		protected String project;
 		protected String projectId;
-		protected VMSnapshot.Type snapshotType;
+		protected VMSnapshot.Type type;
 		protected VMSnapshot.State state;
 		protected String virtualMachineId;
 		protected String zoneId;
@@ -166,8 +168,8 @@ public class VMSnapshot {
 			return self();
 		}
 
-		public T snapshotType(VMSnapshot.Type snapshotType) {
-			this.snapshotType = snapshotType;
+		public T type(VMSnapshot.Type type) {
+			this.type = type;
 			return self();
 		}
 
@@ -189,7 +191,7 @@ public class VMSnapshot {
 		public VMSnapshot build() {
 			return new VMSnapshot(id, account, created, current, description,
 					displayName, domain, domainId, name, parent, parentName,
-					project, projectId, snapshotType, state, virtualMachineId,
+					project, projectId, type, state, virtualMachineId,
 					zoneId);
 		}
 
@@ -199,7 +201,7 @@ public class VMSnapshot {
 					.domainId(in.getDomainId())
 					.description(in.getDescription())
 					.displayName(in.getDisplayName()).parent(in.getParent())
-					.name(in.getName()).snapshotType(in.getSnapshotType())
+					.name(in.getName()).type(in.getType())
 					.state(in.getState()).parentName(in.getParentName())
 					.virtualMachineId(in.getVirtualMachineId())
 					.zoneId(in.getZoneId()).project(in.getProject())
@@ -227,22 +229,22 @@ public class VMSnapshot {
 	private final String parentName;
 	private final String project;
 	private final String projectId;
-	private final VMSnapshot.Type snapshotType;
+	private final VMSnapshot.Type type;
 	private final VMSnapshot.State state;
 	private final String virtualMachineId;
 	private final String zoneId;
 
 	@ConstructorProperties({ "id", "account", "created", "current",
-			"description", "displayName", "domain", "domainId", "name",
-			"parent", "parentName", "project", "projectId", "snapshotType",
-			"state", "virtualMachineId", "zoneId" })
+			"description", "displayname", "domain", "domainid", "name",
+			"parent", "parentName", "project", "projectid", "type",
+			"state", "virtualmachineid", "zoneid" })
 	protected VMSnapshot(String id, @Nullable String account,
 			@Nullable Date created, boolean current,
 			@Nullable String description, @Nullable String displayName,
 			@Nullable String domain, @Nullable String domainId,
 			@Nullable String name, @Nullable String parent,
 			@Nullable String parentName, @Nullable String project,
-			@Nullable String projectId, @Nullable VMSnapshot.Type snapshotType,
+			@Nullable String projectId, @Nullable VMSnapshot.Type type,
 			@Nullable VMSnapshot.State state,
 			@Nullable String virtualMachineId, @Nullable String zoneId) {
 		this.id = checkNotNull(id, "id");
@@ -258,7 +260,7 @@ public class VMSnapshot {
 		this.parentName = parentName;
 		this.project = project;
 		this.projectId = projectId;
-		this.snapshotType = snapshotType;
+		this.type = type;
 		this.state = state;
 		this.virtualMachineId = virtualMachineId;
 		this.zoneId = zoneId;
@@ -315,8 +317,8 @@ public class VMSnapshot {
 	 * @return the type of the snapshot
 	 */
 	@Nullable
-	public VMSnapshot.Type getSnapshotType() {
-		return this.snapshotType;
+	public VMSnapshot.Type getType() {
+		return this.type;
 	}
 
 	/**
@@ -403,7 +405,7 @@ public class VMSnapshot {
 	public int hashCode() {
 		return Objects.hashCode(id, account, created, current, description,
 				displayName, domain, domainId, name, parent, parentName,
-				project, projectId, snapshotType, state, virtualMachineId,
+				project, projectId, type, state, virtualMachineId,
 				zoneId);
 	}
 
@@ -423,7 +425,7 @@ public class VMSnapshot {
 				&& Objects.equal(this.displayName, that.displayName)
 				&& Objects.equal(this.parent, that.parent)
 				&& Objects.equal(this.name, that.name)
-				&& Objects.equal(this.snapshotType, that.snapshotType)
+				&& Objects.equal(this.type, that.type)
 				&& Objects.equal(this.state, that.state)
 				&& Objects.equal(this.parentName, that.parentName)
 				&& Objects.equal(this.virtualMachineId, that.virtualMachineId)
@@ -438,7 +440,7 @@ public class VMSnapshot {
 				.add("domain", domain).add("domainId", domainId)
 				.add("description", description)
 				.add("displayName", displayName).add("parent", parent)
-				.add("name", name).add("snapshotType", snapshotType)
+				.add("name", name).add("snapshotType", type)
 				.add("state", state).add("parentName", parentName)
 				.add("virtualMachineId", virtualMachineId)
 				.add("zoneId", zoneId).add("project", project)

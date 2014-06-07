@@ -16,6 +16,8 @@
  */
 package org.jclouds.cloudstack.options;
 
+import java.util.Map;
+
 import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableSet;
 
@@ -127,6 +129,68 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
       this.queryParameters.replaceValues("forvirtualnetwork", ImmutableSet.of(usesVirtualNetwork + ""));
       return this;
    }
+   
+   public ListVirtualMachinesOptions tags(Map<String, String> tagMap) {
+       int count = 0;
+       for (Map.Entry<String, String> entry : tagMap.entrySet()) {
+           this.queryParameters.replaceValues(String.format("tags[%d].key", count), ImmutableSet.of(entry.getKey()));
+           if(entry.getValue() != null && !entry.getValue().trim().equals("")){
+               this.queryParameters.replaceValues(String.format("tags[%d].value", count), ImmutableSet.of(entry.getValue()));
+           }
+          count += 1;
+       }
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions affinityGroupId(String affinityGroupId) {
+       this.queryParameters.replaceValues("affinitygroupid", ImmutableSet.of(affinityGroupId));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions details(String details) {
+       this.queryParameters.replaceValues("details", ImmutableSet.of(details));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions forVirtualNetwork(boolean forVirtualNetwork) {
+       this.queryParameters.replaceValues("forvirtualnetwork", ImmutableSet.of(forVirtualNetwork + ""));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions hypervisor(String hypervisor) {
+       this.queryParameters.replaceValues("hypervisor", ImmutableSet.of(hypervisor));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions isoId(String isoId) {
+       this.queryParameters.replaceValues("isoid", ImmutableSet.of(isoId));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions isRecursive(boolean isRecursive) {
+       this.queryParameters.replaceValues("isrecursive", ImmutableSet.of(isRecursive + ""));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions keyword(String keyword) {
+       this.queryParameters.replaceValues("keyword", ImmutableSet.of(keyword));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions storageId(String storageId) {
+       this.queryParameters.replaceValues("storageid", ImmutableSet.of(storageId));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions templateId(String templateId) {
+       this.queryParameters.replaceValues("templateid", ImmutableSet.of(templateId));
+       return this;
+    }
+   
+   public ListVirtualMachinesOptions vpcId(String vpcId) {
+       this.queryParameters.replaceValues("vpcid", ImmutableSet.of(vpcId));
+       return this;
+    }
 
    public static class Builder {
 
@@ -244,6 +308,61 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
       public static ListVirtualMachinesOptions pageSize(long pageSize) {
           ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
           return options.pageSize(pageSize);
+       }
+      
+      public static ListVirtualMachinesOptions tags(Map<String, String> tagMap) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.tags(tagMap);
+       }
+      
+      public static ListVirtualMachinesOptions affinityGroupId(String affinityGroupId) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.affinityGroupId(affinityGroupId);
+       }
+      
+      public static ListVirtualMachinesOptions details(String details) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.details(details);
+       }
+      
+      public static ListVirtualMachinesOptions forVirtualNetwork(boolean forVirtualNetwork) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.forVirtualNetwork(forVirtualNetwork);
+       }
+      
+      public static ListVirtualMachinesOptions hypervisor(String hypervisor) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.hypervisor(hypervisor);
+       }
+      
+      public static ListVirtualMachinesOptions isoId(String isoId) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.isoId(isoId);
+       }
+      
+      public static ListVirtualMachinesOptions isRecursive(boolean isRecursive) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.isRecursive(isRecursive);
+       }
+      
+      public static ListVirtualMachinesOptions keyword(String keyword) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.keyword(keyword);
+       }
+      
+      public static ListVirtualMachinesOptions storageId(String storageId) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.storageId(storageId);
+       }
+      
+      public static ListVirtualMachinesOptions templateId(String templateId) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.templateId(templateId);
+       }
+      
+      public static ListVirtualMachinesOptions vpcId(String vpcId) {
+          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+          return options.vpcId(vpcId);
        }
    }
 
