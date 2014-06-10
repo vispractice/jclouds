@@ -78,6 +78,21 @@ public class UpdateTemplateOptions extends BaseHttpRequestOptions {
       this.queryParameters.replaceValues("passwordenabled", ImmutableSet.of(passwordEnabled + ""));
       return this;
    }
+   
+   public UpdateTemplateOptions isDynamicallyScalable(boolean isDynamicallyScalable) {
+       this.queryParameters.replaceValues("isdynamicallyscalable", ImmutableSet.of(isDynamicallyScalable + ""));
+       return this;
+    }
+   
+   public UpdateTemplateOptions isRouting(boolean isRouting) {
+       this.queryParameters.replaceValues("isrouting", ImmutableSet.of(isRouting + ""));
+       return this;
+    }
+   
+   public UpdateTemplateOptions sortKey(int sortKey) {
+       this.queryParameters.replaceValues("sortkey", ImmutableSet.of(sortKey + ""));
+       return this;
+    }
 
    public static class Builder {
 
@@ -110,6 +125,21 @@ public class UpdateTemplateOptions extends BaseHttpRequestOptions {
          UpdateTemplateOptions options = new UpdateTemplateOptions();
          return options.passwordEnabled(passwordEnabled);
       }
+      
+      public static UpdateTemplateOptions isDynamicallyScalable(boolean isDynamicallyScalable) {
+          UpdateTemplateOptions options = new UpdateTemplateOptions();
+          return options.isDynamicallyScalable(isDynamicallyScalable);
+       }
+      
+      public static UpdateTemplateOptions isRouting(boolean isRouting) {
+          UpdateTemplateOptions options = new UpdateTemplateOptions();
+          return options.isRouting(isRouting);
+       }
+      
+      public static UpdateTemplateOptions sortKey(int sortKey) {
+          UpdateTemplateOptions options = new UpdateTemplateOptions();
+          return options.sortKey(sortKey);
+       }
    }
    
 }
