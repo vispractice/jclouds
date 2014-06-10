@@ -109,7 +109,7 @@ public class UpdateVirtualMachineOptions extends BaseHttpRequestOptions {
         
         public static UpdateVirtualMachineOptions group(String group) {
             UpdateVirtualMachineOptions options = new UpdateVirtualMachineOptions();
-            return options.ostypeid(group);
+            return options.group(group);
         }
         
         public static UpdateVirtualMachineOptions userData(byte[] unencodedData) {

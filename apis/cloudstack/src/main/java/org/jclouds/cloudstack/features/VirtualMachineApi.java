@@ -16,7 +16,6 @@
  */
 package org.jclouds.cloudstack.features;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -31,21 +30,18 @@ import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.AddNicToVirtualMachineOptions;
-import org.jclouds.cloudstack.options.AssignVirtualMachineOptions;
 import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
+import org.jclouds.cloudstack.options.ScaleVirtualMachineOptions;
 import org.jclouds.cloudstack.options.StopVirtualMachineOptions;
 import org.jclouds.cloudstack.options.UpdateVirtualMachineOptions;
-import org.jclouds.cloudstack.response.ListResponse;
 import org.jclouds.cloudstack.response.ListVirtualMachinesResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.OnlyElement;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
-
-import com.google.common.annotations.Beta;
 
 /**
  * Provides synchronous access to cloudstack via their REST API.
@@ -302,7 +298,8 @@ public interface VirtualMachineApi {
    @SelectJson({ "scalevirtualmachine", "scalevirtualmachineresponse" })
    @Consumes(MediaType.APPLICATION_JSON)
    AsyncCreateResponse scaleVirtualMachine(@QueryParam("id") String id,
-		   @QueryParam("serviceofferingid") String serviceOfferingId);
+		   @QueryParam("serviceofferingid") String serviceOfferingId,
+		   ScaleVirtualMachineOptions... options);
    
    /**
     * Adds VM to specified network by creating a NIC

@@ -59,6 +59,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
       protected StorageType storageType;
       protected boolean defaultUse;
       protected boolean systemOffering;
+      protected boolean customizedOffering;
       protected boolean cpuUseLimited;
       protected long networkRate;
       protected boolean systemVmType;
@@ -183,6 +184,11 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
          this.systemOffering = systemOffering;
          return self();
       }
+      
+      public T customizedOffering(boolean customizedOffering) {
+         this.customizedOffering = customizedOffering;
+         return self();
+      }
 
       /**
        * @see ServiceOffering#isCpuUseLimited()
@@ -210,7 +216,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
 
       public ServiceOffering build() {
          return new ServiceOffering(id, name, displayText, created, domain, domainId, cpuNumber, cpuSpeed, memory, haSupport, storageType,
-               tags.build(), defaultUse, systemOffering, cpuUseLimited, networkRate, systemVmType);
+               tags.build(), defaultUse, systemOffering, customizedOffering, cpuUseLimited, networkRate, systemVmType);
       }
 
       public T fromServiceOffering(ServiceOffering in) {
@@ -256,17 +262,18 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
    private final Set<String> tags;
    private final boolean defaultUse;
    private final boolean systemOffering;
+   private final boolean customizedOffering;
    private final boolean cpuUseLimited;
    private final long networkRate;
    private final boolean systemVmType;
 
    @ConstructorProperties({
-         "id", "name", "displaytext", "created", "domain", "domainid", "cpunumber", "cpuspeed", "memory", "offerha", "storagetype", "tags", "defaultuse", "issystem", "limitcpuuse", "networkrate", "systemvmtype"
+         "id", "name", "displaytext", "created", "domain", "domainid", "cpunumber", "cpuspeed", "memory", "offerha", "storagetype", "tags", "defaultuse", "issystem", "iscustomized", "limitcpuuse", "networkrate", "systemvmtype"
    })
    protected ServiceOffering(String id, @Nullable String name, @Nullable String displayText, @Nullable Date created,
                              @Nullable String domain, @Nullable String domainId, int cpuNumber, int cpuSpeed, int memory,
                              boolean haSupport, @Nullable StorageType storageType, @Nullable Iterable<String> tags, boolean defaultUse,
-                             boolean systemOffering, boolean cpuUseLimited, long networkRate, boolean systemVmType) {
+                             boolean systemOffering, boolean customizedOffering, boolean cpuUseLimited, long networkRate, boolean systemVmType) {
       this.id = checkNotNull(id, "id");
       this.name = name;
       this.displayText = displayText;
@@ -281,6 +288,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
       this.tags = tags != null ? ImmutableSet.copyOf(tags) : ImmutableSet.<String> of();
       this.defaultUse = defaultUse;
       this.systemOffering = systemOffering;
+      this.customizedOffering = customizedOffering;
       this.cpuUseLimited = cpuUseLimited;
       this.networkRate = networkRate;
       this.systemVmType = systemVmType;
@@ -393,7 +401,11 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
       return this.cpuUseLimited;
    }
 
-   /**
+   public boolean isCustomizedOffering() {
+	   return customizedOffering;
+   }
+
+/**
     * @return data transfer rate in megabits per second allowed.
     */
    public long getNetworkRate() {
@@ -409,7 +421,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(id, name, displayText, created, domain, domainId, cpuNumber, cpuSpeed, memory, haSupport, storageType, tags, defaultUse, systemOffering, cpuUseLimited, networkRate, systemVmType);
+      return Objects.hashCode(id, name, displayText, created, domain, domainId, cpuNumber, cpuSpeed, memory, haSupport, storageType, tags, defaultUse, systemOffering, customizedOffering, cpuUseLimited, networkRate, systemVmType);
    }
 
    @Override
@@ -431,6 +443,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
             && Objects.equal(this.getTags(), that.getTags())
             && Objects.equal(this.defaultUse, that.defaultUse)
             && Objects.equal(this.systemOffering, that.systemOffering)
+            && Objects.equal(this.customizedOffering, that.customizedOffering)
             && Objects.equal(this.cpuUseLimited, that.cpuUseLimited)
             && Objects.equal(this.networkRate, that.networkRate)
             && Objects.equal(this.systemVmType, that.systemVmType);
@@ -441,7 +454,7 @@ public class ServiceOffering implements Comparable<ServiceOffering> {
             .add("id", id).add("name", name).add("displayText", displayText).add("created", created).add("domain", domain)
             .add("domainId", domainId).add("cpuNumber", cpuNumber).add("cpuSpeed", cpuSpeed).add("memory", memory)
             .add("haSupport", haSupport).add("storageType", storageType).add("tags", getTags()).add("defaultUse", defaultUse)
-            .add("systemOffering", systemOffering).add("cpuUseLimited", cpuUseLimited)
+            .add("systemOffering", systemOffering).add("customizedOffering", customizedOffering).add("cpuUseLimited", cpuUseLimited)
             .add("networkRate", networkRate).add("systemVmType", systemVmType);
    }
 
