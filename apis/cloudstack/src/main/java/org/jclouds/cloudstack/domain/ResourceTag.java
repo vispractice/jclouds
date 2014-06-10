@@ -37,7 +37,8 @@ public class ResourceTag {
     public static enum Type {
         UserVm, Template, ISO, Volume, Snapshot, Network, Nic, LoadBalancer, PortForwardingRule, FirewallRule, 
         SecurityGroup, PublicIpAddress, Project, Vpc, NetworkACL, StaticRoute, VMSnapshot, RemoteAccessVpn, 
-        Zone, ServiceOffering, Storage, PrivateGateway, NetworkACLList, VpnGateway, CustomerGateway, VpnConnection, UNRECOGNIZED;
+        Zone, ServiceOffering, Storage, PrivateGateway, NetworkACLList, VpnGateway, CustomerGateway, VpnConnection, 
+        Host, UNRECOGNIZED;
 
         public static Type fromValue(String type) {
             try {
