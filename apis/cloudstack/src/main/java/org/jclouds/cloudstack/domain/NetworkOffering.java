@@ -22,8 +22,10 @@ import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Set;
 
+import org.jclouds.cloudstack.domain.VirtualMachine.State;
 import org.jclouds.javax.annotation.Nullable;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.ImmutableSet;
@@ -34,6 +36,27 @@ import com.google.common.collect.ImmutableSet;
  * @author Adrian Cole
  */
 public class NetworkOffering implements Comparable<NetworkOffering> {
+    
+    public static enum State {
+        DISABLED, ENABLED, INACTIVE, UNRECOGNIZED;
+
+        @Override
+        public String toString() {
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
+                    name());
+        }
+
+        public static State fromValue(String state) {
+            try {
+                return valueOf(CaseFormat.UPPER_CAMEL.to(
+                        CaseFormat.UPPER_UNDERSCORE,
+                        checkNotNull(state, "state")));
+            } catch (IllegalArgumentException e) {
+                return UNRECOGNIZED;
+            }
+        }
+
+    }
 
    public static Builder<?> builder() {
       return new ConcreteBuilder();
