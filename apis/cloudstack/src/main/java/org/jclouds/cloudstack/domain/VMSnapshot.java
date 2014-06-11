@@ -61,7 +61,7 @@ public class VMSnapshot {
     */
 	public static enum Type {
 
-		DISK, MEMORY, DISKANDMEMORY, UNRECOGNIZED;
+		DISK, MEMORY, DISK_AND_MEMORY, UNRECOGNIZED;
 
 		public static Type fromValue(String type) {
 			try {
