@@ -79,6 +79,16 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
       return this;
 
    }
+   
+   /**
+    * @param hostId or lastHostId
+    *           list virtual machines by hostId.
+    */
+   public ListVirtualMachinesOptions currentHostId(String currentHostId) {
+      this.queryParameters.replaceValues("currenthostid", ImmutableSet.of(currentHostId));
+      return this;
+
+   }
 
    /**
     * @param networkId
@@ -248,6 +258,11 @@ public class ListVirtualMachinesOptions extends AccountInDomainOptions {
       public static ListVirtualMachinesOptions hostId(String id) {
          ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
          return options.hostId(id);
+      }
+      
+      public static ListVirtualMachinesOptions currentHostId(String currentHostId) {
+         ListVirtualMachinesOptions options = new ListVirtualMachinesOptions();
+         return options.currentHostId(currentHostId);
       }
 
       /**
