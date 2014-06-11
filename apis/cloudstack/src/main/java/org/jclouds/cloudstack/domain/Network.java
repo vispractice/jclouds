@@ -23,8 +23,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+import org.jclouds.cloudstack.domain.VirtualMachine.State;
 import org.jclouds.javax.annotation.Nullable;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.ImmutableList;
@@ -38,6 +40,27 @@ import com.google.common.collect.ImmutableSortedSet;
  * @author liwei
  */
 public class Network {
+    
+    public static enum State {
+        ALLOCATED,SETUP,IMPLEMENTING,IMPLEMENTED,SHUTDOWN,DESTROY,UNRECOGNIZED;
+
+        @Override
+        public String toString() {
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
+                    name());
+        }
+
+        public static State fromValue(String state) {
+            try {
+                return valueOf(CaseFormat.UPPER_CAMEL.to(
+                        CaseFormat.UPPER_UNDERSCORE,
+                        checkNotNull(state, "state")));
+            } catch (IllegalArgumentException e) {
+                return UNRECOGNIZED;
+            }
+        }
+
+    }
 
 	public static Builder<?> builder() {
 		return new ConcreteBuilder();
@@ -73,7 +96,7 @@ public class Network {
 		protected String related;
 		protected String startIP;
 		protected String name;
-		protected String state;
+		protected State state;
 		protected GuestIPType type;
 		protected String VLAN;
 		protected TrafficType trafficType;
@@ -284,7 +307,7 @@ public class Network {
 		/**
 		 * @see Network#getState()
 		 */
-		public T state(String state) {
+		public T state(State state) {
 			this.state = state;
 			return self();
 		}
@@ -543,7 +566,7 @@ public class Network {
 	private final String related;
 	private final String startIP;
 	private final String name;
-	private final String state;
+	private final State state;
 	private final GuestIPType type;
 	private final String VLAN;
 	private final TrafficType trafficType;
@@ -597,7 +620,7 @@ public class Network {
 			@Nullable String networkOfferingId,
 			@Nullable String networkOfferingName, @Nullable String related,
 			@Nullable String startIP, @Nullable String name,
-			@Nullable String state, @Nullable GuestIPType type,
+			@Nullable State state, @Nullable GuestIPType type,
 			@Nullable String VLAN, @Nullable TrafficType trafficType,
 			@Nullable String zoneId, @Nullable Set<ResourceTag> tags,
 			boolean securityGroupEnabled,
@@ -841,7 +864,7 @@ public class Network {
 	 * @return state of the network
 	 */
 	@Nullable
-	public String getState() {
+	public State getState() {
 		return this.state;
 	}
 

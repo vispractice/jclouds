@@ -65,7 +65,7 @@ public class ListNetworksResponseTest extends BaseSetParserTest<Network> {
                   .networkOfferingAvailability("Required")
                   .isShared(false)
                   .isSystem(false)
-                  .state("Implemented")
+                  .state(Network.State.IMPLEMENTED)
                   .related("204")
                   .broadcastURI(URI.create("vlan://240"))
                   .DNS(ImmutableList.of("8.8.8.8"))
