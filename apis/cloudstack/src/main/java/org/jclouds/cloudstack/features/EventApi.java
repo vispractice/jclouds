@@ -28,6 +28,7 @@ import org.jclouds.cloudstack.domain.Event;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.functions.ParseEventTypesFromHttpResponse;
 import org.jclouds.cloudstack.options.ListEventsOptions;
+import org.jclouds.cloudstack.response.ListEventsResponse;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -62,12 +63,25 @@ public interface EventApi {
     *
     * @return event list or null if not found
     */
-   @Named("listEventTypes")
+   @Named("listEvent")
    @GET
    @QueryParams(keys = "command", values = "listEvents")
    @SelectJson("event")
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<Event> listEvents(ListEventsOptions...options);
+   
+   /**
+    * List Events
+    *
+    * @return event list or null if not found
+    */
+   @Named("listEvent")
+   @GET
+   @QueryParams(keys = "command", values = "listEvents")
+   @SelectJson("listeventsresponse")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Fallback(EmptySetOnNotFoundOr404.class)
+   ListEventsResponse pagingTolistEvents(ListEventsOptions...options);
 
 }
