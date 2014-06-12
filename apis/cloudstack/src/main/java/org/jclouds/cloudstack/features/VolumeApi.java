@@ -31,6 +31,7 @@ import org.jclouds.Fallbacks.VoidOnNotFoundOr404;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.Volume;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
+import org.jclouds.cloudstack.options.CreateVolumeOptions;
 import org.jclouds.cloudstack.options.ExtractVolumeOptions;
 import org.jclouds.cloudstack.options.ListVolumesOptions;
 import org.jclouds.cloudstack.options.MigrateVolumeOptions;
@@ -131,7 +132,8 @@ public interface VolumeApi {
 	AsyncCreateResponse createVolumeFromDiskOfferingInZone(
 			@QueryParam("name") String name,
 			@QueryParam("diskofferingid") String diskOfferingId,
-			@QueryParam("zoneid") String zoneId);
+			@QueryParam("zoneid") String zoneId,
+			CreateVolumeOptions... options);
 
 	/**
 	 * List volumes
@@ -146,7 +148,8 @@ public interface VolumeApi {
 	AsyncCreateResponse createVolumeFromCustomDiskOfferingInZone(
 			@QueryParam("name") String name,
 			@QueryParam("diskofferingid") String diskOfferingId,
-			@QueryParam("zoneid") String zoneId, @QueryParam("size") int size);
+			@QueryParam("zoneid") String zoneId, @QueryParam("size") int size, 
+			CreateVolumeOptions... options);
 
 	/**
 	 * Get volume by id
@@ -163,7 +166,8 @@ public interface VolumeApi {
 	AsyncCreateResponse createVolumeFromSnapshotInZone(
 			@QueryParam("name") String name,
 			@QueryParam("snapshotid") String snapshotId,
-			@QueryParam("zoneid") String zoneId);
+			@QueryParam("zoneid") String zoneId,
+			CreateVolumeOptions... options);
 
 	/**
 	 * Deletes a attached disk volume
