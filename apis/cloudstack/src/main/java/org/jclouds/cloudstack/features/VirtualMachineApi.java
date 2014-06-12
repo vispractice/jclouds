@@ -80,7 +80,7 @@ public interface VirtualMachineApi {
     */
    @Named("listVirtualMachines")
    @GET
-   @QueryParams(keys = { "command", "listAll" }, values = { "listVirtualMachines", "false" })
+   @QueryParams(keys = { "command", "listAll" }, values = { "listVirtualMachines", "true" })
    @Consumes(MediaType.APPLICATION_JSON)
    @SelectJson("listvirtualmachinesresponse")
    @Fallback(NullOnNotFoundOr404.class)
