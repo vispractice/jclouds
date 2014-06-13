@@ -75,10 +75,10 @@ public class EventApiTest extends BaseCloudStackApiTest<EventApi> {
 
    public void testEventsListOptions() throws SecurityException, NoSuchMethodException, IOException {
       Invokable<?, ?> method = method(EventApi.class, "listEvents", ListEventsOptions[].class);
-      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListEventsOptions.Builder.account("jclouds")));
+      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListEventsOptions.Builder.accountInDomain("jclouds", "domain")));
 
       assertRequestLineEquals(httpRequest,
-            "GET http://localhost:8080/client/api?response=json&listAll=true&command=listEvents&account=jclouds HTTP/1.1");
+            "GET http://localhost:8080/client/api?response=json&listAll=true&command=listEvents&account=jclouds&domainid=domain HTTP/1.1");
       assertNonPayloadHeadersEqual(httpRequest, "Accept: application/json\n");
       assertPayloadEquals(httpRequest, null, null, false);
 

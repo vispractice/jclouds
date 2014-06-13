@@ -24,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.Fallbacks.EmptySetOnNotFoundOr404;
+import org.jclouds.Fallbacks.NullOnNotFoundOr404;
 import org.jclouds.cloudstack.domain.Event;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.functions.ParseEventTypesFromHttpResponse;
@@ -81,7 +82,7 @@ public interface EventApi {
    @QueryParams(keys = "command", values = "listEvents")
    @SelectJson("listeventsresponse")
    @Consumes(MediaType.APPLICATION_JSON)
-   @Fallback(EmptySetOnNotFoundOr404.class)
+   @Fallback(NullOnNotFoundOr404.class)
    ListEventsResponse pagingTolistEvents(ListEventsOptions...options);
 
 }

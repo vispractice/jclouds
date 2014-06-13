@@ -30,26 +30,16 @@ import com.google.common.collect.ImmutableSet;
  *      "http://download.cloud.com/releases/2.2.0/api_2.2.12/user/listEvents.html"
  *      />
  */
-public class ListEventsOptions extends BaseHttpRequestOptions {
+public class ListEventsOptions extends AccountInDomainOptions {
    public static final ListEventsOptions NONE = new ListEventsOptions();
-
-   public ListEventsOptions account(String account) {
-      this.queryParameters.replaceValues("account", ImmutableSet.of(account));
-      return this;
-   }
-
-   public ListEventsOptions domainId(String domainId) {
-      this.queryParameters.replaceValues("domainid", ImmutableSet.of(domainId + ""));
-      return this;
-   }
 
    public ListEventsOptions duration(String duration) {
       this.queryParameters.replaceValues("duration", ImmutableSet.of(duration));
       return this;
    }
 
-   public ListEventsOptions endDate(Date enddate) {
-      this.queryParameters.replaceValues("enddate", ImmutableSet.of(enddate + ""));
+   public ListEventsOptions endDate(String endDate) {
+      this.queryParameters.replaceValues("enddate", ImmutableSet.of(endDate));
       return this;
    }
 
@@ -82,12 +72,53 @@ public class ListEventsOptions extends BaseHttpRequestOptions {
       this.queryParameters.replaceValues("type", ImmutableSet.of(type));
       return this;
    }
+   
+   /**
+    * @param page
+    */
+   public ListEventsOptions page(long page) {
+      this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+      return this;
+   }
 
+   /**
+    * @param pageSize the page size
+    */
+   public ListEventsOptions pageSize(long pageSize) {
+      this.queryParameters.replaceValues("pagesize", ImmutableSet.of(pageSize + ""));
+      return this;
+   }
+   
+   public ListEventsOptions isRecursive(boolean isRecursive) {
+       this.queryParameters.replaceValues("isrecursive", ImmutableSet.of(isRecursive + ""));
+       return this;
+    }
+   
+   public ListEventsOptions startDate(String startDate) {
+       this.queryParameters.replaceValues("startdate", ImmutableSet.of(startDate));
+       return this;
+    }
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public ListEventsOptions accountInDomain(String account, String domain) {
+      return ListEventsOptions.class.cast(super.accountInDomain(account, domain));
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public ListEventsOptions domainId(String domainId) {
+      return ListEventsOptions.class.cast(super.domainId(domainId));
+   }
 
    public static class Builder {
-      public static ListEventsOptions account(String account) {
+      public static ListEventsOptions accountInDomain(String account, String domain) {
          final ListEventsOptions options = new ListEventsOptions();
-         return options.account(account);
+         return options.accountInDomain(account, domain);
       }
 
       public static ListEventsOptions domainId(String domainId) {
@@ -100,9 +131,9 @@ public class ListEventsOptions extends BaseHttpRequestOptions {
          return options.duration(duration);
       }
 
-      public static ListEventsOptions endDate(Date enddate) {
+      public static ListEventsOptions endDate(String endDate) {
          final ListEventsOptions options = new ListEventsOptions();
-         return options.endDate(enddate);
+         return options.endDate(endDate);
       }
 
       public static ListEventsOptions entryTime(Date entrytime) {
@@ -134,6 +165,26 @@ public class ListEventsOptions extends BaseHttpRequestOptions {
          final ListEventsOptions options = new ListEventsOptions();
          return options.type(type);
       }
+      
+      public static ListEventsOptions pageSize(long pageSize) {
+          final ListEventsOptions options = new ListEventsOptions();
+          return options.pageSize(pageSize);
+       }
+      
+      public static ListEventsOptions page(long page) {
+          final ListEventsOptions options = new ListEventsOptions();
+          return options.page(page);
+       }
+      
+      public static ListEventsOptions isRecursive(boolean isRecursive) {
+          final ListEventsOptions options = new ListEventsOptions();
+          return options.isRecursive(isRecursive);
+       }
+      
+      public static ListEventsOptions startDate(String startDate) {
+          final ListEventsOptions options = new ListEventsOptions();
+          return options.startDate(startDate);
+       }
 
    }
 
