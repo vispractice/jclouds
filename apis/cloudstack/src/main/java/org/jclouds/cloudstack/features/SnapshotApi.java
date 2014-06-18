@@ -192,7 +192,7 @@ public interface SnapshotApi {
    @Named("listVMSnapshot")
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
-   @QueryParams(keys = { "command"}, values = { "listVMSnapshot"})
+   @QueryParams(keys = { "command", "listAll"}, values = { "listVMSnapshot", "true"})
    @SelectJson("vmSnapshot")
    @Fallback(EmptySetOnNotFoundOr404.class)
    Set<VMSnapshot> listVMSnapshot(ListVMSnapshotsOptions... options);
