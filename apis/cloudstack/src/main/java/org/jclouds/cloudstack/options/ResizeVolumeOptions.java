@@ -48,16 +48,16 @@ public class ResizeVolumeOptions extends BaseHttpRequestOptions {
 	/**
 	 * @param shrinkok Verify OK to Shrink
 	 */
-	public ResizeVolumeOptions shrinkok(String shrinkok) {
-		this.queryParameters.replaceValues("shrinkok", ImmutableSet.of(shrinkok));
+	public ResizeVolumeOptions shrinkok(boolean shrinkok) {
+		this.queryParameters.replaceValues("shrinkok", ImmutableSet.of(shrinkok+""));
 		return this;
 	}
 	
 	/**
 	 * @param size New volume size in G
 	 */
-	public ResizeVolumeOptions size(String size) {
-		this.queryParameters.replaceValues("size", ImmutableSet.of(size));
+	public ResizeVolumeOptions size(long size) {
+		this.queryParameters.replaceValues("size", ImmutableSet.of(size+""));
 		return this;
 	}
 
@@ -82,7 +82,7 @@ public class ResizeVolumeOptions extends BaseHttpRequestOptions {
 		/**
 		 * @see ResizeVolumeOptions#shrinkok
 		 */
-		public static ResizeVolumeOptions shrinkok(String shrinkok) {
+		public static ResizeVolumeOptions shrinkok(boolean shrinkok) {
 			ResizeVolumeOptions options = new ResizeVolumeOptions();
 			return options.shrinkok(shrinkok);
 		}
@@ -90,7 +90,7 @@ public class ResizeVolumeOptions extends BaseHttpRequestOptions {
 		/**
 		 * @see ResizeVolumeOptions#size
 		 */
-		public static ResizeVolumeOptions size(String size) {
+		public static ResizeVolumeOptions size(long size) {
 			ResizeVolumeOptions options = new ResizeVolumeOptions();
 			return options.size(size);
 		}

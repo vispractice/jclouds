@@ -272,7 +272,7 @@ public class VolumeApiLiveTest extends BaseCloudStackApiLiveTest {
             ResizeVolumeOptions options = new ResizeVolumeOptions();
             options.id(volume.getId());
             options.diskOfferingId(volume.getDiskOfferingId());
-            options.size(String.valueOf(newSize));
+            options.size(newSize);
             String resizeJobId = client.getVolumeApi().resizeVolume(options);
             assertTrue(jobComplete.apply(resizeJobId));
 
