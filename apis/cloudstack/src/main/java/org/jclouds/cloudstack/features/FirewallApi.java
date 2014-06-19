@@ -42,6 +42,8 @@ import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 import org.jclouds.rest.annotations.Unwrap;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Provides synchronous access to cloudstack via their REST API.
  * <p/>
@@ -213,4 +215,14 @@ public interface FirewallApi {
    @Fallback(VoidOnNotFoundOr404.class)
    void deletePortForwardingRule(@QueryParam("id") String id);
 
+   @Beta
+   @Named("updatePortForwardingRule")
+   @GET
+   @QueryParams(keys = "command", values = "updatePortForwardingRule")
+   @Unwrap
+   @Consumes(MediaType.APPLICATION_JSON)
+   AsyncCreateResponse updatePortForwardingRuleForVirtualMachine(
+      @QueryParam("ipaddressid") String ipAddressId, @QueryParam("protocol") PortForwardingRule.Protocol protocol,
+      @QueryParam("publicport") int publicPort, @QueryParam("virtualmachineid") String virtualMachineId,
+      @QueryParam("privateport") int privatePort);
 }
