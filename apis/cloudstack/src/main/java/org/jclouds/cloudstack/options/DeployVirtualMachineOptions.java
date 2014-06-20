@@ -381,9 +381,9 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
             return options.affinityGroupNames(affinityGroupNames);
         }
         
-        public static DeployVirtualMachineOptions details(String details) {
+        public static DeployVirtualMachineOptions details(Map<String, Object> detailsMap) {
             DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
-            return options.details(details);
+            return options.details(detailsMap);
         }
         
         public static DeployVirtualMachineOptions displayVm(boolean displayVm) {
@@ -445,11 +445,19 @@ public class DeployVirtualMachineOptions extends AccountInDomainOptions {
         return this;
     }
     
-    public DeployVirtualMachineOptions details(String details) {
-        this.queryParameters.replaceValues("details",
-                ImmutableSet.of(details));
+    /**
+     * @param details 
+     *           name value pairs of custom parameters for cpu,memory and cpunumber. example details[i].name=value
+     */
+    public DeployVirtualMachineOptions details(Map<String, Object> detailsMap) {
+        int count = 0;
+        for (Map.Entry<String, Object> entry : detailsMap.entrySet()) {
+            if(entry.getValue() != null && !entry.getValue().toString().trim().equals("")){
+                this.queryParameters.replaceValues(String.format("details[%d].%s", count, entry.getKey()), ImmutableSet.of(entry.getValue().toString()));
+            }
+        }
         return this;
-    }
+     }
     
     public DeployVirtualMachineOptions displayVm(boolean displayVm) {
         this.queryParameters.replaceValues("displayvm",
