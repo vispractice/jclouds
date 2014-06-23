@@ -19,11 +19,14 @@ package org.jclouds.cloudstack.features;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jclouds.cloudstack.binders.ResourceLimitToQueryParams;
 import org.jclouds.cloudstack.domain.ResourceLimit;
+import org.jclouds.cloudstack.domain.ResourceLimit.ResourceType;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
+import org.jclouds.cloudstack.options.UpdateResourceLimitOptions;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -52,6 +55,8 @@ public interface DomainLimitApi extends LimitApi {
    @QueryParams(keys = "command", values = "updateResourceLimit")
    @SelectJson("resourcelimit")
    @Consumes(MediaType.APPLICATION_JSON)
-   ResourceLimit updateResourceLimit(@BinderParam(ResourceLimitToQueryParams.class) ResourceLimit limit);
+   ResourceLimit updateResourceLimit(
+           @QueryParam("resourcetype") int resourceType, 
+           UpdateResourceLimitOptions... options);
    
 }
