@@ -81,11 +81,10 @@ public interface DomainVirtualMachineApi extends VirtualMachineApi {
 	 * Expunge a virtual machine. Once expunged, it cannot be recoverd.
 	 * @param id The ID of the virtual machine
 	 */
-	@Beta
 	@Named("expungeVirtualMachine")
 	@GET
 	@QueryParams(keys = "command", values = "expungeVirtualMachine")
-	@SelectJson({ "expungevirtualmachine", "expungevirtualmachineresponse" })
+	@SelectJson({ "expungevirtualmachineresponse"})
 	@Consumes(MediaType.APPLICATION_JSON)
 	AsyncCreateResponse expungeVirtualMachine(@QueryParam("id") String id);
 }

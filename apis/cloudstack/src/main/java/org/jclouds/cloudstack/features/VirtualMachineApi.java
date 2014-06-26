@@ -31,6 +31,7 @@ import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;
 import org.jclouds.cloudstack.options.AddNicToVirtualMachineOptions;
 import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
+import org.jclouds.cloudstack.options.DestroyVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
 import org.jclouds.cloudstack.options.RestoreVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ScaleVirtualMachineOptions;
@@ -258,7 +259,8 @@ public interface VirtualMachineApi {
    @SelectJson("jobid")
    @Consumes(MediaType.APPLICATION_JSON)
    @Fallback(NullOnNotFoundOr404.class)
-   String destroyVirtualMachine(@QueryParam("id") String id);
+   String destroyVirtualMachine(@QueryParam("id") String id,
+		   DestroyVirtualMachineOptions... options);
 
    /**
     * Restore a VM to original template/ISO or new template/ISO
