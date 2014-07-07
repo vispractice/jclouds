@@ -23,66 +23,117 @@ import com.google.common.collect.ImmutableSet;
 
 /**
  * Options to the listCapacity command.
- *
+ * 
  * @author Richard Downer
  */
 public class ListCapacityOptions extends BaseHttpRequestOptions {
 
-   public static final ListCapacityOptions NONE = new ListCapacityOptions();
+    public static final ListCapacityOptions NONE = new ListCapacityOptions();
 
-   public ListCapacityOptions hostId(String hostId) {
-      this.queryParameters.replaceValues("hostid", ImmutableSet.of(hostId + ""));
-      return this;
-   }
+    public ListCapacityOptions clusterId(String clusterId) {
+        this.queryParameters.replaceValues("clusterid",
+                ImmutableSet.of(clusterId));
+        return this;
+    }
 
-   public ListCapacityOptions keyword(String keyword) {
-      this.queryParameters.replaceValues("keyword", ImmutableSet.of(keyword));
-      return this;
-   }
+    public ListCapacityOptions fetchLatest(boolean fetchLatest) {
+        this.queryParameters.replaceValues("fetchlatest",
+                ImmutableSet.of(fetchLatest + ""));
+        return this;
+    }
 
-   public ListCapacityOptions podId(String podId) {
-      this.queryParameters.replaceValues("podid", ImmutableSet.of(podId + ""));
-      return this;
-   }
+    public ListCapacityOptions keyword(String keyword) {
+        this.queryParameters.replaceValues("keyword", ImmutableSet.of(keyword));
+        return this;
+    }
 
-   public ListCapacityOptions type(Capacity.Type type) {
-      this.queryParameters.replaceValues("type", ImmutableSet.of(type.ordinal() + ""));
-      return this;
-   }
+    /**
+     * @param page
+     */
+    public ListCapacityOptions page(long page) {
+        this.queryParameters.replaceValues("page", ImmutableSet.of(page + ""));
+        return this;
+    }
 
-   public ListCapacityOptions zoneId(String zoneId) {
-      this.queryParameters.replaceValues("zoneid", ImmutableSet.of(zoneId + ""));
-      return this;
-   }
+    /**
+     * @param pageSize
+     *            the page size
+     */
+    public ListCapacityOptions pageSize(long pageSize) {
+        this.queryParameters.replaceValues("pagesize",
+                ImmutableSet.of(pageSize + ""));
+        return this;
+    }
 
-   public static class Builder {
+    public ListCapacityOptions podId(String podId) {
+        this.queryParameters.replaceValues("podid", ImmutableSet.of(podId));
+        return this;
+    }
 
-      public static ListCapacityOptions hostId(String hostId) {
-         final ListCapacityOptions options = new ListCapacityOptions();
-         return options.hostId(hostId);
-      }
+    public ListCapacityOptions sortBy(String sortBy) {
+        this.queryParameters.replaceValues("sortby", ImmutableSet.of(sortBy));
+        return this;
+    }
 
-      public static ListCapacityOptions keyword(String keyword) {
-         final ListCapacityOptions options = new ListCapacityOptions();
-         return options.keyword(keyword);
-      }
+    public ListCapacityOptions type(Capacity.Type type) {
+        this.queryParameters.replaceValues("type",
+                ImmutableSet.of(type.ordinal() + ""));
+        return this;
+    }
 
-      public static ListCapacityOptions podId(String podId) {
-         final ListCapacityOptions options = new ListCapacityOptions();
-         return options.podId(podId);
-      }
+    public ListCapacityOptions zoneId(String zoneId) {
+        this.queryParameters.replaceValues("zoneid",
+                ImmutableSet.of(zoneId + ""));
+        return this;
+    }
 
-      public static ListCapacityOptions type(Capacity.Type type) {
-         final ListCapacityOptions options = new ListCapacityOptions();
-         return options.type(type);
-      }
+    public static class Builder {
 
-      public static ListCapacityOptions zoneId(String zoneId) {
-         final ListCapacityOptions options = new ListCapacityOptions();
-         return options.zoneId(zoneId);
-      }
+        public static ListCapacityOptions clusterId(String clusterId) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.clusterId(clusterId);
+        }
 
-   }
+        public static ListCapacityOptions fetchLatest(boolean fetchLatest) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.fetchLatest(fetchLatest);
+        }
+
+        public static ListCapacityOptions keyword(String keyword) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.keyword(keyword);
+        }
+
+        public static ListCapacityOptions page(long page) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.page(page);
+        }
+
+        public static ListCapacityOptions pageSize(long pageSize) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.pageSize(pageSize);
+        }
+
+        public static ListCapacityOptions podId(String podId) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.podId(podId);
+        }
+
+        public static ListCapacityOptions sortBy(String sortBy) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.sortBy(sortBy);
+        }
+
+        public static ListCapacityOptions type(Capacity.Type type) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.type(type);
+        }
+
+        public static ListCapacityOptions zoneId(String zoneId) {
+            final ListCapacityOptions options = new ListCapacityOptions();
+            return options.zoneId(zoneId);
+        }
+
+    }
 
 }
-

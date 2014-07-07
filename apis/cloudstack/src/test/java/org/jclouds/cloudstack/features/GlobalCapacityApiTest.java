@@ -58,7 +58,7 @@ public class GlobalCapacityApiTest extends BaseCloudStackApiTest<GlobalCapacityA
 
    public void testListCapacityOptions() throws SecurityException, NoSuchMethodException, IOException {
       Invokable<?, ?> method = method(GlobalCapacityApi.class, "listCapacity", ListCapacityOptions[].class);
-      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListCapacityOptions.Builder.hostId("3").keyword("fred").podId("4").type(Capacity.Type.CPU_ALLOCATED_MHZ).zoneId("6")));
+      GeneratedHttpRequest httpRequest = processor.createRequest(method, ImmutableList.<Object> of(ListCapacityOptions.Builder.clusterId("3").keyword("fred").podId("4").type(Capacity.Type.CPU_ALLOCATED_MHZ).zoneId("6")));
 
       assertRequestLineEquals(httpRequest,
             "GET http://localhost:8080/client/api?response=json&command=listCapacity&listAll=true&hostid=3&keyword=fred&podid=4&type=1&zoneid=6 HTTP/1.1");

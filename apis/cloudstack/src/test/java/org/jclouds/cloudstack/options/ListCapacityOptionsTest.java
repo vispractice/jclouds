@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudstack.options;
 
-import static org.jclouds.cloudstack.options.ListCapacityOptions.Builder.hostId;
+import static org.jclouds.cloudstack.options.ListCapacityOptions.Builder.clusterId;
 import static org.jclouds.cloudstack.options.ListCapacityOptions.Builder.keyword;
 import static org.jclouds.cloudstack.options.ListCapacityOptions.Builder.podId;
 import static org.jclouds.cloudstack.options.ListCapacityOptions.Builder.type;
@@ -37,13 +37,13 @@ import com.google.common.collect.ImmutableList;
 public class ListCapacityOptionsTest {
 
    public void testHostId() {
-      ListCapacityOptions options = new ListCapacityOptions().hostId("6");
-      assertEquals(ImmutableList.of("6"), options.buildQueryParameters().get("hostid"));
+      ListCapacityOptions options = new ListCapacityOptions().clusterId("6");
+      assertEquals(ImmutableList.of("6"), options.buildQueryParameters().get("clusterid"));
    }
 
    public void testHostIdStatic() {
-      ListCapacityOptions options = hostId("6");
-      assertEquals(ImmutableList.of("6"), options.buildQueryParameters().get("hostid"));
+      ListCapacityOptions options = clusterId("6");
+      assertEquals(ImmutableList.of("6"), options.buildQueryParameters().get("clusterid"));
    }
 
    public void testKeyword() {
