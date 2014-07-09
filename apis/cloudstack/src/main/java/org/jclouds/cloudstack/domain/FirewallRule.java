@@ -41,6 +41,7 @@ public class FirewallRule implements Comparable<FirewallRule> {
       TCP,
       UDP,
       ICMP,
+      ALL,
       UNKNOWN;
 
       public static Protocol fromValue(String value) {
