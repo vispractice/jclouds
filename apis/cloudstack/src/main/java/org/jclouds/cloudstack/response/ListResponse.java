@@ -17,7 +17,7 @@
 package org.jclouds.cloudstack.response;
 
 public abstract class ListResponse extends ExceptionResponse {
-    protected Integer count;
+    protected Integer count = 0;
 
     public Integer getCount() {
         return count;
